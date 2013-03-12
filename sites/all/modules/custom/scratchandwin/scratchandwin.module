@@ -1,0 +1,128 @@
+<?php
+
+function scratchandwin_menu() {
+  $items = array();
+
+ $items['claim-prize'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('scratchandwin_claim_form'),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+
+  return $items;
+}
+
+
+function scratchandwin_block_info() {
+	$blocks['scratch-block'] = array(
+    'info' => t('Custom: Scratch Block'),
+  );
+  return $blocks;
+}
+
+
+function scratchandwin_block_view($delta='') {
+  $block = array();
+  $nid = arg(1);
+  switch ($delta) {
+    case 'scratch-block':
+      $block['subject'] = 'Scratch Block';
+      //$block['content'] = button_contents($nid);
+      $block['content'] = _scratch_block($nid);
+      break;
+  }
+
+  return $block;
+}
+
+function _scratch_block($nid){
+  $node = node_load($nid);
+  //$html = "<canvas>HI</canvas>";
+  $html = "";
+  $_SESSION['campaign_id'] = '';
+//get campaign type
+      $type = $node->field_single_winner['und'][0]['value'];
+      $current_impression = $node->field_current_impressions['und'][0]['value'] + 1;
+      $max_impression = $node->field_impressions['und'][0]['value'];
+      $winner_num = $node->field_winner_['und'][0]['value'];
+      $win_every = $node->field_win_every['und'][0]['value'];
+
+  if($type == 1){
+        //single winner	
+        if($current_impression == $winner_num){
+	     $_SESSION['campaign_id'] = $nid;
+	     $html .= "You Won<bR>";
+	     $html .= "<a href='/claim-prize'>Claim Your Prize</a>";
+	     $html .= "<br>";
+        }else{
+	     $html .= "Sorry Try Again<br>";
+        }
+        $html .= "single winner";
+      }else{
+        //win every x impressions
+        $html .= "win every x impressions";	
+          if ($current_impression % $win_every == 0) {
+		     $html .= "You Won<bR>";
+		     $html .= "<a href='/claim-prize'>Claim Your Prize</a>";
+		     $html .= "<br>";
+		  }else{
+			 $html .= "Sorry Try Again<br>";
+		  }
+
+        
+      }
+
+    $node->field_current_impressions['und'][0]['value'] = $current_impression;
+
+    if($max_impression == $current_impression){
+	 $node->status = 0;
+    }
+    node_save($node);
+
+	return $html;
+}
+
+function scratchandwin_claim_form($form, &$form_state) {
+	if($_SESSION['campaign_id'] == ''){
+			drupal_set_message("You don't have access to this page");
+			return;
+		}
+	$form['node'] = array(
+		'#type' => 'hidden',
+		'#value' => $_SESSION['campaign_id'],
+	);
+	$form['name'] = array(
+		'#type' => 'textfield',
+		'#title' => 'name',
+	);
+	$form['phone'] = array(
+		'#title' => 'phone',
+		'#type' => 'textfield',
+	);
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Submit',
+    // '#ajax' => array(
+    //               	      'callback' => 'ajax_freebutton_winner_form_callback',
+    //               	      'wrapper' => 'contact-form-wrapper',
+    //               	      'method' => 'replace',
+    //               	      'effect' => 'fade',
+    //               	    ),
+  );
+	
+	return $form;
+}
+
+
+function scratchandwin_claim_form_submit($form, &$form_state) {
+	
+	$nid = $form_state['values']['node'];
+	print $nid;
+	print "<br>HERE";
+    $_SESSION['campaign_id'] = '';
+    drupal_set_message("Thank you we will get back to you");
+    drupal_goto('/node/'.$nid);
+	return;
+}
