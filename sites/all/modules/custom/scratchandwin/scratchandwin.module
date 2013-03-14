@@ -9,7 +9,12 @@ function scratchandwin_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
-
+  $items['check-winner/%'] = array(
+    'page callback' => '_check_winner',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'page arguments'   => array(1),
+  );
 
   return $items;
 }
@@ -38,51 +43,62 @@ function scratchandwin_block_view($delta='') {
 }
 
 function _scratch_block($nid){
+  $path = drupal_get_path('module', 'scratchandwin');
+  drupal_add_js($path.'/scratchandwin.js');
   $node = node_load($nid);
-  //$html = "<canvas>HI</canvas>";
-  $html = "";
-  $_SESSION['campaign_id'] = '';
-//get campaign type
-      $type = $node->field_single_winner['und'][0]['value'];
-      $current_impression = $node->field_current_impressions['und'][0]['value'] + 1;
-      $max_impression = $node->field_impressions['und'][0]['value'];
-      $winner_num = $node->field_winner_['und'][0]['value'];
-      $win_every = $node->field_win_every['und'][0]['value'];
+  $html = '<a href="#" onclick="sw_ajax_win_request('.$nid.')">Click To Win</a>';
+  
+	return $html;
+}
 
-  if($type == 1){
-        //single winner	
-        if($current_impression == $winner_num){
-	     $_SESSION['campaign_id'] = $nid;
-	     $html .= "You Won<bR>";
-	     $html .= "<a href='/claim-prize'>Claim Your Prize</a>";
-	     $html .= "<br>";
-        }else{
-	     $html .= "Sorry Try Again<br>";
-        }
-        $html .= "single winner";
-      }else{
-        //win every x impressions
-        $html .= "win every x impressions";	
-          if ($current_impression % $win_every == 0) {
+function _check_winner($nid){
+	$html = "";
+	  $_SESSION['campaign_id'] = '';
+	  $node = node_load($nid);
+	//get campaign type
+	      $type = $node->field_single_winner['und'][0]['value'];
+	      $current_impression = $node->field_current_impressions['und'][0]['value'] + 1;
+	      $max_impression = $node->field_impressions['und'][0]['value'];
+	      $winner_num = $node->field_winner_['und'][0]['value'];
+	      $win_every = $node->field_win_every['und'][0]['value'];
+
+	  if($type == 1){
+	        //single winner	
+	        if($current_impression == $winner_num){
+		     $_SESSION['campaign_id'] = $nid;
 		     $html .= "You Won<bR>";
 		     $html .= "<a href='/claim-prize'>Claim Your Prize</a>";
 		     $html .= "<br>";
-		  }else{
-			 $html .= "Sorry Try Again<br>";
-		  }
+	        }else{
+		     $html .= "Sorry Try Again<br>";
+	        }
+	        $html .= "single winner";
+	      }else{
+	        //win every x impressions
+	        $html .= "win every x impressions";	
+	          if ($current_impression % $win_every == 0) {
+			     $html .= "You Won<bR>";
+			     $html .= "<a href='/claim-prize'>Claim Your Prize</a>";
+			     $html .= "<br>";
+			  }else{
+				 $html .= "<br>";
+				 $html .= "Sorry Try Again<br>";
+			  }
 
-        
-      }
 
-    $node->field_current_impressions['und'][0]['value'] = $current_impression;
+	      }
 
-    if($max_impression == $current_impression){
-	 $node->status = 0;
-    }
-    node_save($node);
+	    $node->field_current_impressions['und'][0]['value'] = $current_impression;
 
-	return $html;
+	    if($max_impression == $current_impression){
+		 $node->status = 0;
+	    }
+	    node_save($node);
+	
+	echo $html;
+	return;
 }
+
 
 function scratchandwin_claim_form($form, &$form_state) {
 	if($_SESSION['campaign_id'] == ''){
