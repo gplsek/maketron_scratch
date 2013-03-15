@@ -1,0 +1,91 @@
+/***********************************
+*   scratcher stylesheet
+*   Developer: tragic{media}
+***********************************/
+
+/* insert variables here*/
+// VARS
+$color-bg:#f4f4f4;
+$color-body:#000;
+$color-header:#222;
+$color-link:#000;
+$color-link-hover:#333;
+
+$font-body:Arial, Helvetica, sans-serif;
+$font-header: Arial, Helvetica, sans-serif;
+$font-size-body:12px;
+$font-size-header:18px;
+$font-size-custom:15px;
+
+$path-fonts:'../fonts/';
+$path-img:'../images/';
+$path-sprite:$path-img + 'sprite.png';
+
+$size-full:960px;
+$size-sidebar:200px;
+$size-two-col:824px;
+$size-three-col:624px;
+
+/*  import base structure */
+	@import 'base';
+
+/*
+* BEGIN: Site Styles
+*/
+
+#container {
+    margin:0 auto;
+    max-width:960px;
+    position:relative;
+    width:100%;
+}
+.front .region-content{
+    display:none;
+}
+
+.front .ajax-result .region-content {
+    display:block;
+    padding-left:5px;
+}
+/*test*/
+.scratch-box {
+    > div {
+        display:none;
+    }
+    > div:first-child {
+        display:block;
+    }
+}
+
+.scratch-box {
+    @include transition(2500ms);
+    position:absolute;
+    left:0;
+    top:0;
+}
+
+#tempAjax {
+    @mixin delay(500);
+    @include wrap();
+    @include size(680px, 450px);
+    @include opacity(0);
+    z-index:2;
+    &.finished {
+        @include opacity(1);
+        z-index:3;
+    }
+}
+
+#scratch-canvas {
+    @include transition(500ms);
+    z-index:3;
+    @include opacity(1);
+    canvas {
+        position:relative;
+        z-index:99;
+    }
+    &.finished {
+        @include opacity(0);
+        z-index:2;
+    }
+}

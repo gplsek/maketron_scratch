@@ -1,0 +1,384 @@
+/***********************************
+*   Base scss stylesheet
+*   Developer: tragic{media}
+***********************************/
+
+/*
+    COPY AND PASTE VARS INTO MAIN SITE STYLESHEET ABOVE BASE IMPORT
+
+
+// FORM MIXINS (adjust colors per site)
+@mixin form-submit($color:#fff) {
+    display:block;
+    line-height:25px;
+    border:none;
+    font-size:12px;
+    font-weight:bold;
+    background:$color;
+    text-transform:uppercase;
+    padding:0 5px;
+    margin:0;
+    color:#fff;
+    &:hover {
+        color:#000;
+    }
+}
+@mixin form-submit-small() {
+    line-height:25px;
+    background:#fff;
+    padding:0 3px;
+    @include border-radius(5px);
+}
+@mixin input-text() {
+    background:#fbfbfb;
+    border:1px solid #fff;
+    @include font(13px, 19px);
+    height:19px;
+    width:138px;
+    margin:0;
+    padding:2px 4px;
+}
+@mixin select() {
+    border:1px solid #fff;
+    width:150px;
+    padding:2px 2px 2px 4px;
+    margin:8px 10px 0 0;
+}
+
+*/
+
+// MIXINS
+@mixin font($size:$font-size-body, $line:$size + 4, $face:$font-body) {
+    font-family:$face;
+    font-size:$size;
+    line-height:$line;
+}
+@mixin font-size($size:12px, $line:$size + 4) {
+    font-size:$size;
+    line-height:$line;
+}
+@mixin indent($width:auto, $height:auto) {
+    display:block;
+    text-indent:105%;
+    white-space:nowrap;
+    width:$width;
+    height:$height;
+    overflow:hidden;
+}
+@mixin hide() {
+    @include indent(0, 0);
+}
+@mixin size($x:0, $y:0) {
+    width:$x;
+    height:$y;
+}
+@mixin sprite($l: 0, $t: 0, $repeat: no-repeat) {
+    background: url($path-sprite) $l $t $repeat;
+}
+@mixin wrap($h:auto) {
+    height:$h;
+    overflow:hidden;
+}
+@mixin opacity($opacity) {
+    opacity:$opacity;
+    $opacity:$opacity * 100;
+    filter:alpha(opacity=$opacity);
+}
+@mixin border-radius ($r1:5px, $r2:5px) {
+    -webkit-border-radius:$r1 $r1 $r2 $r2;
+    border-radius:$r1 $r1 $r2 $r2;
+}
+@mixin box-shadow ($x: 0px, $y: 0px, $blur: 2px, $spread: 2px, $color: #CCC) {
+    -khtml-box-shadow:$x $y $blur $spread $color;
+    -moz-box-shadow:$x $y $blur $spread $color;
+    -o-box-shadow:$x $y $blur $spread $color;
+    -webkit-box-shadow:$x $y $blur $spread $color;
+    box-shadow:$x $y $blur $spread $color;
+}
+@mixin delay($time: 200) {
+    -moz-transition-delay:$time+ms;
+    -webkit-transition-delay:$time+ms;
+    -o-transition-delay:$time+ms;
+    transition-delay:$time+ms;
+}
+@mixin mega-border ($topsize: 1px, $top: #333, $rightsize:1px, $right: #333, $bottomsize: 1px, $bottom: #333, $leftsize: 1px, $left: #333) {
+    border-top:$topsize solid $top;
+    border-right:$rightsize solid $right;
+    border-bottom:$bottomsize solid $bottom;
+    border-left:$leftsize solid $left;
+}
+@mixin mega-border-radius ($tl: 5px, $tr: 5px, $br: 5px, $bl: 5px) {
+    -webkit-border-radius:$tl $tr $br $bl;
+    border-radius:$tl;
+}
+@mixin transition($speed: 500, $transition:all) {
+    -moz-transition:$transition $speed+ms;
+    -webkit-transition:$transition $speed+ms;
+    -o-transition:$transition $speed+ms;
+    transition:$transition $speed+ms;
+}
+@mixin keyframes($name) {
+    @-webkit-keyframes #{$name} { @content; }
+    @-moz-keyframes #{$name} { @content; }
+    @-o-keyframes #{$name} { @content; }
+    @keyframes #{$name} { @content; }
+}
+@mixin animate($content) {
+    -webkit-animation:$content;
+    -moz-animation:$content;
+    -o-animation:$content;
+    -ms-animation:$content;
+    animation:$content;
+}
+@mixin text-shadow ($x: 0px, $y: 1px, $blur: 1px, $color: #000) {
+    -khtml-text-shadow:$x $y $blur $color;
+    -moz-text-shadow:$x $y $blur $color;
+    -o-text-shadow:$x $y $blur $color;
+    -webkit-text-shadow:$x $y $blur $color;
+    text-shadow:$x $y $blur $color;
+}
+@mixin gradient($color) {
+  @if $color==red {
+    // conditions
+  }
+  @if $color==black {
+    // conditions
+  }
+}
+
+//  TragicMedia footer mixin
+//  #tragicMediaFooter {@include tragic-footer(#666);}
+@mixin tragic-footer($text-color:#666) {
+    color:$text-color;
+    clear:both;
+    display:block;
+    height:28px;
+    margin:0;
+    padding:35px 0 25px;
+    text-align:center;
+    text-transform:lowercase;
+    vertical-align:top;
+    &, a {
+      @include font-size(10px, 28px);
+    }
+    a {
+        color:$text-color;
+        vertical-align:top;
+        *vertical-align:middle;
+        *display:inline-block;
+        &.tragic-logo {
+            display:inline-block;
+        }
+    }
+}
+
+// TragicMedia drupal admin tabs
+@mixin tragic-tabs() {
+    @include mega-border-radius(0px, 5px, 5px, 0px);
+    background:#222;
+    border-left:2px solid #b5121b;
+    margin:0;
+    padding:5px 8px 5px 4px;
+    position:absolute;
+    left:0;
+    top:20%;
+    z-index:99999;
+    li {
+        display:block;padding:5px 0;
+        a {
+            @include font(13px, 16px, $font-header);
+            background:none;
+            border:0;
+            color:#fff;
+            display:block;
+            margin:0;padding:0;
+            text-transform:uppercase;
+            &:hover {
+                color:#b5121b;
+            }
+        }
+        &.active a {
+            background:none;border:0;
+        }
+    }
+}
+
+/*
+ * BEGIN: Reset
+ */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre, a,
+abbr, acronym, address, big, cite, code, del,
+dfn, em, img, ins, kbd, q, s, samp, small, strike,
+strong, sub, sup, tt, var, b, u, i, center, dl, dt,
+dd, ol, ul, li, .item-list ul, .item-list ul li,
+ul.menu li, li.expanded, li.collapsed, li.leaf,
+fieldset, form, label, legend, table, caption, tbody,
+tfoot, thead, tr, th, td, article, aside, canvas,
+details, embed, figure, figcaption, footer, header,
+hgroup, menu, nav, output, ruby, section, summary,time,
+mark, audio, video {
+    margin:0;
+    padding:0;
+    border:0;
+    vertical-align:baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+#site-container, #footer-logo, .region-footer-bottom .block,
+article, aside, body, details, figcaption, figure, footer,
+header,hgroup, menu, nav, section, #fluidContainer {
+    display:block;
+}
+
+/*
+* BEGIN: Default Styles
+*/
+body {
+    @include font();
+    @include size(100%, 100%);
+    color:$color-body;
+    background:$color-bg;
+    -webkit-font-smoothing:antialiased;
+}
+h1, h2, h3, h4, h5, h6 {
+    @include font($size:$font-size-header, $face:$font-header);
+    color:$color-header;
+    font-weight:normal;
+    margin-bottom:15px;
+}
+h1 {
+    @include font-size(26px, 30px);
+    text-transform:capitalize;
+}
+h2 {
+    @include font-size(18px, 22px);
+}
+h3, h4, h5, h6 {
+    @include font-size(16px, 20px);
+}
+a,
+a:visited,
+a:link,
+li a.active {
+    color:$color-link;
+}
+a,
+li.active {
+    text-decoration:none;
+}
+a:hover {
+    color:$color-link-hover;
+    text-decoration:none;
+}
+p {
+    margin:0 0 15px;
+    padding:0;
+    font-style:italic;
+}
+#content {
+  ul, .item-list ul {
+    padding-left:15px;
+    @include wrap();
+    margin-bottom:15px;
+  }
+}
+ul, ul li.leaf {
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+ul.tabs.primary {
+    @include tragic-tabs();
+}
+p, blockquote {
+    margin-bottom:20px;
+}
+img {
+    display:block;
+}
+button,
+fieldset,
+img {
+    border:0;
+}
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+input.form-submit:hover {
+    cursor:pointer;
+}
+
+button {
+    cursor:pointer;
+}
+
+/* generic classes */
+.views-row,
+.form-item,
+.form-wrapper {
+    height:auto;
+    overflow:hidden;
+    margin-bottom:15px;
+}
+.wrap {
+    @include wrap();
+}
+.float-left {
+    float:left;
+    margin:0 20px 15px 0;
+}
+.float-right {
+    float:right;
+    margin:0 0 15px 20px;
+}
+.float-clear {
+    clear:both;
+}
+
+/* admin */
+#admin-toolbar h2 {
+    text-transform:none;
+}
+
+/*
+* BEGIN: Layout
+*/
+#container {
+    width:$size-full;
+    margin:0 auto;
+}
+#main {
+    min-height:600px;
+}
+body {
+    /* no sidebars */
+    &.no-sidebars #content {
+        @include size(680px, 480px);
+        margin:0 auto;
+        position:relative;
+    }
+    /* sidebars */
+    .sidebar {
+        width:$size-sidebar;
+    }
+    /* one sidebar */
+    &.one-sidebar #content {
+        width:$size-two-col;
+    }
+    &.one-sidebar.sidebar-first #content {
+        float:right;
+    }
+    &.one-sidebar.sidebar-second #content {
+        float:left;
+    }
+    /* two sidebars */
+    &.two-sidebars #content {
+        float:left;
+        width:$size-three-col;
+    }
+
+}
+
+
