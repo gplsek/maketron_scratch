@@ -124,18 +124,23 @@ validateForm = function (form) {
     });
 },
 
-reNod = function() {
-    $.ajax({
-        type:'GET',
-        dataType: 'html',
-        url: '?q=clp',
-        success:function(data){
-            var html = $('<div>').html(data);
-            var item = html.find('#sQue').html();
-            doc = '?q=node/' + item;
-            getWinLose(doc);
-        }
-    });
+/* this (reNod) is a temporary step for retrieving latest content nid,
+  and will be replaced/removed/updated soon */
+reNod = function(reqs) {
+    if(reqs == 0) {
+        reqs++;
+        $.ajax({
+            type:'GET',
+            dataType: 'html',
+            url: '?q=clp',
+            success:function(data){
+                var html = $('<div>').html(data);
+                var item = html.find('#sQue').html();
+                doc = '?q=node/' + item;
+                getWinLose(doc);
+            }
+        });
+    }
 },
 
 getWinLose = function(doc) {
@@ -149,12 +154,7 @@ getWinLose = function(doc) {
             sml = $('<div>').html(data);
             var contents = sml.find('#main').html();
             _ajax.html(contents);
-            _canvas.addClass('finished');
-            _ajax.addClass('finished');
-            _canvas.wScratchPad('clear');
-            _canvas.remove();
-            _ajax.removeClass('scratch-box');
-            _ajax.css('height', 'auto'); /*tmp*/
+            $('#sindex').click();
         }
     });
 }
@@ -178,6 +178,8 @@ $(document).ready(function() {
         };
     }
     var Cans = 0;
+    /* prevent multiple ajax requests */
+    var reqs = 0;
     if($('.scratch-block').length) {
         var imgUnder, imgOver, h = window.location.host + '/?q=';
         if(Cans < 1) {
@@ -199,11 +201,23 @@ $(document).ready(function() {
             scratchDown: function(e, percent){},
             scratchUp: function(e, percent){},
             scratchMove: function(e, percent) {
-                if(percent > 5) {
+                /* stage */
+                if(percent > 15) {
                     if(Cans == 0) {
                         Cans = 1;
-                        reNod();
+                        reNod(reqs);
                     }
+                }
+                /* show */
+                if(percent > 30) {
+                   var _canvas = $('#scratch-canvas');
+                   var _ajax = $('#tempAjax');
+                    _canvas.addClass('finished');
+                    _ajax.addClass('finished');
+                    _canvas.wScratchPad('clear');
+                    _canvas.remove();
+                    _ajax.removeClass('scratch-box');
+                    _ajax.css('height', 'auto'); /*tmp*/
                 }
             },
         });

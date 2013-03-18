@@ -46,45 +46,51 @@ function _scratch_block($nid){
   $path = drupal_get_path('module', 'scratchandwin');
   drupal_add_js($path.'/scratchandwin.js');
   $node = node_load($nid);
-  $html = '<a href="#" onclick="sw_ajax_win_request('.$nid.')">Click To Win</a>';
-  
+  $html = '<a id="sindex" href="#" onclick="sw_ajax_win_request('.$nid.')">Click To Win</a>';
+
 	return $html;
 }
 
 function _check_winner($nid){
-	$html = "";
-	  $_SESSION['campaign_id'] = '';
-	  $node = node_load($nid);
+    $html = "";
+    $_SESSION['campaign_id'] = '';
+    $node = node_load($nid);
 	//get campaign type
 	      $type = $node->field_single_winner['und'][0]['value'];
 	      $current_impression = $node->field_current_impressions['und'][0]['value'] + 1;
 	      $max_impression = $node->field_impressions['und'][0]['value'];
 	      $winner_num = $node->field_winner_['und'][0]['value'];
 	      $win_every = $node->field_win_every['und'][0]['value'];
+          /*images*/
+          $winText = $node->field_campaign_win_text['und'][0]['value'];
+          $loseText = $node->field_campaign_lose_text['und'][0]['value'];
+          $winImg = image_style_url('scratcher_image_680x450', $node->field_campaign_win_image['und'][0]['uri']);
+          $loseImg = image_style_url('scratcher_image_680x450', $node->field_campaign_lose_images['und'][0]['uri']);
 
 	  if($type == 1){
-	        //single winner	
+	        //single winner
 	        if($current_impression == $winner_num){
 		     $_SESSION['campaign_id'] = $nid;
-		     $html .= "You Won<bR>";
-		     $html .= "<a href='/claim-prize'>Claim Your Prize</a>";
-		     $html .= "<br>";
+		     $html .= "<p class='wlMsg'>".$winText."</p>";
+		     $html .= "<a id='cta_claim_prize' href='/claim-prize'>Claim Your Prize</a>";
+		     $html .= "<img src='".$winImg."' border='0' class='img_win'/><br/>";
 	        }else{
-		     $html .= "Sorry Try Again<br>";
+		     $html .= "<p class='wlMsg'>".$loseText."</p>";
+             $html .= "<img src='".$loseImg."' border='0' class='img_lose'/><br/>";
 	        }
-	        $html .= "single winner";
+            $html .= "<p class='wlMsg'>".$winText."</p>";
+	        $html .= "<img src='".$winImg."' border='0' class='img_win'/><br/>";
 	      }else{
 	        //win every x impressions
-	        $html .= "win every x impressions";	
+//	        $html .= "win every x impressions";
 	          if ($current_impression % $win_every == 0) {
-		         $_SESSION['campaign_id'] = $nid;
-			     $html .= "You Won<bR>";
-			     $html .= "<a href='/claim-prize'>Claim Your Prize</a>";
-			     $html .= "<br>";
+			     $html .= "<p class='wlMsg'>".$winText."</p>";
+			     $html .= "<a id='cta_claim_prize' href='/claim-prize'>Claim Your Prize</a>";
+			     $html .= "<img src='".$winImg."' border='0' class='img_win'/><br/>";
 			  }else{
-				 $html .= "<br>";
-				 $html .= "Sorry Try Again<br>";
-			  }
+                $html .= "<p class='wlMsg'>".$loseText."</p>";
+				$html .= "<img src='".$loseImg."' border='0' class='img_lose'/><br/>";
+			}
 
 
 	      }
@@ -95,7 +101,7 @@ function _check_winner($nid){
 		 $node->status = 0;
 	    }
 	    node_save($node);
-	
+
 	echo $html;
 	return;
 }
@@ -136,13 +142,13 @@ function scratchandwin_claim_form($form, &$form_state) {
     //               	      'effect' => 'fade',
     //               	    ),
   );
-	
+
 	return $form;
 }
 
 
 function scratchandwin_claim_form_submit($form, &$form_state) {
-	
+
 	$nid = $form_state['values']['node'];
 	print $nid;
 	print "<br>HERE";

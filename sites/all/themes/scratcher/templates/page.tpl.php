@@ -107,6 +107,7 @@
 
             <?php if($is_front): ?>
                 <!-- CUSTOM SCRATCHER INTERFACE -->
+                <div id="iterimsg"><p>Checking if you've won...</p></div>
                 <div id="scratch-canvas" class="scratch-box"></div>
                 <div id="tempAjax" class="ajax-result scratch-box"></div>
                 <!-- END SCRATCHER INTERFACE -->
