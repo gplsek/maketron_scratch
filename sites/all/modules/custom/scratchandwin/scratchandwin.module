@@ -77,6 +77,7 @@ function _check_winner($nid){
 	        //win every x impressions
 	        $html .= "win every x impressions";	
 	          if ($current_impression % $win_every == 0) {
+		         $_SESSION['campaign_id'] = $nid;
 			     $html .= "You Won<bR>";
 			     $html .= "<a href='/claim-prize'>Claim Your Prize</a>";
 			     $html .= "<br>";
@@ -111,11 +112,19 @@ function scratchandwin_claim_form($form, &$form_state) {
 	);
 	$form['name'] = array(
 		'#type' => 'textfield',
-		'#title' => 'name',
+		'#title' => 'Name',
+	);
+	$form['email'] = array(
+		'#title' => 'Email',
+		'#type' => 'textfield',
 	);
 	$form['phone'] = array(
-		'#title' => 'phone',
+		'#title' => 'Phone',
 		'#type' => 'textfield',
+	);
+	$form['club'] = array(
+		'#title' => 'Join mClub',
+		'#type' => 'checkbox',
 	);
   $form['submit'] = array(
     '#type' => 'submit',

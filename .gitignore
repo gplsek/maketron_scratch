@@ -1,39 +1,19 @@
-# Ignore configuration files that may contain sensitive information.
-sites/*/*settings*.php
-
-# Ignore paths that contain generated content.
+sites/default/files
+sites/default/private
+sites/default/settings.php
 cache/
 files/
-sites/*/files
-sites/*/private
-sites/default/settings.php
-sites/default/files
-
-# Ignore default text files
-.htaccess
-robots.txt
+/README.txt
 /CHANGELOG.txt
 /COPYRIGHT.txt
 /INSTALL*.txt
 /LICENSE.txt
 /MAINTAINERS.txt
 /UPGRADE.txt
-/README.txt
 sites/all/README.txt
 sites/all/modules/README.txt
 sites/all/themes/README.txt
+.htaccess
 
-# Ignore everything but the "sites" folder ( for non core developer )
-web.config
-authorize.php
-cron.php
-index.php
-install.php
-update.php
-xmlrpc.php
-/includes
-/misc
-/modules
-/profiles
-/scripts
-/themes
+#for non core developer
+#only include "sites" folder without exclusions before
