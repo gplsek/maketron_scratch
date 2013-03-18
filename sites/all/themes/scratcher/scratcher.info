@@ -1,0 +1,26 @@
+name = Scratcher
+description = Drupal 7 html 5 theme by TragicMedia
+core = 7.x
+version = 1.0
+engine = phptemplate
+
+stylesheets[all][] = includes/styles.scss
+stylesheets[print][] = includes/print.css
+scripts[] = includes/wScratchPad.js
+scripts[] = includes/scripts.js
+
+regions[header] = Header
+regions[highlighted] = Highlighted
+regions[help] = Help
+regions[content_top] = Content top
+regions[content] = Content
+regions[sidebar_first] = Left sidebar
+regions[sidebar_second] = Right sidebar
+regions[content_bottom] = Content bottom
+regions[footer] = Footer
+
+features[] = node_user_picture
+features[] = comment_user_picture
+features[] = main_menu
+features[] = favicon
+
