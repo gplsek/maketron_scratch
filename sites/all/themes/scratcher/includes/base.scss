@@ -355,8 +355,9 @@ button {
 body {
     /* no sidebars */
     &.no-sidebars #content {
-        @include size(680px, 480px);
+        @include size(680px, auto);
         margin:0 auto;
+        min-height:480px;
         position:relative;
     }
     /* sidebars */

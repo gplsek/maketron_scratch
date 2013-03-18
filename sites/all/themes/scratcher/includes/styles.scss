@@ -65,7 +65,6 @@ $size-three-col:624px;
 }
 
 #tempAjax {
-    @mixin delay(500);
     @include wrap();
     @include size(680px, 450px);
     @include opacity(0);

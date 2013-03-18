@@ -139,6 +139,8 @@ reNod = function() {
 },
 
 getWinLose = function(doc) {
+    _canvas = $('#scratch-canvas');
+    _ajax = $('#tempAjax');
     $.ajax({
         type: 'GET',
         dataType:'html',
@@ -146,11 +148,13 @@ getWinLose = function(doc) {
         success:function(data) {
             sml = $('<div>').html(data);
             var contents = sml.find('#main').html();
-            $('#tempAjax').html(contents);
-            $('#scratch-canvas').addClass('finished');
-            $('#tempAjax').addClass('finished');
-            $('#scratch-canvas').wScratchPad('clear');
-            $('canvas').remove();
+            _ajax.html(contents);
+            _canvas.addClass('finished');
+            _ajax.addClass('finished');
+            _canvas.wScratchPad('clear');
+            _canvas.remove();
+            _ajax.removeClass('scratch-box');
+            _ajax.css('height', 'auto'); /*tmp*/
         }
     });
 }
@@ -166,20 +170,26 @@ $(document).ready(function() {
     }
     if($('#content table').length) $('#content table').wrap('<div class="table-wrapper">');
 
-    /* iphone > 5.0 swipe */
-    document.getElementById('scratch-canvas').ontouchstart = function(e){
-        e.preventDefault();
+     /* iphone > 5.0 swipe */
+    var Canvas = document.getElementById('scratch-canvas');
+    if(Canvas) {
+        Canvas.ontouchstart = function(e){
+            e.preventDefault();
+        };
     }
+    var Cans = 0;
+    if($('.scratch-block').length) {
+        var imgUnder, imgOver, h = window.location.host + '/?q=';
+        if(Cans < 1) {
 
-    if($('body.front').length) {
-        var h = window.location.host + '/?q=';
-        var x = 0;
-        if(x < 1) {
+        imgOver = $('#imgTop img').attr('src');
+        imgUnder = $('#imgBot img').attr('src');
+
         $('#scratch-canvas').wScratchPad({
             width         : 680,                 // set width - best to match image width
             height        : 450,                 // set height - best to match image height
-            image         : 'sites/all/themes/scratcher/images/imgUnder.png',
-            image2        : 'sites/all/themes/scratcher/images/imgOver.png',
+            image         : imgUnder,
+            image2        : imgOver,
             overlay       : 'none',
             size          : 20,
             scratchDown   : null,
@@ -189,9 +199,9 @@ $(document).ready(function() {
             scratchDown: function(e, percent){},
             scratchUp: function(e, percent){},
             scratchMove: function(e, percent) {
-                if(percent > 20) {
-                    if(x == 0) {
-                        x = 1;
+                if(percent > 5) {
+                    if(Cans == 0) {
+                        Cans = 1;
                         reNod();
                     }
                 }
