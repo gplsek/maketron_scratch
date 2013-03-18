@@ -215,10 +215,10 @@ $databases = array (
   array (
     'default' =>
     array (
-      'database' => 'marketron',
-      'username' => 'root',
-      'password' => '12Sunset',
-      'host' => '127.0.0.1',
+      'database' => 'tragic_plsek-scratcher',
+      'username' => 'tragic_devuser',
+      'password' => 'passw0rd',
+      'host' => 'localhost',
       'port' => '',
       'driver' => 'mysql',
       'prefix' => '',
