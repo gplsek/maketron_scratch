@@ -55,6 +55,8 @@ function _check_winner($nid){
     $html = "";
     $_SESSION['campaign_id'] = '';
     $node = node_load($nid);
+    $winner = false;
+    $looser = true;
 	//get campaign type
 	      $type = $node->field_single_winner['und'][0]['value'];
 	      $current_impression = $node->field_current_impressions['und'][0]['value'] + 1;
@@ -62,19 +64,21 @@ function _check_winner($nid){
 	      $winner_num = $node->field_winner_['und'][0]['value'];
 	      $win_every = $node->field_win_every['und'][0]['value'];
           /*images*/
-          $winText = $node->field_campaign_win_text['und'][0]['value'];
-          $loseText = $node->field_campaign_lose_text['und'][0]['value'];
-          $winImg = image_style_url('scratcher_image_680x450', $node->field_campaign_win_image['und'][0]['uri']);
-          $loseImg = image_style_url('scratcher_image_680x450', $node->field_campaign_lose_images['und'][0]['uri']);
+          $winText = $node->field_win_text['und'][0]['value'];
+          $loseText = $node->field_loose_text['und'][0]['value'];
+          $winImg = image_style_url('scratcher_image_680x450', $node->field_win_images['und'][0]['uri']);
+          $loseImg = image_style_url('scratcher_image_680x450', $node->field_lose_images['und'][0]['uri']);
 
-         
+            $loose .= "<img src='".$loseImg."' border='0' class='img_lose'/><br/>";
          	$loose .= "<p class='wlMsg'>".$loseText."</p>";
-			$loose .= "<img src='".$loseImg."' border='0' class='img_lose'/><br/>";
 			
+			
+			$win .= "<img src='".$winImg."' border='0' class='img_win'/><br/>";
 			$win .= "<p class='wlMsg'>".$winText."</p>";
-		    $win .= "<a id='cta_claim_prize' href='/claim-prize'>Claim Your Prize</a>";
-		    $win .= "<img src='".$winImg."' border='0' class='img_win'/><br/>";
-		    $win .= drupal_get_form('scratchandwin_claim_form');
+		    //$win .= "<a id='cta_claim_prize' href='/claim-prize'>Claim Your Prize</a>";
+		    
+		    
+		    
 
 
 
@@ -82,18 +86,26 @@ function _check_winner($nid){
 	        //single winner
 	        if($current_impression == $winner_num){
 		     $_SESSION['campaign_id'] = $nid;
-		     $html = $win;
+		     $html .= $win;
+		     $winner = true;
+		     $looser = false;
 	        }else{
-		     $html .= $loose; 
+		     $html .= $loose;
+		     $winner = false;
+		     $looser = true;
 	        }
 	      }else{
 	        //win every x impressions
 //	        $html .= "win every x impressions";
 	          if ($current_impression % $win_every == 0) {
 		         $_SESSION['campaign_id'] = $nid;
-			     $html = $win;
+			     $html .= $win;
+			     $winner = true;
+			     $looser = false;
 			  }else{
-                 $html .= $loose;   
+                 $html .= $loose;
+                 $winner = false;
+			     $looser = true; 
 			}
 
 
@@ -107,6 +119,12 @@ function _check_winner($nid){
 	    node_save($node);
 
 	echo $html;
+	if($winner){
+     echo render(drupal_get_form('scratchandwin_claim_form'));
+    }else if(($looser) && ($node->field_show_form_on_loose['und'][0]['value'] == 1)){
+	 echo render(drupal_get_form('scratchandwin_claim_form'));
+    }
+ 
 	return;
 }
 
