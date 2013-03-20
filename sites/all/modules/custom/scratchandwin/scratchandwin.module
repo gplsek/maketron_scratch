@@ -67,29 +67,33 @@ function _check_winner($nid){
           $winImg = image_style_url('scratcher_image_680x450', $node->field_campaign_win_image['und'][0]['uri']);
           $loseImg = image_style_url('scratcher_image_680x450', $node->field_campaign_lose_images['und'][0]['uri']);
 
+         
+         	$loose .= "<p class='wlMsg'>".$loseText."</p>";
+			$loose .= "<img src='".$loseImg."' border='0' class='img_lose'/><br/>";
+			
+			$win .= "<p class='wlMsg'>".$winText."</p>";
+		    $win .= "<a id='cta_claim_prize' href='/claim-prize'>Claim Your Prize</a>";
+		    $win .= "<img src='".$winImg."' border='0' class='img_win'/><br/>";
+		    $win .= drupal_get_form('scratchandwin_claim_form');
+
+
+
 	  if($type == 1){
 	        //single winner
 	        if($current_impression == $winner_num){
 		     $_SESSION['campaign_id'] = $nid;
-		     $html .= "<p class='wlMsg'>".$winText."</p>";
-		     $html .= "<a id='cta_claim_prize' href='/claim-prize'>Claim Your Prize</a>";
-		     $html .= "<img src='".$winImg."' border='0' class='img_win'/><br/>";
+		     $html = $win;
 	        }else{
-		     $html .= "<p class='wlMsg'>".$loseText."</p>";
-             $html .= "<img src='".$loseImg."' border='0' class='img_lose'/><br/>";
+		     $html .= $loose; 
 	        }
-            $html .= "<p class='wlMsg'>".$winText."</p>";
-	        $html .= "<img src='".$winImg."' border='0' class='img_win'/><br/>";
 	      }else{
 	        //win every x impressions
 //	        $html .= "win every x impressions";
 	          if ($current_impression % $win_every == 0) {
-			     $html .= "<p class='wlMsg'>".$winText."</p>";
-			     $html .= "<a id='cta_claim_prize' href='/claim-prize'>Claim Your Prize</a>";
-			     $html .= "<img src='".$winImg."' border='0' class='img_win'/><br/>";
+		         $_SESSION['campaign_id'] = $nid;
+			     $html = $win;
 			  }else{
-                $html .= "<p class='wlMsg'>".$loseText."</p>";
-				$html .= "<img src='".$loseImg."' border='0' class='img_lose'/><br/>";
+                 $html .= $loose;   
 			}
 
 
