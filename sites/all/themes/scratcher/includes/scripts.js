@@ -155,6 +155,16 @@ getWinLose = function(doc) {
             var contents = sml.find('#main').html();
             _ajax.html(contents);
             $('#sindex').click();
+            var _canvas = $('#scratch-canvas');
+                    /* leaving this functionality basic as the design/flow could change */
+                    $('#interimsg').removeClass('enabled');
+                    _ajax = $('#tempAjax');
+                    _canvas.addClass('finished');
+                    _ajax.addClass('finished');
+                    _canvas.wScratchPad('clear');
+                    _canvas.remove();
+                    _ajax.removeClass('scratch-box');
+                    _ajax.css('height', 'auto'); /*tmp*/
         }
     });
 }
@@ -202,13 +212,15 @@ $(document).ready(function() {
             scratchUp: function(e, percent){},
             scratchMove: function(e, percent) {
                 /* stage */
-                if(percent > 15) {
+                if(percent > 20) {
                     if(Cans == 0) {
                         Cans = 1;
                         reNod(reqs);
+                        $('#interimsg').addClass('enabled');
                     }
                 }
                 /* show */
+/*
                 if(percent > 30) {
                    var _canvas = $('#scratch-canvas');
                    var _ajax = $('#tempAjax');
@@ -217,8 +229,8 @@ $(document).ready(function() {
                     _canvas.wScratchPad('clear');
                     _canvas.remove();
                     _ajax.removeClass('scratch-box');
-                    _ajax.css('height', 'auto'); /*tmp*/
-                }
+                    _ajax.css('height', 'auto');
+                }*/
             },
         });
         }
