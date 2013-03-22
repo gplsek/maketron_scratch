@@ -44,10 +44,23 @@ function scratchandwin_block_view($delta='') {
 
 function _scratch_block($nid){
   $path = drupal_get_path('module', 'scratchandwin');
-  drupal_add_js($path.'/scratchandwin.js');
+//  drupal_add_js($path.'/scratchandwin.js');
   $node = node_load($nid);
-  $html = '<a id="sindex" href="#" onclick="sw_ajax_win_request('.$nid.')">Click To Win</a>';
+  $preloadBG = image_style_url('scratcher_image_680x450', $node->field_scratcher_images['und'][0]['uri']);
+  $canvas = '<div id="scratch-canvas" class="scratch-box"></div>';
+  $preloader = '<div id="loading-text" class="enabled" style="background:url('
+                .$preloadBG
+                .') 0 0 no-repeat;"><div id="preloadScreen"><div id="preloadMsg">'
+                .'<h4>Swipe the play area to win!</h4>'
+                .'<div id="bg_instructions"></div><a href="#" id="scratch-start">Play</a>'
+                .'</div></div></div>';
 
+
+  /* need to randomize these */
+  $imgTop = '<div id="imgTop">'.image_style_url('scratcher_image_680x450', $node->field_scratcher_images['und'][0]['uri']).'</div>';
+  $imgBot = '<div id="imgBot">'.image_style_url('scratcher_image_680x450', $node->field_temp_images['und'][0]['uri']).'</div>';
+  $html = '<div class="scratch-block" class="enabled"><div id="scratch-container">'.$canvas.$preloader.'</div></div>';
+  $html = $html.$imgTop.$imgBot.'<div id="nindex" rel="'.$nid.'"></div>';
 	return $html;
 }
 

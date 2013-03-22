@@ -77,9 +77,10 @@
  * @see template_preprocess_node()
  * @see template_process()
  */
+
 ?>
+
 <article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
-<?php if($node->type != 'scratch_campaign'): ?>
   <?php print $user_picture; ?>
   <?php print render($title_prefix); ?>
   <?php if(!$page): ?>
@@ -104,5 +105,4 @@
 
   <?php print render($content['comments']); ?>
 
-<?php endif; ?>
 </article>

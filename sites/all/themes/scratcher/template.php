@@ -98,9 +98,19 @@ function scratcher_preprocess_page(&$vars) {
       $vars['theme_hook_suggestions'][] = 'page__gallery';
 	}
   }
-
   // Initialize section image if it exists.
   if (!empty($vars['node'])) {
+
+    /* scratcher header/footer images */
+    if($vars['node]']->type = 'scratch_campaign') {
+      $pageBG = file_create_url($vars['node']->field_page_background['und'][0]['uri']);
+      $headerImg = field_get_items('node', $vars['node'], 'field_header_images');
+      $footerImg = field_get_items('node', $vars['node'], 'field_footer_images');
+      $vars['page_bg'] = $pageBG;
+      $vars['header_image'] = theme('image_style', array('style_name' => 'campaign_node_banner', 'path' => $headerImg[0]['uri']));
+      $vars['footer_image'] = theme('image_style', array('style_name' => 'campaign_node_banner', 'path' => $footerImg[0]['uri']));
+    }
+
     $items = field_get_items('node', $vars['node'], 'field_section_image');
     if (!empty($items)) {
       $vars['section_image'] = theme('image_style', array('style_name' => 'banner', 'path' => $items[0]['uri']));
@@ -157,3 +167,5 @@ function scratcher_menu_link(&$vars) {
   $output = l($element['#title'], $element['#href'], $element['#localized_options']);
   return '<li' . drupal_attributes($element['#attributes']) . '>' . $output . $sub_menu . "</li>\n";
 }
+
+

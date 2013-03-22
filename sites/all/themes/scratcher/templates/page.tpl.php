@@ -66,15 +66,25 @@
  * @see template_process()
  */
 ?>
-<section id="container" class="wrap">
+<?php if(isset($node) && isset($page_bg) && $node->type == 'scratch_campaign'): ?>
+    <section id="container" class="wrap" style="background:url(<?php print render($page_bg)?>) 0 0 repeat">
+    <?php else: ?>
+        <section id="container" class="wrap">
+    <?php endif;?>
+
     <!-- header -->
     <header id="header" class="wrap">
         <?php if($is_front): ?>
+            <h1 id="logo" title="<?php print $site_name; ?>"><a href="/" title="<?php print $site_name; ?>"><img src="<?php print base_path().path_to_theme(); ?>/images/logo.png" alt="<?php print $site_name; ?>" /></a></h1>
         <?php else: ?>
-            <div id="logo" title="<?php print $site_name; ?>"><a href="/" title="<?php print $site_name; ?>"><img src="<?php print base_path().path_to_theme(); ?>/images/logo.png" alt="<?php print $site_name; ?>" /></a></div>
+            <?php if(!isset($node) || (isset($node) && $node->type != 'scratch_campaign')): ?>
+                <div id="logo" title="<?php print $site_name; ?>"><a href="/" title="<?php print $site_name; ?>"><img src="<?php print base_path().path_to_theme(); ?>/images/logo.png" alt="<?php print $site_name; ?>" /></a></div>
+                <?php print render($page['header']); ?>
+                <?php print $breadcrumb; ?>
+            <?php elseif(isset($node) && $node->type == 'scratch_campaign'): ?>
+                <?php print render($header_image);?>
+            <?php endif; ?>
         <?php endif; ?>
-        <?php print render($page['header']); ?>
-        <?php print $breadcrumb; ?>
     </header> <!-- /header -->
     <!-- content top -->
     <?php if(!empty($page['content_top'])): ?>
@@ -97,18 +107,13 @@
             <?php if($page['highlighted']): ?><div id="highlighted"><?php print render($page['highlighted']); ?></div><?php endif; ?>
             <?php print render($page['help']); ?>
             <?php if($action_links): ?><ul class="action-links"><?php print render($action_links); ?></ul><?php endif; ?>
-            <?php if($title && !$is_front): ?>
-                <?php print render($title_prefix); ?>
-                <h1 class="title" id="page-title"><?php print $title; ?></h1>
-                <?php print render($title_suffix); ?>
-            <?php endif; ?>
-
-            <?php if($is_front): ?>
-                <!-- CUSTOM SCRATCHER INTERFACE -->
-                <div id="scratch-canvas" class="scratch-box"></div>
-                <div id="tempAjax" class="ajax-result scratch-box"></div>
-                <div id="temtem"></div>
-                <!-- END SCRATCHER INTERFACE -->
+            <?php if($title && !$is_front) : ?>
+                <?php if(!isset($node) || (isset($node) && $node->type != 'scratch_campaign')): ?>
+                    <!--scratch campaign node -->
+                    <?php print render($title_prefix); ?>
+                   <h1 class="title" id="page-title"><?php print $title; ?></h1>
+                    <?php print render($title_suffix); ?>
+                <?php endif; ?>
             <?php endif; ?>
 
             <?php print render($page['content']); ?>
@@ -128,7 +133,11 @@
     <?php endif; ?>
     <!-- footer -->
     <footer id="footer" class="wrap">
-        <?php print render($page['footer']); ?>
+        <?php if(isset($node) && $node->type == 'scratch_campaign'): ?>
+                <?php print render($footer_image);?>
+            <?php else: ?>
+            <?php print render($page['footer']); ?>
+        <?php endif; ?>
     </footer><!-- /footer -->
 </section> <!-- /container -->
 

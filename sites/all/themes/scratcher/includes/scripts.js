@@ -124,37 +124,26 @@ validateForm = function (form) {
     });
 },
 
-scratcherInit = function(r, nid) {
-    var nid = $('#nindex').attr('rel');
-    console.log(nid);
-    if(r < 1) sw_ajax_win_request(nid);
+sw_ajax_win_request = function(r, nid) {
+    if(r < 1) {
+        $('#block-scratchandwin-scratch-block').load("/check-winner/"+nid, function(response, status, xhr) {
+            if(status != 'error') {
+                _scratch = $('#scratch-canvas');
+                _results = $('#tempAjax');
+                var position = $('#block-scratchandwin-scratch-block').position();
+                scroll(0,position.top);
+                showResults(_results, _scratch);
+            }
+        });
+    }
 },
 
-sw_ajax_win_request = function(nid) {
-    $('#block-scratchandwin-scratch-block').load("/check-winner/"+nid, function(response, status, xhr) {
-        if(status != 'error') {
-            _canvas = $('#scratch-canvas');
-            _ajax = $('#tempAjax');
-            /* leaving this functionality basic as the design/flow could change*/
-            revealResult(_ajax, _canvas);
-        }
-    });
-},
-
-showResults = function(result, scratcher) {
-    result.removeClass('scratch-box');
-    scratcher = $('#tempAjax');
-    result.addClass('finished');
-    result.addClass('expanded');
-    scratcher.addClass('finished');
-    scratcher.remove();
-    $('#test12').css('display', 'block');
-},
-
-
-getResult = function(nid) {
-    var modinit = document.getElementById('sindex');
-
+showResults = function(results, scratch) {
+    results.removeClass('scratch-box');
+    results.addClass('finished');
+    results.addClass('expanded');
+    scratch.addClass('finished');
+    scratch.remove();
 }
 
 
@@ -162,17 +151,18 @@ $(document).ready(function() {
     /* default */
     resetFields();
     externalLinks();
+    var z = 0, r = 0,
+    nid = $('#nindex').attr('rel'),
+    Canvas = document.getElementById('scratch-canvas');
 
-    /*iphone5*/
-    var Canvas = document.getElementById('scratch-canvas');
+    /* Canvas var for swiping iphone >= 5.0 */
+    if(Canvas) {
+        Canvas.ontouchstart = function(e){
+            e.preventDefault();
+        };
+    }
 
-    /* prevent multiple func calls */
-    var z = 0;
-
-    /* fast swipe will fire reNod multiple times
-    for each instance > 20, and 20 can be
-    missed so == doesn't work*/
-    var r = 0;
+    $('#loading-text').addClass('fade-in');
 
     if($('#webform-client-form').length) {
         contactDefaults('webform-client-form');
@@ -180,53 +170,47 @@ $(document).ready(function() {
     }
     if($('#content table').length) $('#content table').wrap('<div class="table-wrapper">');
 
-     /* iphone >= 5.0 swipe */
-    if(Canvas) {
-        Canvas.ontouchstart = function(e){
-            e.preventDefault();
-        };
-    }
 
     if($('.scratch-block').length) {
         var imgUnder, imgOver,
-            nid = $('#nindex').attr('rel'),
             h = window.location.host + '/?q=';
 
         if(z < 1) {
-            imgOver = $('#imgTop img').attr('src');
-            imgUnder = $('#imgBot img').attr('src');
+            imgOver = $('#imgTop').html();
+            imgUnder = $('#imgBot').html();
 
-            $('#scratch-canvas').wScratchPad({
-                width         : 680,                 // set width - best to match image width
-                height        : 450,                 // set height - best to match image height
+            setTimeout(function(){
+
+                $('#scratch-canvas').wScratchPad({
+                width         : 620,
+                height        : 390,
                 image         : imgUnder,
                 image2        : imgOver,
                 overlay       : 'none',
                 size          : 20,
-                scratchDown   : null,
-                scratchUp     : null,
-                scratchMove   : null,
                 cursor        : 'sites/all/themes/scratcher/images/cursor.png',
-                scratchDown: function(e, percent){},
-                scratchUp: function(e, percent){},
+                scratchDown :null,scratchUp:null,scratchMove:null,
                 scratchMove: function(e, percent) {
-                    /* stage */
                     if(percent > 20) {
-                       scratcherInit(r, nid);
+                       sw_ajax_win_request(r, nid);
                        r++;
                     }
-                },
-            });
+                }
+                });
+
+                $('#scratch-start').click(function() {
+                    $('#loading-text').removeClass('fade-in');
+                    setTimeout(function(){
+                        $('#loading-text').remove();
+                    }), 600;
+                });
+
+            }, 1500);
         }
     }
+
+
 });
 
 
-
-
-
-
-
-
-
-/*end*/
+/*ends*/

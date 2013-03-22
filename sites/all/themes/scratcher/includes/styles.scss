@@ -14,7 +14,7 @@ $color-link-hover:#333;
 $font-body:Arial, Helvetica, sans-serif;
 $font-header: Arial, Helvetica, sans-serif;
 $font-size-body:12px;
-$font-size-header:18px;fiel
+$font-size-header:18px;
 $font-size-custom:15px;
 
 $path-fonts:'../fonts/';
@@ -25,6 +25,9 @@ $size-full:960px;
 $size-sidebar:200px;
 $size-two-col:824px;
 $size-three-col:624px;
+
+$canvas-x:620px;
+$canvas-y:390px;
 
 /*  import base structure */
 	@import 'base';
@@ -48,10 +51,7 @@ header h1 {
     }
 }
 
-.img_win,
-.img_lose {
 
-}
 
 #container {
     margin:0 auto;
@@ -59,8 +59,9 @@ header h1 {
     position:relative;
     width:100%;
 }
-.front .region-content{
-    display:none;
+
+.region-content{
+    position:relative;
 }
 
 #content-top,
@@ -68,16 +69,17 @@ header h1 {
     background:#333;
 }
 #footer {
-    background:#111;
-    min-height:100px;
 }
 
-.front .ajax-result .region-content {
-    display:block;
-   // padding-left:5px;
-}
-/*test*/
+
 .scratch-box {
+
+    @include transition(2500ms);
+    position:absolute;
+    left:0;
+    top:0;
+
+    /*test*/
     > div {
         display:none;
     }
@@ -86,33 +88,15 @@ header h1 {
     }
 }
 
-.scratch-box {
-    @include transition(2500ms);
-    position:absolute;
-    left:0;
-    top:0;
-}
-
-#tempAjax {
-   // margin-bottom:15px;
-    position:relative;
-    &.expanded #interimsg.enabled {
-            @include delay(2500);
-        @include transition(800ms, all);
-    @include opacity(0);
-    }
-}
-
 #sindex {
     visibility:hidden;
 }
-#temtem {
-    position: absolute;
-    background: red;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0
+
+/*vars*/
+#nindex,
+#imgTop,
+#imgBot {
+    display:none;
 }
 
 #tempAjax,
@@ -129,6 +113,7 @@ header h1 {
 
 }
 
+/*
 #interimsg {
     @include delay(2500);
     @include size(100%,100%);
@@ -139,7 +124,7 @@ header h1 {
     z-index:-999;
     &.enabled {
         z-index:99;
-//        p {display:block;}
+//       p {display:block;}
     }
     p {
         display:block;
@@ -147,11 +132,20 @@ header h1 {
         @include font-size(24px, 450px);
         color:#fff;
     }
-}
+}*/
 #tempAjax {
     @include wrap();
     @include size(680px, 450px);
-    z-index:2;
+        z-index:2;
+        //margin-bottom:15px;
+        position:relative;
+
+    &.expanded #interimsg.enabled {
+        @include delay(2500);
+        @include transition(800ms, all);
+        @include opacity(0);
+    }
+
     &.expanded {
         height:auto;
     }
@@ -170,6 +164,29 @@ header h1 {
     }
 }
 
+/* node page layout */
+#scratch-container {
+    position:relative;
+
+    #scratch-canvas,
+    #loading-text {
+        @include size($canvas-x, $canvas-y);
+        @include transition(2500ms);
+        position:absolute;
+        left:0;
+        top:0;
+    }
+    #scratch-canvas.enabled,
+    #loading-text.enabled {
+        z-index:1;
+    }
+    #scratch-canvas,
+    #loading-text {
+        z-index:0;
+    }
+}
+
+/* canvas scratcher */
 #scratch-canvas {
     @include transition(2500ms, opacity);
     @include opacity(1);
@@ -182,6 +199,121 @@ header h1 {
         @include transition(2500ms, opacity);
         @include opacity(0);
         z-index:2;
+    }
+}
+
+/* preload container */
+#loading-text {
+    position:relative;
+
+    &,
+    #preloadMsg,
+    #preloadScreen {
+        @include transition(500ms);
+        @include opacity(0);
+        background:transparent;
+
+    }
+
+    &.fade-in {
+
+        #preloadScreen {
+            @include box-shadow(0,0,5px,2px,#666);
+            background:rgba(255,255,255,.6);
+            border:2px solid #555;
+        }
+
+        &,
+        #preloadScreen,
+        #preloadMsg {
+            @include transition(500ms, opacity);
+            @include opacity(1);
+        }
+    }
+
+    #preloadScreen {
+        @include size($canvas-x, $canvas-y);
+    }
+
+    #preloadScreen,
+    img {
+        position:absolute;
+        left:0;
+        top:0;
+    }
+
+    #preloadMsg {
+        @include border-radius(20px, 20px);
+        @include size(410px, 360px);
+//        background:rgba(0,255,6,.3);
+        background:url($path-img + 'bg_wood.png') 0 0 repeat;
+        border:2px solid #444;
+        position:absolute;
+        left:105px;
+        top:14px;
+        z-index:1;
+        h4 {
+            @include text-shadow(1px, 1px, 0, #666);
+            @include font-size(32px, 34px);
+            color:#fff;
+            font-weight:bold;
+            padding:10px 30px 0;
+            text-align:center;
+            text-transform:uppercase;
+        }
+        #bg_instructions {
+            @include size(340px, 180px);
+            background:url($path-img + 'bg_instructions.png') 0 0 no-repeat;
+            display:block;
+            margin:0 auto 20px;
+        }
+        #scratch-start {
+            @include wrap();
+            @include font-size(34px, 45px);
+            @include size(150px, 45px);
+            @include box-shadow(0, 0, 10px, 2px, #000);
+            @include border-radius(2px, 2px);
+            background:url($path-img + 'bg_buttons.png') 0 0 repeat;
+            color:#479348;
+            display:block;
+            font-weight:bold;
+            margin:0 auto;
+            text-align:center;
+            text-transform:uppercase;
+            &:hover {
+                background:white;
+                color:#3c6f7e;
+                cursor:pointer;
+            }
+        }
+    }
+
+    p {
+        @include font-size(36px, 450px);
+        @include transition(500ms, color);
+        color:transparent;
+        font-style:normal;
+        text-align:center;
+        width:100%;
+        z-index:1;
+    }
+
+    img {
+        z-index:0;
+    }
+}
+
+// node output block
+#block-scratchandwin-scratch-block {
+    @include transition(500ms, opacity);
+    //@include opacity(0);
+    h2 {
+    display:none;
+    }
+
+    &.fade-in {
+        @include transition(500ms, opacity);
+        @include opacity(1);
     }
 }
 
@@ -198,6 +330,23 @@ header h1 {
 /* claim your prize cta */
 #cta_claim_prize {
 
+}
+
+/*homepage preview */
+.front .view-campaign-listing.scratch-block {
+    .views-field-title {
+        @include font-size(24px, 26px);
+        background:rgba(0,255,6,.5);
+        padding: 5px 0;
+        text-align:center;
+        text-transform:uppercase;
+        a {
+            @include text-shadow(0,0,1px,#999);
+            color: #FFF;
+            font-style:italic;
+            font-weight:bold;
+        }
+    }
 }
 
 /* temp drupal hides */

@@ -350,20 +350,25 @@ button {
     margin:0 auto;
 }
 #main {
-//    min-height:600px;
-}
-body {
+   //s min-height:600px;
+}body {
     /* no sidebars */
     &.no-sidebars {
         #block-views-campaign-listing-block-1,
         #block-views-campaign-listing-block-2,
+        #header,
+        #footer,
         #content {
-            @include size(680px, auto);
+            @include size($canvas-x, auto);
             margin:0 auto;
-            position:relative;
+            padding:0 25px;/*room for shadows*/
+                position:relative;
+        }
+        #header {
+            margin-bottom:25px;
         }
         #content {
-            min-height:450px;
+            min-height:415px;
         }
     }
     /* sidebars */
