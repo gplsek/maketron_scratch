@@ -66,12 +66,10 @@
  * @see template_process()
  */
 ?>
-
 <section id="container" class="wrap">
     <!-- header -->
     <header id="header" class="wrap">
         <?php if($is_front): ?>
-            <h1 id="logo" title="<?php print $site_name; ?>"><a href="/" title="<?php print $site_name; ?>"><img src="<?php print base_path().path_to_theme(); ?>/images/logo.png" alt="<?php print $site_name; ?>" /></a></h1>
         <?php else: ?>
             <div id="logo" title="<?php print $site_name; ?>"><a href="/" title="<?php print $site_name; ?>"><img src="<?php print base_path().path_to_theme(); ?>/images/logo.png" alt="<?php print $site_name; ?>" /></a></div>
         <?php endif; ?>
@@ -107,9 +105,9 @@
 
             <?php if($is_front): ?>
                 <!-- CUSTOM SCRATCHER INTERFACE -->
-                <div id="iterimsg"><p>Checking if you've won...</p></div>
                 <div id="scratch-canvas" class="scratch-box"></div>
                 <div id="tempAjax" class="ajax-result scratch-box"></div>
+                <div id="temtem"></div>
                 <!-- END SCRATCHER INTERFACE -->
             <?php endif; ?>
 

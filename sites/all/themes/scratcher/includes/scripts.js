@@ -124,49 +124,37 @@ validateForm = function (form) {
     });
 },
 
-/* this (reNod) is a temporary step for retrieving latest content nid,
-  and will be replaced/removed/updated soon */
-reNod = function(reqs) {
-    if(reqs == 0) {
-        reqs++;
-        $.ajax({
-            type:'GET',
-            dataType: 'html',
-            url: '?q=clp',
-            success:function(data){
-                var html = $('<div>').html(data);
-                var item = html.find('#sQue').html();
-                doc = '?q=node/' + item;
-                getWinLose(doc);
-            }
-        });
-    }
+scratcherInit = function(r, nid) {
+    var nid = $('#nindex').attr('rel');
+    console.log(nid);
+    if(r < 1) sw_ajax_win_request(nid);
 },
 
-getWinLose = function(doc) {
-    _canvas = $('#scratch-canvas');
-    _ajax = $('#tempAjax');
-    $.ajax({
-        type: 'GET',
-        dataType:'html',
-        url: doc,
-        success:function(data) {
-            sml = $('<div>').html(data);
-            var contents = sml.find('#main').html();
-            _ajax.html(contents);
-            $('#sindex').click();
-            var _canvas = $('#scratch-canvas');
-                    /* leaving this functionality basic as the design/flow could change */
-                    $('#interimsg').removeClass('enabled');
-                    _ajax = $('#tempAjax');
-                    _canvas.addClass('finished');
-                    _ajax.addClass('finished');
-                    _canvas.wScratchPad('clear');
-                    _canvas.remove();
-                    _ajax.removeClass('scratch-box');
-                    _ajax.css('height', 'auto'); /*tmp*/
+sw_ajax_win_request = function(nid) {
+    $('#block-scratchandwin-scratch-block').load("/check-winner/"+nid, function(response, status, xhr) {
+        if(status != 'error') {
+            _canvas = $('#scratch-canvas');
+            _ajax = $('#tempAjax');
+            /* leaving this functionality basic as the design/flow could change*/
+            revealResult(_ajax, _canvas);
         }
     });
+},
+
+showResults = function(result, scratcher) {
+    result.removeClass('scratch-box');
+    scratcher = $('#tempAjax');
+    result.addClass('finished');
+    result.addClass('expanded');
+    scratcher.addClass('finished');
+    scratcher.remove();
+    $('#test12').css('display', 'block');
+},
+
+
+getResult = function(nid) {
+    var modinit = document.getElementById('sindex');
+
 }
 
 
@@ -174,71 +162,64 @@ $(document).ready(function() {
     /* default */
     resetFields();
     externalLinks();
+
+    /*iphone5*/
+    var Canvas = document.getElementById('scratch-canvas');
+
+    /* prevent multiple func calls */
+    var z = 0;
+
+    /* fast swipe will fire reNod multiple times
+    for each instance > 20, and 20 can be
+    missed so == doesn't work*/
+    var r = 0;
+
     if($('#webform-client-form').length) {
         contactDefaults('webform-client-form');
         validateForm('webform-client-form')
     }
     if($('#content table').length) $('#content table').wrap('<div class="table-wrapper">');
 
-     /* iphone > 5.0 swipe */
-    var Canvas = document.getElementById('scratch-canvas');
+     /* iphone >= 5.0 swipe */
     if(Canvas) {
         Canvas.ontouchstart = function(e){
             e.preventDefault();
         };
     }
-    var Cans = 0;
-    /* prevent multiple ajax requests */
-    var reqs = 0;
+
     if($('.scratch-block').length) {
-        var imgUnder, imgOver, h = window.location.host + '/?q=';
-        if(Cans < 1) {
+        var imgUnder, imgOver,
+            nid = $('#nindex').attr('rel'),
+            h = window.location.host + '/?q=';
 
-        imgOver = $('#imgTop img').attr('src');
-        imgUnder = $('#imgBot img').attr('src');
+        if(z < 1) {
+            imgOver = $('#imgTop img').attr('src');
+            imgUnder = $('#imgBot img').attr('src');
 
-        $('#scratch-canvas').wScratchPad({
-            width         : 680,                 // set width - best to match image width
-            height        : 450,                 // set height - best to match image height
-            image         : imgUnder,
-            image2        : imgOver,
-            overlay       : 'none',
-            size          : 20,
-            scratchDown   : null,
-            scratchUp     : null,
-            scratchMove   : null,
-            cursor        : 'sites/all/themes/scratcher/images/cursor.png',
-            scratchDown: function(e, percent){},
-            scratchUp: function(e, percent){},
-            scratchMove: function(e, percent) {
-                /* stage */
-                if(percent > 20) {
-                    if(Cans == 0) {
-                        Cans = 1;
-                        reNod(reqs);
-                        $('#interimsg').addClass('enabled');
+            $('#scratch-canvas').wScratchPad({
+                width         : 680,                 // set width - best to match image width
+                height        : 450,                 // set height - best to match image height
+                image         : imgUnder,
+                image2        : imgOver,
+                overlay       : 'none',
+                size          : 20,
+                scratchDown   : null,
+                scratchUp     : null,
+                scratchMove   : null,
+                cursor        : 'sites/all/themes/scratcher/images/cursor.png',
+                scratchDown: function(e, percent){},
+                scratchUp: function(e, percent){},
+                scratchMove: function(e, percent) {
+                    /* stage */
+                    if(percent > 20) {
+                       scratcherInit(r, nid);
+                       r++;
                     }
-                }
-                /* show */
-/*
-                if(percent > 30) {
-                   var _canvas = $('#scratch-canvas');
-                   var _ajax = $('#tempAjax');
-                    _canvas.addClass('finished');
-                    _ajax.addClass('finished');
-                    _canvas.wScratchPad('clear');
-                    _canvas.remove();
-                    _ajax.removeClass('scratch-box');
-                    _ajax.css('height', 'auto');
-                }*/
-            },
-        });
+                },
+            });
         }
     }
 });
-
-
-
 
 
 

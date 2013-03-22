@@ -67,18 +67,18 @@ function _check_winner($nid){
           $winText = $node->field_win_text['und'][0]['value'];
           $loseText = $node->field_loose_text['und'][0]['value'];
           $winImg = image_style_url('scratcher_image_680x450', $node->field_win_images['und'][0]['uri']);
-          $loseImg = image_style_url('scratcher_image_680x450', $node->field_lose_images['und'][0]['uri']);
+          $loseImg = image_style_url('scratcher_image_680x450', $node->field_loose_images['und'][0]['uri']);
 
             $loose .= "<img src='".$loseImg."' border='0' class='img_lose'/><br/>";
          	$loose .= "<p class='wlMsg'>".$loseText."</p>";
-			
-			
+
+
 			$win .= "<img src='".$winImg."' border='0' class='img_win'/><br/>";
 			$win .= "<p class='wlMsg'>".$winText."</p>";
 		    //$win .= "<a id='cta_claim_prize' href='/claim-prize'>Claim Your Prize</a>";
-		    
-		    
-		    
+
+
+
 
 
 
@@ -105,11 +105,11 @@ function _check_winner($nid){
 			  }else{
                  $html .= $loose;
                  $winner = false;
-			     $looser = true; 
+			     $looser = true;
 			}
 		  }else if ($type == 2){
 		   $winners = explode(",", $node->field_random_winners['und'][0]['value']);
-		
+
 		    if(in_array($current_impression,$winners)){
 			   	$_SESSION['campaign_id'] = $nid;
 			     $html .= $win;
@@ -119,9 +119,9 @@ function _check_winner($nid){
 				 $html .= $loose;
                  $winner = false;
 			     $looser = true;
-				
+
 			}
-		
+
 	      }
 
 	    $node->field_current_impressions['und'][0]['value'] = $current_impression;
@@ -137,7 +137,7 @@ function _check_winner($nid){
     }else if(($looser) && ($node->field_show_form_on_loose['und'][0]['value'] == 1)){
 	 echo render(drupal_get_form('scratchandwin_claim_form'));
     }
- 
+
 	return;
 }
 
