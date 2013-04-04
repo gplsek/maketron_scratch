@@ -183,16 +183,54 @@ function scratchandwin_claim_form($form, &$form_state) {
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => 'Submit',
-    // '#ajax' => array(
-    //               	      'callback' => 'ajax_freebutton_winner_form_callback',
-    //               	      'wrapper' => 'contact-form-wrapper',
-    //               	      'method' => 'replace',
-    //               	      'effect' => 'fade',
-    //               	    ),
   );
 
 	return $form;
 }
+
+function scratchandwin_age_form($form, &$form_state) {
+	  
+	  $years = array("" => "");
+	  for ($i = (date("Y")-18); $i >= (date("Y")-100); $i--) {
+	    $years[$i] = $i;
+	  };
+	  $form['field_dob_month'] = array(
+	    '#prefix' => '<div class="user-dob">',
+	    '#type' => 'select',
+	    '#title' => 'Date of Birth',
+	    '#options' => array("" => "", "01" => "Jan", "02" => "Feb", "03" => "Mar", "04" => "Apr", "05" => "May", "06" => "Jun", "07" => "Jul", "08" => "Aug", "09" => "Sep", "10" => "Oct", "11" => "Nov", "12" => "Dec"),
+	    '#weight' => (float)($form['field_date_of_birth']['#weight'] . '.1'),
+	    '#required' => TRUE,
+	    );
+	  $days = array("" => "");
+	  for ($i = 1; $i <= 31; $i++) {
+	    $days[str_pad($i, 2, "0", STR_PAD_LEFT)] = $i;
+	  };
+	  $form['field_dob_day'] = array(
+	    '#title' => 'Day',
+	    '#type' => 'select',
+	    '#options' => $days,
+	    '#weight' => (float)($form['field_date_of_birth']['#weight'] . '.2'),
+	    '#required' => TRUE,
+	    );
+	  $form['field_dob_year'] = array(
+	    '#title' => 'Year',
+	    '#type' => 'select',
+	    '#options' => $years,
+	    '#weight' => (float)($form['field_date_of_birth']['#weight'] . '.3'),
+	    '#required' => TRUE,
+	    '#attributes' => array('autocomplete' => 'off'),
+	    '#suffix' => '</div>',
+	    );
+
+    $form['submit'] = array(
+       '#type' => 'submit',
+        '#value' => 'Submit',
+    );
+
+	return $form;
+}
+
 
 
 function scratchandwin_claim_form_submit($form, &$form_state) {

@@ -18,7 +18,7 @@ function scratcher_ctools_plugin_api() {
  * Implements hook_views_api().
  */
 function scratcher_views_api() {
-  return array("version" => "3.0");
+  return array("api" => "3.0");
 }
 
 /**
@@ -41,11 +41,11 @@ function scratcher_image_default_styles() {
         'module' => 'image',
         'name' => 'image_scale',
         'data' => array(
-          'width' => '620',
+          'width' => 620,
           'height' => '',
           'upscale' => 0,
         ),
-        'weight' => '1',
+        'weight' => 1,
       ),
     ),
   );
@@ -64,10 +64,10 @@ function scratcher_image_default_styles() {
         'module' => 'image',
         'name' => 'image_scale_and_crop',
         'data' => array(
-          'width' => '320',
-          'height' => '250',
+          'width' => 320,
+          'height' => 250,
         ),
-        'weight' => '1',
+        'weight' => 1,
       ),
     ),
   );
@@ -86,10 +86,10 @@ function scratcher_image_default_styles() {
         'module' => 'image',
         'name' => 'image_scale_and_crop',
         'data' => array(
-          'width' => '620',
-          'height' => '390',
+          'width' => 620,
+          'height' => 390,
         ),
-        'weight' => '1',
+        'weight' => 1,
       ),
     ),
   );
