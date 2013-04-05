@@ -103,7 +103,9 @@ function scratcher_preprocess_page(&$vars) {
 
     /* scratcher header/footer images */
     if($vars['node]']->type = 'scratch_campaign') {
-      $pageBG = file_create_url($vars['node']->field_page_background['und'][0]['uri']);
+	  if($vars['node']->field_page_background['und'][0]['uri']){
+        $pageBG = file_create_url($vars['node']->field_page_background['und'][0]['uri']);
+      }
       $headerImg = field_get_items('node', $vars['node'], 'field_header_images');
       $footerImg = field_get_items('node', $vars['node'], 'field_footer_images');
       $vars['page_bg'] = $pageBG;
