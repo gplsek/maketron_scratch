@@ -58,8 +58,10 @@ function _scratch_block($nid){
 
   /* need to randomize these */
   $imgTop = '<div id="imgTop">'.image_style_url('scratcher_image_680x450', $node->field_scratcher_images['und'][0]['uri']).'</div>';
-  if($node->field_temp_images['und'][0]['uri']){
+  if($node->field_temp_images){
   	$imgBot = '<div id="imgBot">'.image_style_url('scratcher_image_680x450', $node->field_temp_images['und'][0]['uri']).'</div>';
+  }else{
+	$imgBot = '';
   }
   $html = '<div class="scratch-block" class="enabled"><div id="scratch-container">'.$canvas.$preloader.'</div></div>';
   $html = $html.$imgTop.$imgBot.'<div id="nindex" rel="'.$nid.'"></div>';
