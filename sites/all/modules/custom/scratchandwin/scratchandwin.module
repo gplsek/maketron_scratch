@@ -48,13 +48,22 @@ function _scratch_block($nid){
   $node = node_load($nid);
   $preloadBG = image_style_url('scratcher_image_680x450', $node->field_scratcher_images['und'][0]['uri']);
   $canvas = '<div id="scratch-canvas" class="scratch-box"></div>';
-  $preloader = '<div id="loading-text" class="enabled" style="background:url('
-                .$preloadBG
-                .') 0 0 no-repeat;"><div id="preloadScreen"><div id="preloadMsg">'
-                .'<h4>Swipe the play area to win!</h4>'
-                .'<div id="bg_instructions"></div><a href="#" id="scratch-start">Play</a>'
-                .'</div></div></div>';
-
+  if($node->field_age_verification['und'][0]['value'] == 1){
+	  // $preloader = '<div id="loading-text" class="enabled" style="background:url('
+	  //                 .$preloadBG
+	  //                 .') 0 0 no-repeat;"><div id="preloadScreen"><div id="preloadMsg">'
+	  //                 .'<h4>Swipe the play area to win!</h4>'
+	  //                 .'<div id="bg_instructions"></div><a href="#" id="scratch-start">Play</a>'
+	  //                 .'</div></div></div>';
+	 $preloader = '<div id="loading-text" class="enabled"><div id="preloadScreen"><div id="preloadMsg">';
+	 $preloader .= '<h4>You must be '.$node->field_age['und'][0]['value'].' to play</h4>';
+	 $preloader .=  render(drupal_get_form('scratchandwin_age_form'));
+	 $preloader .= '</div></div></div>';
+	
+	
+  }else{
+	$preloader = '';
+  }
 
   /* need to randomize these */
   $imgTop = '<div id="imgTop">'.image_style_url('scratcher_image_680x450', $node->field_scratcher_images['und'][0]['uri']).'</div>';
@@ -205,7 +214,6 @@ function scratchandwin_age_form($form, &$form_state) {
 	    '#type' => 'select',
 	    '#title' => 'Date of Birth',
 	    '#options' => array("" => "", "01" => "Jan", "02" => "Feb", "03" => "Mar", "04" => "Apr", "05" => "May", "06" => "Jun", "07" => "Jul", "08" => "Aug", "09" => "Sep", "10" => "Oct", "11" => "Nov", "12" => "Dec"),
-	    '#weight' => (float)($form['field_date_of_birth']['#weight'] . '.1'),
 	    '#required' => TRUE,
 	    );
 	  $days = array("" => "");
@@ -216,14 +224,12 @@ function scratchandwin_age_form($form, &$form_state) {
 	    '#title' => 'Day',
 	    '#type' => 'select',
 	    '#options' => $days,
-	    '#weight' => (float)($form['field_date_of_birth']['#weight'] . '.2'),
 	    '#required' => TRUE,
 	    );
 	  $form['field_dob_year'] = array(
 	    '#title' => 'Year',
 	    '#type' => 'select',
 	    '#options' => $years,
-	    '#weight' => (float)($form['field_date_of_birth']['#weight'] . '.3'),
 	    '#required' => TRUE,
 	    '#attributes' => array('autocomplete' => 'off'),
 	    '#suffix' => '</div>',
