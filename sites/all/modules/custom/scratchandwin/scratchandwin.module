@@ -236,8 +236,13 @@ function scratchandwin_age_form($form, &$form_state) {
 	    );
 
     $form['submit'] = array(
-       '#type' => 'submit',
+        '#type' => 'submit',
         '#value' => 'Submit',
+        '#ajax' => array(
+               'callback' => 'sw_ajax_age_verify',
+               'effect' => 'fade',
+
+		    ),
     );
 
 	return $form;

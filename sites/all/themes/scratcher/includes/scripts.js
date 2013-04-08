@@ -138,6 +138,14 @@ sw_ajax_win_request = function(r, nid) {
     }
 },
 
+sw_ajax_age_verify = function() {
+	alert("HI");
+    $('#loading-text').removeClass('fade-in');
+    setTimeout(function(){
+        $('#loading-text').remove();
+    }), 600;
+},
+
 showResults = function(results, scratch) {
     results.removeClass('scratch-box');
     results.addClass('finished');
