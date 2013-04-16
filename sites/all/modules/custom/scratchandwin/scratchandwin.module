@@ -59,8 +59,8 @@ function _scratch_block($nid){
 	 $preloader .= '<h4>You must be '.$node->field_age['und'][0]['value'].' to play</h4>';
 	 $preloader .=  render(drupal_get_form('scratchandwin_age_form'));
 	 $preloader .= '</div></div></div>';
-	
-	
+
+
   }else{
 	$preloader = '';
   }
@@ -204,33 +204,37 @@ function scratchandwin_claim_form($form, &$form_state) {
 }
 
 function scratchandwin_age_form($form, &$form_state) {
-	  
-	  $years = array("" => "");
+
+	  $years = array("" => "", "00" => 'YY');
 	  for ($i = (date("Y")-18); $i >= (date("Y")-100); $i--) {
 	    $years[$i] = $i;
 	  };
+      $montharr = array("" => "", "00" => "MM", "01" => "Jan", "02" => "Feb", "03" => "Mar", "04" => "Apr", "05" => "May", "06" => "Jun", "07" => "Jul", "08" => "Aug", "09" => "Sep", "10" => "Oct", "11" => "Nov", "12" => "Dec");
 	  $form['field_dob_month'] = array(
 	    '#prefix' => '<div class="user-dob">',
 	    '#type' => 'select',
 	    '#title' => 'Date of Birth',
-	    '#options' => array("" => "", "01" => "Jan", "02" => "Feb", "03" => "Mar", "04" => "Apr", "05" => "May", "06" => "Jun", "07" => "Jul", "08" => "Aug", "09" => "Sep", "10" => "Oct", "11" => "Nov", "12" => "Dec"),
+	    '#options' => $montharr,
 	    '#required' => TRUE,
+        '#default_value' => '00',
 	    );
-	  $days = array("" => "");
-	  for ($i = 1; $i <= 31; $i++) {
+	  $days = array("" => "", "00" => "DD");
+      for ($i = 1; $i <= 31; $i++) {
 	    $days[str_pad($i, 2, "0", STR_PAD_LEFT)] = $i;
 	  };
 	  $form['field_dob_day'] = array(
 	    '#title' => 'Day',
 	    '#type' => 'select',
 	    '#options' => $days,
+        '#default_value' => '00',
 	    '#required' => TRUE,
 	    );
 	  $form['field_dob_year'] = array(
 	    '#title' => 'Year',
 	    '#type' => 'select',
-	    '#options' => $years,
+        '#options' => $years,
 	    '#required' => TRUE,
+        '#default_value' => '00',
 	    '#attributes' => array('autocomplete' => 'off'),
 	    '#suffix' => '</div>',
 	    );

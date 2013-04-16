@@ -51,7 +51,14 @@ header h1 {
     }
 }
 
-
+body.no-sidebars.node-type-scratch-campaign {
+    #header {
+        margin-bottom:0;
+    }
+    #content {
+        min-height:395px;
+    }
+}
 
 #container {
     margin:0 auto;
@@ -70,7 +77,6 @@ header h1 {
 }
 #footer {
 }
-
 
 .scratch-box {
 
@@ -243,21 +249,21 @@ header h1 {
     }
 
     #preloadMsg {
-        @include border-radius(20px, 20px);
-        @include size(410px, 360px);
-//        background:rgba(0,255,6,.3);
-        background:url($path-img + 'bg_wood.png') 0 0 repeat;
-        border:2px solid #444;
+        //@include border-radius(20px, 20px);
+        @include size(100%, 100%);
+        background:rgba(0, 0, 0, .9);
+        //background:url($path-img + 'bg_buttons.png') 0 0 repeat;
+        //border:2px solid #444;
         position:absolute;
-        left:105px;
-        top:14px;
+        left:0;
+        top:0;
         z-index:1;
         h4 {
             @include text-shadow(1px, 1px, 0, #666);
             @include font-size(32px, 34px);
             color:#fff;
             font-weight:bold;
-            padding:10px 30px 0;
+            padding:30px 30px 15px;
             text-align:center;
             text-transform:uppercase;
         }
@@ -353,4 +359,58 @@ header h1 {
 .contextual-links-wrapper.contextual-links-processed,
 #tempAjax h1 {
     display:none;
+}
+
+
+
+
+/* jQuery form overrides */
+
+.block-scratchandwin {
+    .content form {
+        margin:0 auto;
+        width:90%;
+        .user-dob {
+            @include wrap();
+            .form-item {
+                float:left;
+                height:150px;
+                line-height:150px;
+
+                margin:0 0 15px;
+                width:178px;
+                &.form-item-field-dob-day {
+                    margin:0 2% 15px;
+                }
+            }
+        }
+        label {
+            display:none;
+        }
+        .ui-btn {
+            @include border-radius(20px, 20px);
+            margin:0;
+        }
+        .ui-btn-inner {
+            font-size:75px;
+            font-weight:normal;
+            padding:0;
+            text-align:center;
+        }
+        .ui-icon {
+            display:none;
+        }
+        .ui-submit {
+         //   width:215px;
+           // height:35px;
+            .ui-btn-inner,
+            .ui-btn-text {
+            //    font-size:15px;
+              //  line-height:35px;
+            }
+        }
+    }
+    .ui-focus, .ui-btn:focus {
+        box-shadow:none !important;
+    }
 }

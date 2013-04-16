@@ -170,6 +170,7 @@ $(document).ready(function() {
         };
     }
 
+
     $('#loading-text').addClass('fade-in');
 
     if($('#webform-client-form').length) {
@@ -177,6 +178,9 @@ $(document).ready(function() {
         validateForm('webform-client-form')
     }
     if($('#content table').length) $('#content table').wrap('<div class="table-wrapper">');
+
+    /* jQuery mobile bind to init function */
+
 
 
     if($('.scratch-block').length) {
@@ -219,6 +223,13 @@ $(document).ready(function() {
 
 
 });
+$(document).bind( "mobileinit", function() {
+    /*$.mobile.selectmenu.prototype.options.nativeMenu = false;*/
+    $.mobile.selectmenu.prototype.options.theme="a";
+    $.mobile.selectmenu.prototype.options.corners=false;
+
+});
+
 
 
 /*ends*/
