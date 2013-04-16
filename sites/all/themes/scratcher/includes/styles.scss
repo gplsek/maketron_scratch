@@ -26,9 +26,12 @@ $size-sidebar:200px;
 $size-two-col:824px;
 $size-three-col:624px;
 
-$canvas-x:620px;
+/*$canvas-x:620px;
 $canvas-y:390px;
+*/
 
+$canvas-x:320px;
+$canvas-y:390px;
 /*  import base structure */
 	@import 'base';
 
@@ -56,7 +59,7 @@ body.no-sidebars.node-type-scratch-campaign {
         margin-bottom:0;
     }
     #content {
-        min-height:395px;
+        min-height:390px;
     }
 }
 
@@ -226,7 +229,6 @@ body.no-sidebars.node-type-scratch-campaign {
         #preloadScreen {
             @include box-shadow(0,0,5px,2px,#666);
             background:rgba(255,255,255,.6);
-            border:2px solid #555;
         }
 
         &,
@@ -311,8 +313,11 @@ body.no-sidebars.node-type-scratch-campaign {
 
 // node output block
 #block-scratchandwin-scratch-block {
+    background:rgba(0,0,0,.9);
+    padding-bottom:15px;
     @include transition(500ms, opacity);
     //@include opacity(0);
+
     h2 {
     display:none;
     }
@@ -321,6 +326,37 @@ body.no-sidebars.node-type-scratch-campaign {
         @include transition(500ms, opacity);
         @include opacity(1);
     }
+
+    form {
+        padding:15px 0;
+    }
+
+    .form-type-checkbox {
+
+        .ui-btn-inner {
+            border:0;
+            color:#fff;
+            text-shadow:none;
+        }
+    }
+
+    .form-type-textfield {
+        margin:0 0 5px;
+        label {
+            height:0;
+            overflow:hidden;
+            visibility:hidden;
+        }
+    }
+}
+p.wlMsg {
+    width:90%;
+    margin:0 auto;
+}
+
+.ui-body-c, .ui-overlay-c{
+    color:#fff;
+    text-shadow:none;
 }
 
 /* header image block */
@@ -356,6 +392,8 @@ body.no-sidebars.node-type-scratch-campaign {
 }
 
 /* temp drupal hides */
+.field-name-field-age-verification,
+.field-name-field-age,
 .contextual-links-wrapper.contextual-links-processed,
 #tempAjax h1 {
     display:none;
@@ -366,51 +404,71 @@ body.no-sidebars.node-type-scratch-campaign {
 
 /* jQuery form overrides */
 
-.block-scratchandwin {
-    .content form {
-        margin:0 auto;
-        width:90%;
-        .user-dob {
-            @include wrap();
-            .form-item {
-                float:left;
-                height:150px;
-                line-height:150px;
+#content form {
+    margin:0 auto;
+    padding-bottom:15px;
+    width:90%;
+}
 
-                margin:0 0 15px;
-                width:178px;
-                &.form-item-field-dob-day {
-                    margin:0 2% 15px;
-                }
+.block-scratchandwin .content form {
+    .user-dob {
+        @include wrap();
+        .form-item {
+            float:left;
+            height:90px;
+            line-height:90px;
+
+            margin:0 0 15px;
+            width:92px;
+            &.form-item-field-dob-day {
+                margin:0 2% 15px;
             }
         }
-        label {
-            display:none;
-        }
-        .ui-btn {
-            @include border-radius(20px, 20px);
-            margin:0;
-        }
-        .ui-btn-inner {
-            font-size:75px;
-            font-weight:normal;
-            padding:0;
-            text-align:center;
-        }
-        .ui-icon {
-            display:none;
-        }
-        .ui-submit {
-         //   width:215px;
-           // height:35px;
-            .ui-btn-inner,
-            .ui-btn-text {
-            //    font-size:15px;
-              //  line-height:35px;
-            }
+    }
+    label {
+        display:none;
+    }
+    .ui-btn {
+        @include border-radius(20px, 20px);
+        margin:0;
+    }
+    .ui-btn-inner {
+        text-transform:uppercase;
+        font-size:38px;
+        font-weight:normal;
+        padding:0;
+        text-align:center;
+    }
+    .ui-icon {
+        display:none;
+    }
+    .ui-submit {
+     //   width:215px;
+       // height:35px;
+        .ui-btn-inner,
+        .ui-btn-text {
+        //    font-size:15px;
+          //  line-height:35px;
         }
     }
     .ui-focus, .ui-btn:focus {
         box-shadow:none !important;
+    }
+}
+.ui-checkbox label {
+    border:0;
+}
+
+#matchdate {
+    visibility:hidden;
+}
+
+.node-type-scratch-campaign {
+    #header,
+    #footer {
+        img {
+            max-width:100% !important;
+            height:auto !important;
+        }
     }
 }

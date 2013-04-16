@@ -133,17 +133,10 @@ sw_ajax_win_request = function(r, nid) {
                 var position = $('#block-scratchandwin-scratch-block').position();
                 scroll(0,position.top);
                 showResults(_results, _scratch);
+                $('#scratchandwin-claim-form').trigger( "create" );
             }
         });
     }
-},
-
-sw_ajax_age_verify = function() {
-	alert("HI");
-    $('#loading-text').removeClass('fade-in');
-    setTimeout(function(){
-        $('#loading-text').remove();
-    }), 600;
 },
 
 showResults = function(results, scratch) {
@@ -170,7 +163,6 @@ $(document).ready(function() {
         };
     }
 
-
     $('#loading-text').addClass('fade-in');
 
     if($('#webform-client-form').length) {
@@ -194,8 +186,8 @@ $(document).ready(function() {
             setTimeout(function(){
 
                 $('#scratch-canvas').wScratchPad({
-                width         : 620,
-                height        : 390,
+                width         : 320,
+                height        : 450,
                 image         : imgUnder,
                 image2        : imgOver,
                 overlay       : 'none',
@@ -221,10 +213,41 @@ $(document).ready(function() {
         }
     }
 
+    $('form').submit(function(e) {
+        var fail = false,
+        testday = $('#matchdate #md-m').text(),
+        testyear = $('#matchdate #md-y').text(),
+        userday = $('#edit-field-dob-day option:selected'),
+        usermo = $('#edit-field-dob-month option:selected'),
+        useryr = $('#edit-field-dob-year option:selected');
+        if(userday.val() == 00 || usermo.val() == 00 || useryr.val() == 00) {
+                return false;
+        } else {
+            usermo = usermo.val();
+            userday = userday.text();
+            if(userday < 10) {
+                userday = '0' + userday;
+            }
+            usermo += userday;
+            useryr = useryr.text();
+            if(useryr > testyear) {
+                return false;
+            } else if (testyear == useryr && usermo > testday) {
+                return false;
+            } else {
+                $('#loading-text').remove();
+            }
+        }
+        $('.ui-submit').removeClass('ui-btn-active');
+        return false;
+    });
+
 
 });
 $(document).bind( "mobileinit", function() {
     /*$.mobile.selectmenu.prototype.options.nativeMenu = false;*/
+    $.mobile.button.prototype.options.theme="c";
+    $.mobile.textinput.prototype.options.theme="a";
     $.mobile.selectmenu.prototype.options.theme="a";
     $.mobile.selectmenu.prototype.options.corners=false;
 
