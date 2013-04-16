@@ -222,13 +222,17 @@ $(document).ready(function() {
     }
 
     $('form').submit(function(e) {
-        var fail = false,
+        var allselects = $('.form-type-select .ui-btn-inner'),
         testday = $('#matchdate #md-m').text(),
         testyear = $('#matchdate #md-y').text(),
         userday = $('#edit-field-dob-day option:selected'),
         usermo = $('#edit-field-dob-month option:selected'),
         useryr = $('#edit-field-dob-year option:selected');
+        allselects.each(function() {
+            if($(this).hasClass('error')) $(this).removeClass('error');
+        });
         if(userday.val() == 00 || usermo.val() == 00 || useryr.val() == 00) {
+                allselects.addClass('error');
                 return false;
         } else {
             usermo = usermo.val();
@@ -238,11 +242,7 @@ $(document).ready(function() {
             }
             usermo += userday;
             useryr = useryr.text();
-            if(useryr > testyear) {
-                return false;
-            } else if (testyear == useryr && usermo > testday) {
-                return false;
-            } else {
+            if((useryr <  testyear) || (useryr == testyear && usermo >= testday)) {
                 $('#loading-text').remove();
             }
         }

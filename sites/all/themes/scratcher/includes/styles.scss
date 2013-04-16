@@ -342,6 +342,10 @@ body.no-sidebars.node-type-scratch-campaign {
 
     .form-type-textfield {
         margin:0 0 5px;
+        input.ui-body-c {
+            color:#222;
+        }
+
         label {
             height:0;
             overflow:hidden;
@@ -417,7 +421,7 @@ p.wlMsg {
         @include wrap();
         .form-item {
             float:left;
-            height:90px;
+            height:102px;
             line-height:90px;
 
             margin:0 0 15px;
@@ -452,6 +456,10 @@ p.wlMsg {
         font-weight:normal;
         padding:0;
         text-align:center;
+        &.error {
+            border:1px solid #fff;
+            color:#fff;
+        }
     }
     .ui-icon {
         display:none;
