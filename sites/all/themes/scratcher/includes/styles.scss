@@ -31,7 +31,7 @@ $canvas-y:390px;
 */
 
 $canvas-x:320px;
-$canvas-y:390px;
+$canvas-y:330px;
 /*  import base structure */
 	@import 'base';
 
@@ -59,7 +59,7 @@ body.no-sidebars.node-type-scratch-campaign {
         margin-bottom:0;
     }
     #content {
-        min-height:390px;
+        min-height:330px;
     }
 }
 
@@ -253,7 +253,7 @@ body.no-sidebars.node-type-scratch-campaign {
     #preloadMsg {
         //@include border-radius(20px, 20px);
         @include size(100%, 100%);
-        background:rgba(0, 0, 0, .9);
+        background:#111 url($path-img  + 'navy_blue.png') 0 0 repeat;
         //background:url($path-img + 'bg_buttons.png') 0 0 repeat;
         //border:2px solid #444;
         position:absolute;
@@ -265,7 +265,7 @@ body.no-sidebars.node-type-scratch-campaign {
             @include font-size(32px, 34px);
             color:#fff;
             font-weight:bold;
-            padding:30px 30px 15px;
+            padding:30px 30px 5px;
             text-align:center;
             text-transform:uppercase;
         }
@@ -352,6 +352,8 @@ body.no-sidebars.node-type-scratch-campaign {
 p.wlMsg {
     width:90%;
     margin:0 auto;
+    font-size:14px;
+    line-height:17px;
 }
 
 .ui-body-c, .ui-overlay-c{
@@ -430,7 +432,19 @@ p.wlMsg {
     }
     .ui-btn {
         @include border-radius(20px, 20px);
+        background:rgba(255,255,255,.2);
+        border:0;
+        color:#222;
         margin:0;
+        text-shadow:none;
+        &:hover, &:focus {
+        background:rgba(255,255,255,.4);
+            color:#ccc;
+            border-bottom:1px solid #222;
+            border-right:1px solid #333;
+            text-shadow:0px 1px 2px #222;
+
+        }
     }
     .ui-btn-inner {
         text-transform:uppercase;

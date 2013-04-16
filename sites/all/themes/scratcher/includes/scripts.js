@@ -147,6 +147,14 @@ showResults = function(results, scratch) {
     scratch.remove();
 }
 
+$(document).bind( "mobileinit", function() {
+    /*$.mobile.selectmenu.prototype.options.nativeMenu = false;*/
+    $.mobile.button.prototype.options.theme="c";
+    $.mobile.textinput.prototype.options.theme="a";
+    $.mobile.selectmenu.prototype.options.theme="a";
+    $.mobile.selectmenu.prototype.options.corners=false;
+
+});
 
 $(document).ready(function() {
     /* default */
@@ -187,7 +195,7 @@ $(document).ready(function() {
 
                 $('#scratch-canvas').wScratchPad({
                 width         : 320,
-                height        : 450,
+                height        : 330,
                 image         : imgUnder,
                 image2        : imgOver,
                 overlay       : 'none',
@@ -195,7 +203,7 @@ $(document).ready(function() {
                 cursor        : 'sites/all/themes/scratcher/images/cursor.png',
                 scratchDown :null,scratchUp:null,scratchMove:null,
                 scratchMove: function(e, percent) {
-                    if(percent > 20) {
+                    if(percent > 50) {
                        sw_ajax_win_request(r, nid);
                        r++;
                     }
@@ -244,15 +252,5 @@ $(document).ready(function() {
 
 
 });
-$(document).bind( "mobileinit", function() {
-    /*$.mobile.selectmenu.prototype.options.nativeMenu = false;*/
-    $.mobile.button.prototype.options.theme="c";
-    $.mobile.textinput.prototype.options.theme="a";
-    $.mobile.selectmenu.prototype.options.theme="a";
-    $.mobile.selectmenu.prototype.options.corners=false;
-
-});
-
-
 
 /*ends*/
