@@ -45,7 +45,14 @@ function scratchandwin_block_view($delta='') {
 function _scratch_block($nid){
   $path = drupal_get_path('module', 'scratchandwin');
 //  drupal_add_js($path.'/scratchandwin.js');
+
+
   $node = node_load($nid);
+  $age = (integer)$node->field_age['und'][0]['value'];
+  $time = strtotime("-$age year", time());
+  $date = date("m/d/Y", $time);
+  $array = explode('/',$date);
+  $age_ver = '<div id="matchdate"><span id="md-m">'.$array[0].'</span<span id="md-d">'.$array[1].'</span><span id="md-y">'.$array[2].'</span>';
   $preloadBG = image_style_url('scratcher_image_680x450', $node->field_scratcher_images['und'][0]['uri']);
   $canvas = '<div id="scratch-canvas" class="scratch-box"></div>';
   if($node->field_age_verification['und'][0]['value'] == 1){
@@ -56,7 +63,8 @@ function _scratch_block($nid){
 	  //                 .'<div id="bg_instructions"></div><a href="#" id="scratch-start">Play</a>'
 	  //                 .'</div></div></div>';
 	 $preloader = '<div id="loading-text" class="enabled"><div id="preloadScreen"><div id="preloadMsg">';
-	 $preloader .= '<h4>You must be '.$node->field_age['und'][0]['value'].' to play</h4>';
+	 $preloader .= '<h4>You must be '.$age.' to play</h4>';
+	 $preloader .= $age_ver;
 	 $preloader .=  render(drupal_get_form('scratchandwin_age_form'));
 	 $preloader .= '</div></div></div>';
 
