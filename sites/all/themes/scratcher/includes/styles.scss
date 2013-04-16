@@ -321,6 +321,10 @@ body.no-sidebars.node-type-scratch-campaign {
     h2 {
     display:none;
     }
+    > img {
+        width:100% !important;
+        height:auto !important;
+    }
 
     &.fade-in {
         @include transition(500ms, opacity);
@@ -354,6 +358,7 @@ body.no-sidebars.node-type-scratch-campaign {
     }
 }
 p.wlMsg {
+    color:#fff;
     width:90%;
     margin:0 auto;
     font-size:14px;
