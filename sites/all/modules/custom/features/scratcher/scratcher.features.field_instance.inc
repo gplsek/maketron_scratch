@@ -10,6 +10,49 @@
 function scratcher_field_default_field_instances() {
   $field_instances = array();
 
+  // Exported field_instance: 'node-scratch_campaign-body'
+  $field_instances['node-scratch_campaign-body'] = array(
+    'bundle' => 'scratch_campaign',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(
+          'trim_length' => 600,
+        ),
+        'type' => 'text_summary_or_trimmed',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'body',
+    'label' => 'Body',
+    'required' => FALSE,
+    'settings' => array(
+      'display_summary' => TRUE,
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 20,
+        'summary_rows' => 5,
+      ),
+      'type' => 'text_textarea_with_summary',
+      'weight' => 18,
+    ),
+  );
+
   // Exported field_instance: 'node-scratch_campaign-field_age'
   $field_instances['node-scratch_campaign-field_age'] = array(
     'bundle' => 'scratch_campaign',
@@ -369,8 +412,8 @@ function scratcher_field_default_field_instances() {
           'public' => 'public',
         ),
         'allowed_types' => array(
-          0 => 0,
           'audio' => 0,
+          0 => 0,
           'default' => 0,
           'image' => 'image',
           'video' => 0,
@@ -650,6 +693,48 @@ function scratcher_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-scratch_campaign-field_single_winner'
+  $field_instances['node-scratch_campaign-field_single_winner'] = array(
+    'bundle' => 'scratch_campaign',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_single_winner',
+    'label' => 'Single Winner',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 9,
+    ),
+  );
+
   // Exported field_instance: 'node-scratch_campaign-field_temp_images'
   $field_instances['node-scratch_campaign-field_temp_images'] = array(
     'bundle' => 'scratch_campaign',
@@ -889,6 +974,7 @@ function scratcher_field_default_field_instances() {
   // Included for use with string extractors like potx.
   t('Age');
   t('Age Verification');
+  t('Body');
   t('Campaign Type');
   t('Current Impressions');
   t('Enter a number for system to pick winner for example 5 for every 5th visitor, winner - 5, 10, 15..');
@@ -903,6 +989,7 @@ function scratcher_field_default_field_instances() {
   t('Random Winners');
   t('Scratcher Images');
   t('Show Form on Lose');
+  t('Single Winner');
   t('Temp Images');
   t('Win Every');
   t('Win Images');

@@ -52,7 +52,7 @@ function _scratch_block($nid){
   $time = strtotime("-$age year", time());
   $date = date("m/d/Y", $time);
   $array = explode('/',$date);
-  $age_ver = '<div id="matchdate"><span id="md-m">'.$array[0].'</span<span id="md-d">'.$array[1].'</span><span id="md-y">'.$array[2].'</span>';
+  $age_ver = '<div id="matchdate"><span id="md-m">'.$array[0].'</span<span id="md-d">'.$array[1].'</span><span id="md-y">'.$array[2].'</span></div>';
   $preloadBG = image_style_url('scratcher_image_680x450', $node->field_scratcher_images['und'][0]['uri']);
   $canvas = '<div id="scratch-canvas" class="scratch-box"></div>';
   if($node->field_age_verification['und'][0]['value'] == 1){
@@ -190,14 +190,17 @@ function scratchandwin_claim_form($form, &$form_state) {
 	$form['name'] = array(
 		'#type' => 'textfield',
 		'#title' => 'Name',
+        '#attributes' =>array('placeholder' => t('your Name')),
 	);
 	$form['email'] = array(
 		'#title' => 'Email',
 		'#type' => 'textfield',
-	);
+        '#attributes' =>array('placeholder' => t('your Email')),
+    );
 	$form['phone'] = array(
 		'#title' => 'Phone',
 		'#type' => 'textfield',
+        '#attributes' =>array('placeholder' => t('your Phone')),
 	);
 	$form['club'] = array(
 		'#title' => 'Join mClub',
@@ -250,11 +253,6 @@ function scratchandwin_age_form($form, &$form_state) {
     $form['submit'] = array(
         '#type' => 'submit',
         '#value' => 'Submit',
-        '#ajax' => array(
-               'callback' => 'sw_ajax_age_verify',
-               'effect' => 'fade',
-
-		    ),
     );
 
 	return $form;

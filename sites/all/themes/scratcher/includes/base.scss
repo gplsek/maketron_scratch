@@ -361,7 +361,7 @@ button {
         #content {
             @include size($canvas-x, auto);
             margin:0 auto;
-            padding:0 25px;/*room for shadows*/
+            padding:0;/*room for shadows*/
                 position:relative;
         }
         #header {
