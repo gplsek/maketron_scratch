@@ -56,8 +56,9 @@ function scratcher_field_group_info() {
     'label' => 'Campaign Properties',
     'weight' => '2',
     'children' => array(
-      0 => 'group_settings',
+      0 => 'group_social',
       1 => 'group_images',
+      2 => 'group_settings',
     ),
     'format_type' => 'htabs',
     'format_settings' => array(
@@ -80,7 +81,7 @@ function scratcher_field_group_info() {
   $field_group->parent_name = 'group_properties';
   $field_group->data = array(
     'label' => 'Campaign Settings',
-    'weight' => '3',
+    'weight' => '2',
     'children' => array(
       0 => 'field_current_impressions',
       1 => 'field_impressions',
@@ -92,8 +93,8 @@ function scratcher_field_group_info() {
       7 => 'field_random_winners',
       8 => 'field_show_form_on_loose',
       9 => 'field_win_text',
-      10 => 'field_age_verification',
-      11 => 'field_age',
+      10 => 'field_age',
+      11 => 'field_age_verification',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -106,6 +107,35 @@ function scratcher_field_group_info() {
     ),
   );
   $export['group_settings|node|scratch_campaign|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_social|node|scratch_campaign|form';
+  $field_group->group_name = 'group_social';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'scratch_campaign';
+  $field_group->mode = 'form';
+  $field_group->parent_name = 'group_properties';
+  $field_group->data = array(
+    'label' => 'Social',
+    'weight' => '3',
+    'children' => array(
+      0 => 'field_facebook_url',
+      1 => 'field_twitter_url',
+      2 => 'field_youtube_url',
+    ),
+    'format_type' => 'htab',
+    'format_settings' => array(
+      'formatter' => 'closed',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+  $export['group_social|node|scratch_campaign|form'] = $field_group;
 
   return $export;
 }

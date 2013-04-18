@@ -222,6 +222,46 @@ function scratcher_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-scratch_campaign-field_facebook_url'
+  $field_instances['node-scratch_campaign-field_facebook_url'] = array(
+    'bundle' => 'scratch_campaign',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 21,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_facebook_url',
+    'label' => 'Facebook URL',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 21,
+    ),
+  );
+
   // Exported field_instance: 'node-scratch_campaign-field_footer_images'
   $field_instances['node-scratch_campaign-field_footer_images'] = array(
     'bundle' => 'scratch_campaign',
@@ -413,8 +453,8 @@ function scratcher_field_default_field_instances() {
         ),
         'allowed_types' => array(
           'audio' => 0,
-          0 => 0,
           'default' => 0,
+          0 => 0,
           'image' => 'image',
           'video' => 0,
         ),
@@ -789,6 +829,46 @@ function scratcher_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-scratch_campaign-field_twitter_url'
+  $field_instances['node-scratch_campaign-field_twitter_url'] = array(
+    'bundle' => 'scratch_campaign',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 22,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_twitter_url',
+    'label' => 'Twitter URL',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 22,
+    ),
+  );
+
   // Exported field_instance: 'node-scratch_campaign-field_win_every'
   $field_instances['node-scratch_campaign-field_win_every'] = array(
     'bundle' => 'scratch_campaign',
@@ -970,6 +1050,46 @@ function scratcher_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-scratch_campaign-field_youtube_url'
+  $field_instances['node-scratch_campaign-field_youtube_url'] = array(
+    'bundle' => 'scratch_campaign',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 23,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_youtube_url',
+    'label' => 'YouTube URL',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 23,
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
   t('Age');
@@ -980,6 +1100,7 @@ function scratcher_field_default_field_instances() {
   t('Enter a number for system to pick winner for example 5 for every 5th visitor, winner - 5, 10, 15..');
   t('Enter the visitor # to be the winner');
   t('Enter total number of winners, system will pick random # based on max number of impressions');
+  t('Facebook URL');
   t('Footer Images');
   t('Header Images');
   t('Lose Text');
@@ -991,10 +1112,12 @@ function scratcher_field_default_field_instances() {
   t('Show Form on Lose');
   t('Single Winner');
   t('Temp Images');
+  t('Twitter URL');
   t('Win Every');
   t('Win Images');
   t('Win Text');
   t('Winner #');
+  t('YouTube URL');
   t('lose images');
   t('total current impressions');
 
