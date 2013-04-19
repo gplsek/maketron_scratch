@@ -68,8 +68,8 @@ function scratcher_image_default_styles() {
         'module' => 'image',
         'name' => 'image_scale_and_crop',
         'data' => array(
-          'width' => 640,
-          'height' => 660,
+          'width' => 320,
+          'height' => 330,
         ),
         'weight' => 2,
       ),
