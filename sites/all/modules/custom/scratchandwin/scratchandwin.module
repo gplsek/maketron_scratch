@@ -57,7 +57,7 @@ function _scratch_block($nid){
   $date = date("m/d/Y", $time);
   $array = explode('/',$date);
   $age_ver = '<div id="matchdate"><span id="md-m">'.$array[0].'</span<span id="md-d">'.$array[1].'</span><span id="md-y">'.$array[2].'</span></div>';
-  $preloadBG = image_style_url('scratcher_image_680x450', $node->field_scratcher_images['und'][0]['uri']);
+  $preloadBG = image_style_url('scratch_image', $node->field_scratcher_images['und'][0]['uri']);
   $canvas = '<div id="scratch-canvas" class="scratch-box"></div>';
   if($node->field_age_verification['und'][0]['value'] == 1){
 	  // $preloader = '<div id="loading-text" class="enabled" style="background:url('
@@ -78,9 +78,9 @@ function _scratch_block($nid){
   }
 
   /* need to randomize these */
-  $imgTop = '<div id="imgTop">'.image_style_url('scratcher_image_680x450', $node->field_scratcher_images['und'][0]['uri']).'</div>';
+  $imgTop = '<div id="imgTop">'.image_style_url('scratch_image', $node->field_scratcher_images['und'][0]['uri']).'</div>';
   if($node->field_temp_images){
-  	$imgBot = '<div id="imgBot">'.image_style_url('scratcher_image_680x450', $node->field_temp_images['und'][0]['uri']).'</div>';
+  	$imgBot = '<div id="imgBot">'.image_style_url('scratch_image', $node->field_temp_images['und'][0]['uri']).'</div>';
   }else{
 	$imgBot = '';
   }
@@ -104,8 +104,8 @@ function _check_winner($nid){
           /*images*/
           $winText = $node->field_win_text['und'][0]['value'];
           $loseText = $node->field_loose_text['und'][0]['value'];
-          $winImg = image_style_url('scratcher_image_680x450', $node->field_win_images['und'][0]['uri']);
-          $loseImg = image_style_url('scratcher_image_680x450', $node->field_loose_images['und'][0]['uri']);
+          $winImg = image_style_url('scratch_image', $node->field_win_images['und'][0]['uri']);
+          $loseImg = image_style_url('scratch_image', $node->field_loose_images['und'][0]['uri']);
 
             $loose .= "<img src='".$loseImg."' border='0' class='img_lose'/><br/>";
          	$loose .= "<p class='wlMsg'>".$loseText."</p>";
@@ -263,8 +263,8 @@ function scratchandwin_age_form($form, &$form_state) {
 }
 
 function sw_ajax_age_verify(){
-	
-	
+
+
 	echo "HI";
 }
 

@@ -167,7 +167,7 @@ $(document).ready(function() {
     /* Canvas var for swiping iphone >= 5.0 */
     if(Canvas) {
         Canvas.ontouchstart = function(e){
-            e.preventDefault();
+            //e.preventDefault();
         };
     }
 
@@ -199,7 +199,7 @@ $(document).ready(function() {
                 image         : imgUnder,
                 image2        : imgOver,
                 overlay       : 'none',
-                size          : 20,
+                size          : 40,
                 cursor        : 'sites/all/themes/scratcher/images/cursor.png',
                 scratchDown :null,scratchUp:null,scratchMove:null,
                 scratchMove: function(e, percent) {
