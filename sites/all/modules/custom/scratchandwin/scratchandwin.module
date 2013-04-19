@@ -48,7 +48,9 @@ function _scratch_block($nid){
 
 
   $node = node_load($nid);
-  $age = (integer)$node->field_age['und'][0]['value'];
+  if($node->field_age){
+    $age = (integer)$node->field_age['und'][0]['value'];
+  }
   $time = strtotime("-$age year", time());
   $date = date("m/d/Y", $time);
   $array = explode('/',$date);
