@@ -113,6 +113,9 @@ function scratcher_preprocess_page(&$vars) {
       $vars['page_bg'] = $pageBG;
       $vars['header_image'] = theme('image_style', array('style_name' => 'campaign_node_banner', 'path' => $headerImg[0]['uri']));
       $vars['footer_image'] = theme('image_style', array('style_name' => 'campaign_node_banner', 'path' => $footerImg[0]['uri']));
+      $vars['fb_link'] = field_get_items('node', $vars['node'], 'field_facebook_url');
+      $vars['tw_link'] = field_get_items('node', $vars['node'], 'field_twitter_url');
+      $vars['yt_link'] = field_get_items('node', $vars['node'], 'field_youtube_url');
     }
 
     $items = field_get_items('node', $vars['node'], 'field_section_image');
