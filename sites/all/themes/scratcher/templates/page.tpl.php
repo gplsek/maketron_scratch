@@ -135,9 +135,11 @@
     <footer id="footer" class="wrap">
         <?php if(isset($node) && $node->type == 'scratch_campaign'): ?>
                 <?php print render($footer_image);?>
-                   <?php if($fb_link) print $fb_link;?>
-	               <?php if($tw_link) print $tw_link;?>
-		           <?php if($yt_link) print $yt_link;?>
+                <div id='social'>
+                   <?php if($fb_link) print '<a href='.$fb_link.' id="facebook">Facebook</a>';?>
+	               <?php if($tw_link) print '<a href='.$tw_link.' id="twitter">Twitter</a>';?>
+		           <?php if($yt_link) print '<a href='.$yt_link.' id="youtube">Youtube</a>';?>
+		       </div>
             <?php else: ?>
             <?php print render($page['footer']); ?>
         <?php endif; ?>
