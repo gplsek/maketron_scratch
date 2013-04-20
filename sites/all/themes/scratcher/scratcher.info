@@ -7,7 +7,7 @@ engine = phptemplate
 stylesheets[all][] = includes/jquery.mobile-1.3.0.min.css
 stylesheets[all][] = includes/styles.scss
 stylesheets[print][] = includes/print.css
-scripts[] = includes/wScratchPad.js
+scripts[] = includes/wScratchPad.min.js
 scripts[] = includes/scripts.js
 
 regions[header] = Header

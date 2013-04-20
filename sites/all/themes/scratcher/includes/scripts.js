@@ -147,8 +147,6 @@ showResults = function(results, scratch) {
     scratch.remove();
 },
 
-
-
 startModalEvents = function() {
     var removeLoadDiv;
     removeLoadDiv = setTimeout(function(){
@@ -158,75 +156,10 @@ startModalEvents = function() {
         $('#loading-text').removeClass('fade-in');
         clearTimeout(removeLoadDiv);
     });
-}
+},
 
-
-$(document).bind( "mobileinit", function() {
-    /*$.mobile.selectmenu.prototype.options.nativeMenu = false;*/
-    $.mobile.button.prototype.options.theme="c";
-    $.mobile.textinput.prototype.options.theme="a";
-    $.mobile.selectmenu.prototype.options.theme="a";
-    $.mobile.selectmenu.prototype.options.corners=false;
-
-});
-
-$(document).ready(function() {
-    /* default */
-    resetFields();
-    externalLinks();
-    var z = 0, r = 0,
-    nid = $('#nindex').attr('rel'),
-    Canvas = document.getElementById('scratch-canvas');
-
-    /* Canvas var for swiping iphone >= 5.0 */
-    if(Canvas) {
-        Canvas.ontouchstart = function(e){
-            //e.preventDefault();
-        };
-    }
-    //Canvas.addEventListener('touchstart', function(e){ e.preventDefault(); });
-
-    $('#loading-text').addClass('fade-in');
-
-    if($('#webform-client-form').length) {
-        contactDefaults('webform-client-form');
-        validateForm('webform-client-form')
-    }
-    if($('#content table').length) $('#content table').wrap('<div class="table-wrapper">');
-
-    /* jQuery mobile bind to init function */
-
-    if($('.scratch-block').length) {
-        var imgUnder, imgOver,
-            h = window.location.host + '/?q=';
-        if(z < 1) {
-            imgOver = $('#imgTop').html();
-            imgUnder = $('#imgBot').html();
-            $('footer').append("<div id='percent'></div>");
-            $('#scratch-canvas').wScratchPad({
-                width         : 320,
-                height        : 330,
-                image         : imgUnder,
-                image2        : imgOver,
-                overlay       : 'none',
-                size          : 20,
-                cursor        : 'sites/all/themes/scratcher/images/cursor.png',
-                scratchDown :null,scratchUp:null,scratchMove:null,
-                scratchMove: function(e, percent) {
-                    $
-                    if(percent > 90) {
-                       sw_ajax_win_request(r, nid);
-                       r++;
-                    }
-                }
-            });
-                if($('#scratch-start').length) {
-                    startModalEvents();
-                }
-        }
-    }
-
-    $('form').submit(function() {
+ageVerInit = function() {
+    $('#scratchandwin-age-form').submit(function() {
         var allselects = $('.form-type-select .ui-btn-inner'),
         testday = $('#matchdate #md-m').text(),
         testyear = $('#matchdate #md-y').text(),
@@ -254,7 +187,79 @@ $(document).ready(function() {
         $('.ui-submit').removeClass('ui-btn-active');
         return false;
     });
+}
 
+
+$(document).bind( "mobileinit", function() {
+    /*$.mobile.selectmenu.prototype.options.nativeMenu = false;*/
+    $.mobile.button.prototype.options.theme="c";
+    $.mobile.textinput.prototype.options.theme="a";
+    $.mobile.selectmenu.prototype.options.theme="a";
+    $.mobile.selectmenu.prototype.options.corners=false;
+
+});
+
+$(document).ready(function() {
+    /* default */
+    resetFields();
+    externalLinks();
+    var z = 0, r = 0,
+    nid = $('#nindex').attr('rel'),
+    Canvas = document.getElementById('scratch-canvas');
+
+    /* Canvas var for swiping iphone >= 5.0 */
+    if(Canvas) {
+        Canvas.ontouchstart = function(e){
+            e.preventDefault();
+        };
+    }
+    //Canvas.addEventListener('touchstart', function(e){ e.preventDefault(); });
+
+    $('#loading-text').addClass('fade-in');
+
+    if($('#scratchandwin-age-form').length) {
+        ageVerInit();
+    }
+
+    if($('#webform-client-form').length) {
+        contactDefaults('webform-client-form');
+        validateForm('webform-client-form')
+    }
+    if($('#content table').length) $('#content table').wrap('<div class="table-wrapper">');
+
+    /* jQuery mobile bind to init function */
+
+    if($('.scratch-block').length) {
+        var loadCanvas, imgUnder, imgOver,
+            h = window.location.host + '/?q=';
+        if(z < 1) {
+            if($('#scratch-start').length) {
+                startModalEvents();
+            }
+            imgOver = $('#imgTop').html();
+            imgUnder = $('#imgBot').html();
+            loadCanvas = setTimeout(function() {
+                $('#scratch-canvas').wScratchPad({
+                    width         : 320,
+                    height        : 330,
+                    image         : imgUnder,
+                    image2        : imgOver,
+                    overlay       : 'none',
+                    size          : 20,
+                    cursor        : 'sites/all/themes/scratcher/images/cursor.png',
+                    scratchDown :null,
+                    scratchUp:null,
+                    scratchMove: function(e, percent) {
+                        if(percent > 50) {
+                           sw_ajax_win_request(r, nid);
+                           r++;
+                        }
+                    }
+                });
+            }, 1500);
+            clearTimeut(loadCanvas);
+        }
+    }
 });
 
 /*ends*/
