@@ -313,7 +313,7 @@ body.no-sidebars.node-type-scratch-campaign {
 
 // node output block
 #block-scratchandwin-scratch-block {
-    background:rgba(0,0,0,.9);
+    //background:rgba(0,0,0,.9);
     padding-bottom:15px;
     @include transition(500ms, opacity);
     //@include opacity(0);
@@ -498,4 +498,53 @@ p.wlMsg {
             height:auto !important;
         }
     }
+}
+
+
+#social {
+    display:block;
+    width:100px;
+    clear:both;
+    padding-top:15px;
+    margin:0 auto 15px;
+    /* all icons */
+    .social-footer-link {
+        width:25px;
+        height:25px;
+        background-image:url($path-img + 'socialicons.png');
+        background-repeat:no-repeat;
+        float:left;
+        text-indent:115%;
+        white-space:nowrap;
+        margin-right:5px;
+        overflow:hidden;
+        padding:0;
+        margin-bottom: 5px;
+    }
+
+    #facebook {
+        background-position:0 -155px;
+        &:hover {
+            background-position:0 -125px;
+        }
+
+    }
+
+    #twitter {
+        background-position:0 -95px;
+        &:hover {
+            background-position:0 -65px;
+        }
+    }
+
+    #youtube {
+        background-position:0 -35px;
+        &:hover {
+            background-position:0 -5px;
+        }
+    }
+}
+
+.ui-body-c, .ui-overlay-c {
+    background:#000 !important;
 }

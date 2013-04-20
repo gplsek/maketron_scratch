@@ -145,7 +145,21 @@ showResults = function(results, scratch) {
     results.addClass('expanded');
     scratch.addClass('finished');
     scratch.remove();
+},
+
+
+
+startModalEvents = function() {
+    var removeLoadDiv;
+    removeLoadDiv = setTimeout(function(){
+        $('#loading-text').remove();
+        }), 600;
+    $('#scratch-start').click(function() {
+        $('#loading-text').removeClass('fade-in');
+        clearTimeout(removeLoadDiv);
+    });
 }
+
 
 $(document).bind( "mobileinit", function() {
     /*$.mobile.selectmenu.prototype.options.nativeMenu = false;*/
@@ -170,6 +184,7 @@ $(document).ready(function() {
             //e.preventDefault();
         };
     }
+    //Canvas.addEventListener('touchstart', function(e){ e.preventDefault(); });
 
     $('#loading-text').addClass('fade-in');
 
@@ -181,47 +196,37 @@ $(document).ready(function() {
 
     /* jQuery mobile bind to init function */
 
-
-
     if($('.scratch-block').length) {
         var imgUnder, imgOver,
             h = window.location.host + '/?q=';
-
         if(z < 1) {
             imgOver = $('#imgTop').html();
             imgUnder = $('#imgBot').html();
-
-            setTimeout(function(){
-
-                $('#scratch-canvas').wScratchPad({
+            $('footer').append("<div id='percent'></div>");
+            $('#scratch-canvas').wScratchPad({
                 width         : 320,
                 height        : 330,
                 image         : imgUnder,
                 image2        : imgOver,
                 overlay       : 'none',
-                size          : 40,
+                size          : 20,
                 cursor        : 'sites/all/themes/scratcher/images/cursor.png',
                 scratchDown :null,scratchUp:null,scratchMove:null,
                 scratchMove: function(e, percent) {
-                    if(percent > 50) {
+                    $
+                    if(percent > 90) {
                        sw_ajax_win_request(r, nid);
                        r++;
                     }
                 }
-                });
-
-                $('#scratch-start').click(function() {
-                    $('#loading-text').removeClass('fade-in');
-                    setTimeout(function(){
-                        $('#loading-text').remove();
-                    }), 600;
-                });
-
-            }, 1500);
+            });
+                if($('#scratch-start').length) {
+                    startModalEvents();
+                }
         }
     }
 
-    $('form').submit(function(e) {
+    $('form').submit(function() {
         var allselects = $('.form-type-select .ui-btn-inner'),
         testday = $('#matchdate #md-m').text(),
         testyear = $('#matchdate #md-y').text(),
@@ -249,7 +254,6 @@ $(document).ready(function() {
         $('.ui-submit').removeClass('ui-btn-active');
         return false;
     });
-
 
 });
 
