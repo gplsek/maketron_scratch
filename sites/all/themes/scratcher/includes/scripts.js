@@ -250,7 +250,7 @@ $(document).ready(function() {
                     scratchDown :null,
                     scratchUp:null,
                     scratchMove: function(e, percent) {
-                        if(percent > 50) {
+                        if(percent > 5) {
                            sw_ajax_win_request(r, nid);
                            r++;
                         }
