@@ -98,8 +98,14 @@ function _check_winner($nid){
           /*images*/
           $winText = $node->field_win_text['und'][0]['value'];
           $loseText = $node->field_loose_text['und'][0]['value'];
-          $winImg = image_style_url('campaign_node_banner', $node->field_win_images['und'][0]['uri']);
-          $loseImg = image_style_url('campaign_node_banner', $node->field_loose_images['und'][0]['uri']);
+
+          $win_count = count($node->field_win_images['und']);
+          $win_index = rand(0, $win_count);
+          $lose_count = count($node->field_loose_images['und']);
+          $lose_index = rand(0, $lose_count);
+
+          $winImg = image_style_url('campaign_node_banner', $node->field_win_images['und'][$win_index]['uri']);
+          $loseImg = image_style_url('campaign_node_banner', $node->field_loose_images['und'][$lose_index]['uri']);
 
             $loose .= "<img src='".$loseImg."' border='0' class='img_lose'/><br/>";
          	$loose .= "<p class='wlMsg'>".$loseText."</p>";
