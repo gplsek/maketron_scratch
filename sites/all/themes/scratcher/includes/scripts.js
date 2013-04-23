@@ -200,12 +200,13 @@ $(document).bind( "mobileinit", function() {
 });
 
 $(document).ready(function() {
+
+    var r = 0, nid = $('#nindex').attr('rel'),
+    Canvas = document.getElementById('scratch-canvas');
+
     /* default */
     resetFields();
     externalLinks();
-    var z = 0, r = 0,
-    nid = $('#nindex').attr('rel'),
-    Canvas = document.getElementById('scratch-canvas');
 
     /* Canvas var for swiping iphone >= 5.0 */
     if(Canvas) {
@@ -213,6 +214,7 @@ $(document).ready(function() {
             e.preventDefault();
         };
     }
+
     //Canvas.addEventListener('touchstart', function(e){ e.preventDefault(); });
 
     $('#loading-text').addClass('fade-in');
@@ -228,36 +230,32 @@ $(document).ready(function() {
     if($('#content table').length) $('#content table').wrap('<div class="table-wrapper">');
 
     /* jQuery mobile bind to init function */
-
     if($('.scratch-block').length) {
         var loadCanvas, imgUnder, imgOver,
             h = window.location.host + '/?q=';
-        if(z < 1) {
+        if(r < 1) {
             if($('#scratch-start').length) {
                 startModalEvents();
             }
             imgOver = $('#imgTop').html();
             imgUnder = $('#imgBot').html();
-            loadCanvas = setTimeout(function() {
-                $('#scratch-canvas').wScratchPad({
-                    width         : 320,
-                    height        : 330,
-                    image         : imgUnder,
-                    image2        : imgOver,
-                    overlay       : 'none',
-                    size          : 20,
-                    cursor        : 'sites/all/themes/scratcher/images/cursor.png',
-                    scratchDown :null,
-                    scratchUp:null,
-                    scratchMove: function(e, percent) {
-                        if(percent > 5) {
-                           sw_ajax_win_request(r, nid);
-                           r++;
-                        }
+            $('#scratch-canvas').wScratchPad({
+                width           : 320,
+                height          : 330,
+                image           : imgUnder,
+                image2          : imgOver,
+                overlay         : 'none',
+                size            : 20,
+                cursor          : 'sites/all/themes/scratcher/images/cursor.png',
+                scratchDown     : null,
+                scratchUp       : null,
+                scratchMove     : function(e, percent) {
+                    if(percent > 65) {
+                        sw_ajax_win_request(r, nid);
+                        r++;
                     }
-                });
-            }, 1500);
-            clearTimeut(loadCanvas);
+                }
+            });
         }
     }
 });
