@@ -5,44 +5,53 @@
  * and any preprocessor-specific settings available.
  */
 function prepro_admin_form($form_id, &$form_state) {
-  $types = _prepro_get_types();
-  $settings = _prepro_get_settings();
-  $selected = array(); # keep track of chosen preprocs for deciding wether a fieldset is open by default
+  $compilers = prepro_get_compilers();
+  $cachers = prepro_get_cachers();
+  $settings = prepro_get_settings();
+  $selected = array(); // keep track of chosen preprocs for deciding wether a fieldset is open by default
   $rows = array();
-  foreach ($types as $format => $processors) {
+
+  foreach ($cachers as $key => $cacher) {
+    $cache_options[$cacher['module'] . '/' . $key] = $cacher['title'] . ': ' . $cacher['description'];
+  }
+
+  foreach ($compilers as $format => $processors) {
     $proc_list = array();
-    foreach ($processors as $name => $proc) {
-      $proc_list[$name] = $proc['label'];
+    foreach ($processors as $key => $proc) {
+      $proc_list[$proc['module'] . '/' . $key] = $proc['label'];
     }
     $settings['filetypes'] += array($format => array());
     $settings['filetypes'][$format] += array(
-      'preprocessor' => current(array_keys($proc_list)),
-      'cache' => 'onload',
-      'cache_location' => 'public://prepro/'
+      'compile_handler' => current(array_keys($proc_list)),
+      'cache_handler' => '',
+      'cache_path' => 'public://prepro/'
     );
-    $selected[] = $settings['filetypes'][$format]['preprocessor'];
+    $selected[] = $settings['filetypes'][$format]['compile_handler'];
     $rows[] = array(
       'name' => '.' . $format,
-      'processor' => array('data' => array(
-        '#name' => 'filetypes[' . $format . '][preprocessor]',
-        '#type' => 'select',
-        '#options' => $proc_list,
-        '#value' => $settings['filetypes'][$format]['preprocessor'],
-      )),
-      'cache' => array('data' => array(
-        '#name' => 'filetypes[' . $format . '][cache]',
-        '#type' => 'select',
-        '#options' => array(
-          'cache' => 'Cached, reprocessed on cache-clear',
-          'onload' => 'Uncached, reprocessed on every page load',
-        ),
-        '#value' => $settings['filetypes'][$format]['cache'],
-      )),
-      'cache_location' => array('data' => array(
-        '#name' => 'filetypes[' . $format . '][cache_location]',
-        '#type' => 'textfield',
-        '#value' => rtrim($settings['filetypes'][$format]['cache_location'], '/')
-      )),
+      'compile_handler' => array(
+        'data' => array(
+          '#name' => 'filetypes[' . $format . '][compile_handler]',
+          '#type' => 'select',
+          '#options' => $proc_list,
+          '#value' => $settings['filetypes'][$format]['compile_handler'],
+        )
+      ),
+      'cache_handler' => array(
+        'data' => array(
+          '#name' => 'filetypes[' . $format . '][cache_handler]',
+          '#type' => 'select',
+          '#options' => $cache_options,
+          '#value' => $settings['filetypes'][$format]['cache_handler'],
+        )
+      ),
+      'cache_path' => array(
+        'data' => array(
+          '#name' => 'filetypes[' . $format . '][cache_path]',
+          '#type' => 'textfield',
+          '#value' => rtrim($settings['filetypes'][$format]['cache_path'], '/')
+        )
+      ),
     );
   }
 
@@ -58,12 +67,17 @@ function prepro_admin_form($form_id, &$form_state) {
     $procs = module_invoke($module, 'preprocessor_info');
     $form[$module] = array();
     foreach ($procs as $proc => $info) {
-      # use the "retrieve" and "prepare" funcs to get the form and allow the usual form handler functions
+      // use the "retrieve" and "prepare" funcs to get the form and allow the usual form handler functions
       $form_id = $module . '_preprocessor_settings_form';
       $settings['additional'] += array($proc => array());
-      $form_state = array('prepro' => array('local' => $settings['additional'][$proc], 'global' => $settings, 'processor' => $proc)) + form_state_defaults();
-      $result = drupal_retrieve_form($form_id, $form_state);
-      // drupal_prepare_form($form_id, $result, $form_state);
+      $temp_state = array(
+        'prepro' => array(
+          'local' => $settings['additional'][$proc],
+          'global' => $settings,
+          'processor' => $proc
+        )
+      ) + form_state_defaults();
+      $result = drupal_retrieve_form($form_id, $temp_state);
       // if we got the form, alter the form element names to make saving v simple.
       if ($result) {
         _prepro_admin_form_alter_name($result, $proc);
@@ -71,12 +85,12 @@ function prepro_admin_form($form_id, &$form_state) {
         // otherwise, remove the compiler from the "selected" list
         foreach ($selected as $i => $v) {
           if ($v == $proc) {
-            unset ($selected[$i]);
+            unset($selected[$i]);
           }
         }
         // and change the label a wee bit.
         $info['label'] .= ' (no settings)';
-        $result = array();//
+        $result = array();
       }
 
       // add the result to the page.
@@ -84,7 +98,7 @@ function prepro_admin_form($form_id, &$form_state) {
         '#type' => 'fieldset',
         '#collapsible' => TRUE,
         '#collapsed' => !in_array($proc, $selected),
-        '#title' => $info['label'],
+        '#title' => filter_xss($info['label']),
         '#name' => $proc,
         'fields' => $result
       );
@@ -101,12 +115,6 @@ function prepro_admin_form($form_id, &$form_state) {
       '#title' => t('Show the "files are being recompiled on every page load" warning?'),
       '#description' => t('This warning is there for a reason - compilation can be a heavy process and will cause slowdown on production servers.'),
       '#value' => $settings['show_warnings']
-    ),
-    'fcb_compile' => array(
-      '#type' => 'checkbox',
-      '#title' => t('Only recompile when the file contents have changed'),
-      '#description' => t('This will reduce compilation load but increases I/O as it needs to check the mod-time of every file on every pageload'),
-      '#value' => $settings['fcb_compile']
     ),
   );
 
@@ -135,8 +143,7 @@ function _prepro_admin_form_alter_name(&$array, $proc) {
     if ($key{0} != '#') {
       if (!isset($value['#name'])) {
         $value['#name'] = 'additional[' . $proc . '][' . $key . ']';
-      }
-      else {
+      } else {
         $value['#name'] = preg_replace('/^([^\[]+)(\[.+)?/', 'additional[' . $proc . '][$1]$2', $value['#name']);
       }
       if (is_array($value)) {
@@ -151,30 +158,29 @@ function _prepro_admin_form_alter_name(&$array, $proc) {
  * Submit handler for "Save" on the prepro admin form.
  */
 function prepro_admin_form_save($form, &$form_state) {
-  $settings = _prepro_get_settings(array(
+  $settings = array(
     'additional' => $form_state['input']['additional'],
     'filetypes' => $form_state['input']['filetypes'],
     'show_warnings' => isset($form_state['input']['show_warnings']),
-    'fcb_compile' => isset($form_state['input']['fcb_compile']),
-  ));
-  # make sure that we can write to all the cache locations.
+  );
+  // make sure that we can write to all the cache locations.
   foreach ($settings['filetypes'] as $ext => $type) {
-    if (!file_prepare_directory($type['cache_location'], FILE_MODIFY_PERMISSIONS ^ FILE_CREATE_DIRECTORY)) {
-      drupal_set_message(t('The cache location for :ext files (:dir) can either not be created or is not writable.', array(':ext' => $ext, ':dir' => $type['cache_location'])), 'warning');
+    if (!file_prepare_directory($type['cache_path'], FILE_MODIFY_PERMISSIONS ^ FILE_CREATE_DIRECTORY)) {
+      drupal_set_message(t('The cache location for :ext files (:dir) can either not be created or is not writable.', array(':ext' => $ext, ':dir' => $type['cache_path'])), 'warning');
     }
   }
   variable_set('prepro', $settings);
-  drupal_set_message('Prepro settings have been saved');
+  drupal_set_message(t('Prepro settings have been saved'));
+  prepro_admin_form_cc($form, $form_state);
 }
 
 /**
  * Submit handler for clearing the cache from the prepro admin form
  */
 function prepro_admin_form_cc($form, &$form_state) {
-  prepro_clear_cache();
-  drupal_set_message('The Prepro cache has been cleared');
+  cache_clear_all('prepro:map', 'cache_prepro');
+  drupal_set_message(t('The Prepro cache has been cleared'));
 }
-
 
 /**
  * Implements hook_form_FORM_ID_alter().
