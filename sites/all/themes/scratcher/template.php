@@ -103,23 +103,30 @@ function scratcher_preprocess_page(&$vars) {
 
     /* scratcher header/footer images */
     if($vars['node]']->type = 'scratch_campaign') {
-	  if($vars['node']->field_page_background){
-        $pageBG = file_create_url($vars['node']->field_page_background['und'][0]['uri']);
-      }else{
-	    $pageBG = '';
-      }
-      $headerImg = field_get_items('node', $vars['node'], 'field_header_images');
-      $footerImg = field_get_items('node', $vars['node'], 'field_footer_images');
-      $vars['page_bg'] = $pageBG;
-      $vars['header_image'] = theme('image_style', array('style_name' => 'campaign_node_banner', 'path' => $headerImg[0]['uri']));
-      $vars['footer_image'] = theme('image_style', array('style_name' => 'campaign_node_banner', 'path' => $footerImg[0]['uri']));
-      $fb = field_get_items('node', $vars['node'], 'field_facebook_url');
-      $vars['fb_link'] = $fb[0]['value'];
-      $tw = field_get_items('node', $vars['node'], 'field_twitter_url');
-      $vars['tw_link'] = $tw[0]['value'];
-      $yt = field_get_items('node', $vars['node'], 'field_youtube_url');
-      $vars['yt_link'] = $yt[0]['value'];
+        if($vars['node']->field_page_background){
+            $pageBG = file_create_url($vars['node']->field_page_background['und'][0]['uri']);
+        } else {
+            $pageBG = '';
+        }
+        $vars['social_links'] = false;
+        /* fetch vars */
+        $headerImg = field_get_items('node', $vars['node'], 'field_header_images');
+        $footerImg = field_get_items('node', $vars['node'], 'field_footer_images');
+        $fb = field_get_items('node', $vars['node'], 'field_facebook_url');
+        $tw = field_get_items('node', $vars['node'], 'field_twitter_url');
+        $yt = field_get_items('node', $vars['node'], 'field_youtube_url');
+        $vars['page_bg'] = $pageBG;
+
+        if(!empty($headerImg)) $vars['header_image'] = theme('image_style', array('style_name' => 'campaign_node_banner', 'path' => $headerImg[0]['uri']));
+        if(!empty($footerImg)) $vars['footer_image'] = theme('image_style', array('style_name' => 'campaign_node_banner', 'path' => $footerImg[0]['uri']));
+        if(!empty($fb) || !empty($tw) || !empty($yt)) {
+          $vars['social_links'] = true;
+        }
+        if(!empty($fb)) $vars['fb_link'] = $fb[0]['value'];
+        if(!empty($tw)) $vars['tw_link'] = $tw[0]['value'];
+        if(!empty($yt)) $vars['yt_link'] = $yt[0]['value'];
     }
+
 
     $items = field_get_items('node', $vars['node'], 'field_section_image');
     if (!empty($items)) {

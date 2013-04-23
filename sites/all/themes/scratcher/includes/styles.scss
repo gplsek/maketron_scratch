@@ -524,7 +524,8 @@ p.wlMsg {
 
     #facebook {
         background-position:0 0;
-        &:hover {
+        &:hover,
+        &:focus {
             background-position:0 -75px;
         }
 
@@ -533,14 +534,16 @@ p.wlMsg {
     #twitter {
         background-position:0 -150px;
         margin:0 5px;
-        &:hover {
+        &:hover,
+        &:focus {
             background-position:0 -225px;
         }
     }
 
     #youtube {
         background-position:0 -300px;
-        &:hover {
+        &:hover,
+        &:focus {
             background-position:0 -375px;
         }
     }

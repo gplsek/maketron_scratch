@@ -134,15 +134,19 @@
     <!-- footer -->
     <footer id="footer" class="wrap">
         <?php if(isset($node) && $node->type == 'scratch_campaign'): ?>
-                <?php print render($footer_image);?>
-                <div id='social' class='social'>
-                   <?php if($fb_link) print '<a href='.$fb_link.' id="facebook" class="social-footer-link">Facebook</a>';?>
-	               <?php if($tw_link) print '<a href='.$tw_link.' id="twitter" class="social-footer-link">Twitter</a>';?>
-		           <?php if($yt_link) print '<a href='.$yt_link.' id="youtube" class="social-footer-link">Youtube</a>';?>
-		       </div>
+                <?php if(isset($footer_image)) {
+                    print render($footer_image);
+                };?>
             <?php else: ?>
             <?php print render($page['footer']); ?>
         <?php endif; ?>
+        <?php if(isset($social_links) && $social_links == true): ?>
+            <div id='social' class='social'>
+               <?php if(isset($fb_link)) print '<a href='.$fb_link.' id="facebook" class="social-footer-link">Facebook</a>';?>
+               <?php if(isset($tw_link)) print '<a href='.$tw_link.' id="twitter" class="social-footer-link">Twitter</a>';?>
+               <?php if(isset($yt_link)) print '<a href='.$yt_link.' id="youtube" class="social-footer-link">Youtube</a>';?>
+           </div>
+       <?php endif; ?>
     </footer><!-- /footer -->
 </section> <!-- /container -->
 <?php if(!$logged_in): ?>
