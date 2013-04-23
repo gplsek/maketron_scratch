@@ -60,12 +60,6 @@ function _scratch_block($nid){
   $preloadBG = image_style_url('scratch_image', $node->field_scratcher_images['und'][0]['uri']);
   $canvas = '<div id="scratch-canvas" class="scratch-box"></div>';
   if($node->field_age_verification['und'][0]['value'] == 1){
-	  // $preloader = '<div id="loading-text" class="enabled" style="background:url('
-	  //                 .$preloadBG
-	  //                 .') 0 0 no-repeat;"><div id="preloadScreen"><div id="preloadMsg">'
-	  //                 .'<h4>Swipe the play area to win!</h4>'
-	  //                 .'<div id="bg_instructions"></div><a href="#" id="scratch-start">Play</a>'
-	  //                 .'</div></div></div>';
 	 $preloader = '<div id="loading-text" class="enabled"><div id="preloadScreen"><div id="preloadMsg">';
 	 $preloader .= '<h4>You must be '.$age.' to play</h4>';
 	 $preloader .= $age_ver;
@@ -104,8 +98,8 @@ function _check_winner($nid){
           /*images*/
           $winText = $node->field_win_text['und'][0]['value'];
           $loseText = $node->field_loose_text['und'][0]['value'];
-          $winImg = image_style_url('scratch_image', $node->field_win_images['und'][0]['uri']);
-          $loseImg = image_style_url('scratch_image', $node->field_loose_images['und'][0]['uri']);
+          $winImg = image_style_url('campaign_node_banner', $node->field_win_images['und'][0]['uri']);
+          $loseImg = image_style_url('campaign_node_banner', $node->field_loose_images['und'][0]['uri']);
 
             $loose .= "<img src='".$loseImg."' border='0' class='img_lose'/><br/>";
          	$loose .= "<p class='wlMsg'>".$loseText."</p>";
@@ -275,7 +269,7 @@ function scratchandwin_claim_form_submit($form, &$form_state) {
 	print $nid;
 	print "<br>HERE";
     $_SESSION['campaign_id'] = '';
-    drupal_set_message("Thank you we will get back to you");
+    drupal_set_message("Thank you! And congratulations again! We will get contact you shortly!");
     drupal_goto('/node/'.$nid);
 	return;
 }
