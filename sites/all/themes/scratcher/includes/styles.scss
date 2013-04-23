@@ -503,44 +503,45 @@ p.wlMsg {
 
 #social {
     display:block;
-    width:100px;
+    width:202px;
     clear:both;
     padding-top:15px;
     margin:0 auto 15px;
     /* all icons */
     .social-footer-link {
-        width:25px;
-        height:25px;
+        width:64px;
+        height:60px;
         background-image:url($path-img + 'socialicons.png');
         background-repeat:no-repeat;
         float:left;
+        margin:0;
         text-indent:115%;
         white-space:nowrap;
-        margin-right:5px;
         overflow:hidden;
         padding:0;
         margin-bottom: 5px;
     }
 
     #facebook {
-        background-position:0 -155px;
+        background-position:0 0;
         &:hover {
-            background-position:0 -125px;
+            background-position:0 -75px;
         }
 
     }
 
     #twitter {
-        background-position:0 -95px;
+        background-position:0 -150px;
+        margin:0 5px;
         &:hover {
-            background-position:0 -65px;
+            background-position:0 -225px;
         }
     }
 
     #youtube {
-        background-position:0 -35px;
+        background-position:0 -300px;
         &:hover {
-            background-position:0 -5px;
+            background-position:0 -375px;
         }
     }
 }
