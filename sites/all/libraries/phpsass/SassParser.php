@@ -400,9 +400,23 @@ class SassParser {
     }
 
     if (is_array($source)) {
-      $return = array();
-      foreach ($source as $source_file) {
-        $return = array_merge($return, $this->parse($source_file, TRUE));
+      $return = null;
+      foreach ($source as $key => $value) {
+          if(is_numeric($key)){
+              $code = $value;
+              $type = true;
+          } else {
+              $code = $key;
+              $type = $value;
+          }
+          if($return===null){
+            $return = $this->parse($code, $type);
+          } else {
+            $newNode = $this->parse($code, $type);
+              foreach($newNode->children as $children){
+                array_push($return->children, $children);
+              }
+          }
       }
       return $return;
     }

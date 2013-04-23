@@ -48,7 +48,12 @@ class SassContentNode extends SassNode {
   public function parse($pcontext) {
     $return = $this;
     $context = new SassContext($pcontext);
-    return ($context->getContent());
+    $children = array();
+    foreach ($context->getContent() as $child) {
+      $child->parent = $this->parent;
+      $children = array_merge($children, $child->parse($pcontext->parent));
+    }
+    return $children;
   }
 
   /**

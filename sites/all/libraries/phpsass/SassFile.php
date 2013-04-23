@@ -141,7 +141,7 @@ class SassFile {
       $files = array_slice(scandir($dir), 2);
 
       foreach ($files as $file) {
-        if (is_dir($dir . DIRECTORY_SEPARATOR . $file)) {
+        if (substr($file, 0, 1) != '.' && is_dir($dir . DIRECTORY_SEPARATOR . $file)) {
           $path = self::find_file($filename, $dir . DIRECTORY_SEPARATOR . $file);
           if ($path !== false) {
             return $path;

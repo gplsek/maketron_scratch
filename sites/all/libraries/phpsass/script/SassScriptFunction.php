@@ -254,6 +254,7 @@ class SassScriptFunction {
     }
 
     // print_r(array($required, $provided, $_required));
+    $provided_copy = $provided;
 
     foreach ($required as $name=>$default) {
       if (count($provided)) {
@@ -261,6 +262,16 @@ class SassScriptFunction {
       }
       elseif ($default !== NULL) {
         $arg = $default;
+
+        // for mixins with default values that refer to other arguments
+        // (e.g. border-radius($topright: 0, $bottomright: $topright, $bottomleft: $topright, $topleft: $topright)
+        if (is_string($default) && $default[0]=='$') {
+          $referred = trim(trim($default, '$'));
+          $pos = array_search($referred, array_keys($required));
+          if ($pos!==false && array_key_exists($pos, $provided_copy)) {
+            $arg = $provided_copy[$pos];
+          }
+        }
       }
       else {
         throw new SassMixinNodeException("Function::$name: Required variable ($name) not given.\nFunction defined: " . $source->token->filename . '::' . $source->token->line . "\nFunction used", $source);

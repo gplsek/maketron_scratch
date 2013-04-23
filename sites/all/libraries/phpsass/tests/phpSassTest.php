@@ -237,6 +237,10 @@ class PHPSass_TestCase extends PHPUnit_Framework_TestCase {
     $this->runSassTest('mixins.sass');
   }
 
+  public function testMixinInMixin() {
+    $this->runSassTest('mixin_in_mixin.scss');
+  }
+
   public function testMultiline() {
     $this->runSassTest('multiline.sass');
   }
@@ -299,6 +303,22 @@ class PHPSass_TestCase extends PHPUnit_Framework_TestCase {
 
   public function testUnits() {
     $this->runSassTest('units.sass');
+  }
+
+  public function testListVariable() {
+    $this->runSassTest('list_variable.scss');
+  }
+
+  public function testMediaInFor() {
+    $this->runSassTest('media_in_for.scss');
+  }
+
+  public function testMediaInMixin() {
+    $this->runSassTest('media_in_mixin.scss');
+  }
+
+  public function testMediaInTwoMixins() {
+    $this->runSassTest('media_in_mixin_in_mixin.scss');
   }
 
   public function testWarnImported() {
