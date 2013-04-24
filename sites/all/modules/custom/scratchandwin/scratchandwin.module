@@ -58,7 +58,7 @@ function _scratch_block($nid){
   $array = explode('/',$date);
   $age_ver = '<div id="matchdate"><span id="md-m">'.$array[0].'</span<span id="md-d">'.$array[1].'</span><span id="md-y">'.$array[2].'</span></div>';
   $preloadBG = image_style_url('scratch_image', $node->field_scratcher_images['und'][0]['uri']);
-  $canvas = '<div id="scratch-canvas" class="scratch-box"></div>';
+  $canvas = '<div id="preloadResultContainer" class="fixedHeight"></div><div id="scratch-canvas" class="scratch-box"></div>';
   if($node->field_age_verification['und'][0]['value'] == 1){
 	 $preloader = '<div id="loading-text" class="enabled"><div id="preloadScreen"><div id="preloadMsg">';
 	 $preloader .= '<h4>You must be '.$age.' to play</h4>';
@@ -107,11 +107,11 @@ function _check_winner($nid){
           $winImg = image_style_url('campaign_node_banner', $node->field_win_images['und'][$win_index]['uri']);
           $loseImg = image_style_url('campaign_node_banner', $node->field_loose_images['und'][$lose_index]['uri']);
 
-            $loose .= "<img src='".$loseImg."' border='0' class='img_lose'/><br/>";
+            $loose .= "<img src='".$loseImg."' border='0' class='img_lose'/>";
          	$loose .= "<p class='wlMsg'>".$loseText."</p>";
 
 
-			$win .= "<img src='".$winImg."' border='0' class='img_win'/><br/>";
+			$win .= "<img src='".$winImg."' border='0' class='img_win'/>";
 			$win .= "<p class='wlMsg'>".$winText."</p>";
 		    //$win .= "<a id='cta_claim_prize' href='/claim-prize'>Claim Your Prize</a>";
 

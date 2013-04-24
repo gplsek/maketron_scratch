@@ -548,3 +548,41 @@ p.wlMsg {
 .ui-body-c, .ui-overlay-c {
     background:#000 !important;
 }
+
+/* all win/lose containers */
+#preloadResultContainer {
+    @include opacity(0);
+    @include transition(600);
+    position:absolute;
+    visibility:hidden;
+
+    img {
+        margin-bottom:15px;
+    }
+    /* height set in ../includes/scripts.js */
+
+    /*  MOBILE canvas height on load
+        Removed on canvas clear */
+    &.fixedHeight {
+        @include transition(600);
+        height:330px !important;
+    }
+
+    &.showResult {
+        @include opacity(1);
+        visibility:visible;
+    }
+
+    /* show behind scratch layer */
+    &.showResult {
+        @include transition(600);
+        &.active {
+
+       }
+    }
+
+}
+
+
+
+

@@ -41,27 +41,34 @@ externalLinks = function() {
     }
 },
 
+getStyle = function(el, styleProp) {
+    var y;
+    if(el.currentStyle) y = el.currentStyle[styleProp];
+    else if(window.getComputedStyle) y = document.defaultView.getComputedStyle(el, null).getPropertyValue(styleProp);
+    return y;
+},
+
+doomHeight = function(elem, matchElem) {
+    var timeout,
+    resize = function() {
+        if(getStyle(elem, 'float') != 'none') elem.style.height = matchElem.offsetHeight + 'px';
+        else elem.style.height = 'auto';
+    };
+    window.onresize = function() {
+        if(timeout) clearTimeout(timeout);
+        timeout = setTimeout(resize, 200);
+    };
+    resize();
+},
+
 sw_ajax_win_request = function(r, nid) {
     if(r < 1) {
-        $('#block-scratchandwin-scratch-block').load("/check-winner/"+nid, function(response, status, xhr) {
+        $('#preloadResultContainer').load("/check-winner/"+nid, function(response, status, xhr) {
             if(status != 'error') {
-                _scratch = $('#scratch-canvas');
-                _results = $('#tempAjax');
-                var position = $('#block-scratchandwin-scratch-block').position();
-                scroll(0,position.top);
-                showResults(_results, _scratch);
                 $('#scratchandwin-claim-form').trigger( "create" );
             }
         });
     }
-},
-
-showResults = function(results, scratch) {
-    results.removeClass('scratch-box');
-    results.addClass('finished');
-    results.addClass('expanded');
-    scratch.addClass('finished');
-    scratch.remove();
 },
 
 startModalEvents = function() {
@@ -107,13 +114,19 @@ ageVerInit = function() {
 },
 
 canvasInit = function(imgOver, imgUnder, nid) {
-        var nid = nid, r = 0, loadCanvas, imgtop = imgOver, imgbot = imgUnder,
+        var nid = nid, r = 0, loadCanvas,
+        resClass, results = document.getElementById('preloadResultContainer'),
+        imgtop = imgOver,
+        imgbot = imgUnder,
         h = window.location.host + '/?q=';
+        resClass = results.className;
 
-    if(r < 1) {
-        if($('#scratch-start').length) {
-            startModalEvents();
+        if(r < 1) {
+            if($('#scratch-start').length) {
+                startModalEvents();
         }
+
+
         $('#scratch-canvas').wScratchPad({
             width           : 320,
             height          : 330,
@@ -125,22 +138,71 @@ canvasInit = function(imgOver, imgUnder, nid) {
             scratchDown     : null,
             scratchUp       : null,
             scratchMove     : function(e, percent) {
-                if(percent > 5) {
-                    console.log(percent);
-                }
                 if(percent > 55) {
-                    sw_ajax_win_request(r, nid);
+                    canvasClear();
                     r++;
                 }
             }
         });
+
+        /* append ID to canvas wrapper */
+        $('#scratch-canvas > div').attr('id', 'canvasWrapper');
+
     }
+},
+
+canvasClear = function() {
+    var scratch = $('#scratch-canvas'),
+        results = $('#tempAjax');
+        resultDiv = document.getElementById('preloadResultContainer');
+        formDiv = document.getElementById('scratchandwin-claim-form');
+    results.removeClass('scratch-box');
+    results.addClass('finished');
+    results.addClass('expanded');
+    scratch.addClass('finished');
+    scratch.remove();
+
+    /* expand form */
+    if(resultDiv && formDiv) {
+        canvasComplete(resultDiv, formDiv);
+    }
+},
+
+canvasComplete = function(elem, plusElem) {
+    var i, classes = elem.className, newHeight = 0, grouplen, divgroup = $(elem).children();
+    grouplen = divgroup.length;
+
+    for(i=0;i<grouplen;i++) {
+        newHeight += $(elem).children().eq(i).outerHeight();
+        //console.log(i + ' & ' + $(elem).children().eq(i).outerHeight());
+    }
+
+    elem.style.height = newHeight + 40 + 'px';
+    elem.style.position = 'relative';
+
+    if(classes.indexOf('fixedHeight') != -1) {
+        classes = classes.replace('fixedHeight', 'showResult');
+        elem.className = classes;
+    }
+
+    var timeout,
+    scrollToForm = function() {
+        $('html, body').animate({
+            scrollTop: $(plusElem).offset().top - $(elem).children('p').height() - 50
+        },  1500);
+    };
+
+    if(timeout) clearTimeout(timeout);
+    timeout = setTimeout(scrollToForm, 1500);
 }
 
 $(document).ready(function() {
 
-    var imgOver, imgUnder, nid = $('#nindex').attr('rel'),
+    var z=0, imgOver, imgUnder, resClass, newClass,
+    nid = $('#nindex').attr('rel'),
+    _results = document.getElementById('preloadResultContainer');
     Canvas = document.getElementById('scratch-canvas');
+    resClass = _results.className;
 
     /* default */
     externalLinks();
@@ -159,19 +221,26 @@ $(document).ready(function() {
         imgOver = $('#imgTop').html();
         imgUnder = $('#imgBot').html();
 
+        /* if no bottom image, initialize results backdrop */
+        if(imgUnder == null) {
+            imgUnder = '';
+            if(resClass.indexOf('showResult') == -1) resClass = resClass + ' showResult';
+            _results.className = resClass;
+        }
+
         Canvas.ontouchstart = function(e){
             e.preventDefault();
         };
 
         canvasInit(imgOver, imgUnder, nid);
-
+        sw_ajax_win_request(z, nid);
+        z++;
     }
 
-
-
-
-
+    var sidebar = document.getElementById('sidebar');
+    if(sidebar) resizeElem(sidebar);
     if($('#content table').length) $('#content table').wrap('<div class="table-wrapper">');
+
 });
 
 $(document).bind( "mobileinit", function() {

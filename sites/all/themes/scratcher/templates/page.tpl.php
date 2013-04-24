@@ -109,13 +109,11 @@
             <?php if($action_links): ?><ul class="action-links"><?php print render($action_links); ?></ul><?php endif; ?>
             <?php if($title && !$is_front) : ?>
                 <?php if(!isset($node) || (isset($node) && $node->type != 'scratch_campaign')): ?>
-                    <!--scratch campaign node -->
                     <?php print render($title_prefix); ?>
                    <h1 class="title" id="page-title"><?php print $title; ?></h1>
                     <?php print render($title_suffix); ?>
                 <?php endif; ?>
             <?php endif; ?>
-
             <?php print render($page['content']); ?>
         </div> <!-- /content -->
         <!-- sidebar second-->
