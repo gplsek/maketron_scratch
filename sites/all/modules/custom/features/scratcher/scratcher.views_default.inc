@@ -168,7 +168,7 @@ function scratcher_views_default_views() {
   $handler->display->display_options['fields']['field_scratcher_images']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['field_scratcher_images']['click_sort_column'] = 'fid';
   $handler->display->display_options['fields']['field_scratcher_images']['settings'] = array(
-    'image_style' => 'scratch_image',
+    'image_style' => 'campaign_node_banner',
     'image_link' => 'content',
   );
   $handler->display->display_options['fields']['field_scratcher_images']['group_rows'] = 0;

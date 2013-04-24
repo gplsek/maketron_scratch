@@ -149,6 +149,6 @@
        <?php endif; ?>
     </footer><!-- /footer -->
 </section> <!-- /container -->
-<?php if(!$logged_in): ?>
+<?php if(!$logged_in && !($is_front)) : ?>
     <?php drupal_add_js('sites/all/themes/scratcher/includes/jquery.mobile-1.3.1.min.js'); ?>
 <?php endif;?>

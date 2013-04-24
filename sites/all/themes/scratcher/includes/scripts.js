@@ -22,43 +22,6 @@ phSupport = function() {
     return 'placeholder' in i;
 }, /* if(phSupport() == true){} */
 
-/* resetFields - removes form input value on mouse click, returns value on blue */
-resetFields = function() {
-    var i, j, l, label, len, nodes,
-    inputArray = $('input.form-text');
-
-    for(i=0, len = inputArray.length; i<len; i++){
-        if(inputArray[i].value != '') {
-            if(phSupport() == true) {
-                inputArray[i].setAttribute('placeholder', inputArray[i].value);
-            } else {
-                inputArray[i].setAttribute('value', inputArray[i].value);
-            }
-        } else {
-            nodes = inputArray[i].parentNode.childNodes;
-            for (j = 0, l = nodes.length; j < l; j++) {
-                if(nodes[j].tagName == 'LABEL') label = nodes[j].innerHTML;
-            }
-            label = label.substr(0, label.indexOf('<'));
-            if(phSupport() == true) {
-                inputArray[i].setAttribute('placeholder', label);
-            } else {
-                inputArray[i].setAttribute('value', label);
-            }
-        }
-        console.log(inputArray[i].placeholder);
-        if(inputArray[i].type == 'text') {
-            inputArray[i].onfocus = function() {
-                if(this.value == this.defaultValue) this.value = '';
-            }
-            inputArray[i].onblur = function() {
-                if(this.value == '') this.value = this.defaultValue;
-            }
-        }
-    }
-},
-
-
 /* add target=_blank to external links */
 externalLinks = function() {
     var i, len,
@@ -76,52 +39,6 @@ externalLinks = function() {
             }
         }
     }
-},
-
-/* contactDefaults - sets default values for form inputs */
-contactDefaults = function(formId) {
-    var i, prev, len,
-    inputs = $('#' + formId + ' input.form-text');
-
-    for(i = 0, len=inputs.length; i < len; i++) {
-        prev = inputs[i].previousSibling;
-        while(prev.nodeType != 1) {
-            prev = prev.previousSibling;
-        }
-        inputs[i].defaultValue = prev.innerHTML.slice(prev.innerHTML, prev.innerHTML.indexOf(' ')) + '*';
-        prev.style.display = 'none';
-    }
-},
-
-/* validateForm - Handles client-side form validation */
-validateForm = function (form) {
-    var i, len, inputArray, selectArray, thisInput, defVal, regmatch, newregex, errorsArray;
-
-    if(typeof(form) != Object) form = $('#' + form);
-    inputArray = form.find('input.form-text');
-    selectArray = form.find('select.form-select');
-    $('#' + form[0].id + ' #edit-submit').click(function() {
-        errorsArray=[];
-        for(i = 0, len = inputArray.length; i < len; i++){
-            thisInput = inputArray[i];
-            defVal = thisInput.defaultValue;
-            if(thisInput.value == '' || thisInput.value == 'NULL' || thisInput.value == defVal) {
-                $(thisInput).addClass('error');
-                errorsArray.push(i);
-            }
-        }
-        for(i = 0, i < selectArray.length; i < len; i++) {
-            thisInput = selectArray[i];
-            defVal = thisInput.options[thisInput.selectedIndex].text;
-            if(thisInput.value == defVal || thisInput.value == '' || thisInput.value == 'NULL') {
-                $(thisInput).addClass('error');
-                errorsArray.push(i);
-            }
-        }
-        if(errorsArray.length > 0) {
-            return false;
-        }
-    });
 },
 
 sw_ajax_win_request = function(r, nid) {
@@ -187,8 +104,75 @@ ageVerInit = function() {
         $('.ui-submit').removeClass('ui-btn-active');
         return false;
     });
+},
+
+canvasInit = function(imgOver, imgUnder, nid) {
+        var nid = nid, r = 0, loadCanvas, imgtop = imgOver, imgbot = imgUnder,
+        h = window.location.host + '/?q=';
+
+    if(r < 1) {
+        if($('#scratch-start').length) {
+            startModalEvents();
+        }
+        $('#scratch-canvas').wScratchPad({
+            width           : 320,
+            height          : 330,
+            image           : imgbot,
+            image2          : imgtop,
+            overlay         : 'none',
+            size            : 20,
+            cursor          : 'sites/all/themes/scratcher/images/cursor.png',
+            scratchDown     : null,
+            scratchUp       : null,
+            scratchMove     : function(e, percent) {
+                if(percent > 5) {
+                    console.log(percent);
+                }
+                if(percent > 55) {
+                    sw_ajax_win_request(r, nid);
+                    r++;
+                }
+            }
+        });
+    }
 }
 
+$(document).ready(function() {
+
+    var imgOver, imgUnder, nid = $('#nindex').attr('rel'),
+    Canvas = document.getElementById('scratch-canvas');
+
+    /* default */
+    externalLinks();
+
+    /* Canvas var for swiping iphone >= 5.0 */
+    if(Canvas) {
+
+        if($('#loading-text').length) {
+            $('#loading-text').addClass('fade-in');
+        }
+
+        if($('#scratchandwin-age-form').length) {
+            ageVerInit();
+        }
+
+        imgOver = $('#imgTop').html();
+        imgUnder = $('#imgBot').html();
+
+        Canvas.ontouchstart = function(e){
+            e.preventDefault();
+        };
+
+        canvasInit(imgOver, imgUnder, nid);
+
+    }
+
+
+
+
+
+    if($('#content table').length) $('#content table').wrap('<div class="table-wrapper">');
+});
 
 $(document).bind( "mobileinit", function() {
     /*$.mobile.selectmenu.prototype.options.nativeMenu = false;*/
@@ -196,68 +180,6 @@ $(document).bind( "mobileinit", function() {
     $.mobile.textinput.prototype.options.theme="a";
     $.mobile.selectmenu.prototype.options.theme="a";
     $.mobile.selectmenu.prototype.options.corners=false;
-
-});
-
-$(document).ready(function() {
-
-    var r = 0, nid = $('#nindex').attr('rel'),
-    Canvas = document.getElementById('scratch-canvas');
-
-    /* default */
-    resetFields();
-    externalLinks();
-
-    /* Canvas var for swiping iphone >= 5.0 */
-    if(Canvas) {
-        Canvas.ontouchstart = function(e){
-            e.preventDefault();
-        };
-    }
-
-    //Canvas.addEventListener('touchstart', function(e){ e.preventDefault(); });
-
-    $('#loading-text').addClass('fade-in');
-
-    if($('#scratchandwin-age-form').length) {
-        ageVerInit();
-    }
-
-    if($('#webform-client-form').length) {
-        contactDefaults('webform-client-form');
-        validateForm('webform-client-form')
-    }
-    if($('#content table').length) $('#content table').wrap('<div class="table-wrapper">');
-
-    /* jQuery mobile bind to init function */
-    if($('.scratch-block').length) {
-        var loadCanvas, imgUnder, imgOver,
-            h = window.location.host + '/?q=';
-        if(r < 1) {
-            if($('#scratch-start').length) {
-                startModalEvents();
-            }
-            imgOver = $('#imgTop').html();
-            imgUnder = $('#imgBot').html();
-            $('#scratch-canvas').wScratchPad({
-                width           : 320,
-                height          : 330,
-                image           : imgUnder,
-                image2          : imgOver,
-                overlay         : 'none',
-                size            : 20,
-                cursor          : 'sites/all/themes/scratcher/images/cursor.png',
-                scratchDown     : null,
-                scratchUp       : null,
-                scratchMove     : function(e, percent) {
-                    if(percent > 65) {
-                        sw_ajax_win_request(r, nid);
-                        r++;
-                    }
-                }
-            });
-        }
-    }
 });
 
 /*ends*/
