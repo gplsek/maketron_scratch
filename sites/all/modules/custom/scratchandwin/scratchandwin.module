@@ -100,9 +100,17 @@ function _check_winner($nid){
           $loseText = $node->field_loose_text['und'][0]['value'];
 
           $win_count = count($node->field_win_images['und']);
-          $win_index = rand(0, $win_count);
+          if ($win_count > 1){
+            $win_index = rand(0, $win_count);
+          }else{
+	        $win_index = 0;
+          }
           $lose_count = count($node->field_loose_images['und']);
-          $lose_index = rand(0, $lose_count);
+          if($lose_count > 1){
+             $lose_index = rand(0, $lose_count);
+          }else{
+	         $lose_index = 0;
+          }
 
           $winImg = image_style_url('campaign_node_banner', $node->field_win_images['und'][$win_index]['uri']);
           $loseImg = image_style_url('campaign_node_banner', $node->field_loose_images['und'][$lose_index]['uri']);
