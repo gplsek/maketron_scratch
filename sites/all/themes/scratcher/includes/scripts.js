@@ -185,6 +185,7 @@ canvasComplete = function(elem, plusElem) {
         elem.className = classes;
     }
 
+    /* DEV need to make this specific to form cases */
     var timeout,
     scrollToForm = function() {
         $('html, body').animate({
