@@ -75,7 +75,9 @@
     <!-- header -->
     <header id="header" class="wrap">
         <?php if($is_front): ?>
-            <h1 id="logo" title="<?php print $site_name; ?>"><a href="/" title="<?php print $site_name; ?>"><img src="<?php print base_path().path_to_theme(); ?>/images/logo.png" alt="<?php print $site_name; ?>" /></a></h1>
+        <!--
+            <h1 id="logo" title="<?//php print $site_name; ?>"><a href="/" title="<?//php print $site_name; ?>"><img src="<?//php print base_path().path_to_theme(); ?>/images/logo.png" alt="<?//php print $site_name; ?>" /></a></h1>
+        //-->
         <?php else: ?>
             <?php if(!isset($node) || (isset($node) && $node->type != 'scratch_campaign')): ?>
                 <div id="logo" title="<?php print $site_name; ?>"><a href="/" title="<?php print $site_name; ?>"><img src="<?php print base_path().path_to_theme(); ?>/images/logo.png" alt="<?php print $site_name; ?>" /></a></div>

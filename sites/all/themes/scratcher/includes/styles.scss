@@ -42,6 +42,15 @@ $canvas-y:330px;
 body {
     background:rgba(0,0,0,.9);
     //background:url($path-img + 'bg1.png') 0 0 repeat;
+    #content .field-name-body {
+        &, p {
+            color:#fff;
+        }
+    }
+}
+
+body.front.no-sidebars #content {
+    min-height:150px;
 }
 
 header h1 {
@@ -53,6 +62,11 @@ header h1 {
             margin:0 auto;
         }
     }
+}
+
+.front h1,
+.front .field-name-body {
+    display:none !important; /* hiding page title for now */
 }
 
 body.no-sidebars.node-type-scratch-campaign {
@@ -344,7 +358,7 @@ body.no-sidebars.node-type-scratch-campaign {
     .form-type-textfield {
         margin:0 0 5px;
         input.ui-body-c {
-            color:#222;
+            color:#FFF;
         }
 
         label {
@@ -386,13 +400,15 @@ p.wlMsg {
 .node-type-scratch-campaign #header img,
 .node-type-scratch-campaign #footer img,
 #block-scratchandwin-scratch-block > img,
-.front .view-campaign-listing.scratch-block .views-field-field-scratcher-images img {
+.view-campaign-listing.scratch-block .views-field-field-scratcher-images img,
+#preloadResultContainer img,
+#content .node .field-type-image img {
     width:100% !important;
     height:auto !important;
 }
 
 /*homepage preview */
-.front .view-campaign-listing.scratch-block {
+.view-campaign-listing.scratch-block {
     .views-field-title {
         @include font-size(24px, 26px);
         background:rgba(0,255,6,.5);
@@ -555,6 +571,7 @@ p.wlMsg {
     @include transition(600);
     position:absolute;
     visibility:hidden;
+    width:100%;
 
     img {
         margin-bottom:15px;
@@ -582,7 +599,6 @@ p.wlMsg {
     }
 
 }
-
 
 
 
