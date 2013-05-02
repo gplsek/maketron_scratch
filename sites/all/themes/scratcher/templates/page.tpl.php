@@ -141,7 +141,7 @@
             <?php print render($page['footer']); ?>
         <?php endif; ?>
         <?php if(isset($social_links) && $social_links == true): ?>
-            <div id='social' class='social'>
+            <div id='social' class='social wrap'>
                <?php if(isset($fb_link)) print '<a href='.$fb_link.' id="facebook" class="social-footer-link">Facebook</a>';?>
                <?php if(isset($tw_link)) print '<a href='.$tw_link.' id="twitter" class="social-footer-link">Twitter</a>';?>
                <?php if(isset($yt_link)) print '<a href='.$yt_link.' id="youtube" class="social-footer-link">Youtube</a>';?>
