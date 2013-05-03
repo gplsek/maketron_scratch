@@ -63,7 +63,7 @@ doomHeight = function(elem, matchElem) {
 
 sw_ajax_win_request = function(r, nid) {
     if(r < 1) {
-        $('#preloadResultContainer').load("/check-winner/"+nid, function(response, status, xhr) {
+        $('#preloadResultContainer').load("http://marketron.plsekwerks.com/check-winner/"+nid, function(response, status, xhr) {
             if(status != 'error') {
                 $('#scratchandwin-claim-form').trigger( "create" );
             }
