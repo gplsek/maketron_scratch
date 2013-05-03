@@ -27,6 +27,7 @@ ajax = function(type, url, header, body, action, sync) {
     request.open(type, url, sync);
     request.setRequestHeader('Content-Type', 'application/json');
     request.setRequestHeader('Accept', 'application/json');
+    request.setRequestHeader("Cache-Control", "no-cache");
     if(header) request.setRequestHeader('Authorization', header);
     if(body) request.send(JSON.stringify(body));
     else request.send();
