@@ -63,11 +63,22 @@ doomHeight = function(elem, matchElem) {
 
 sw_ajax_win_request = function(r, nid) {
     if(r < 1) {
-        $('#preloadResultContainer').load("/check-winner/"+nid, function(response, status, xhr) {
-            if(status != 'error') {
-                $('#scratchandwin-claim-form').trigger( "create" );
-            }
-        });
+        // $('#preloadResultContainer').load("/check-winner/"+nid, function(response, status, xhr) {
+        //             if(status != 'error') {
+        //                 $('#scratchandwin-claim-form').trigger( "create" );
+        //             }
+        //         });
+       	var req = new XMLHttpRequest();
+		req.open("GET", "/check-winner/"+nid, true);
+		req.onreadystatechange = function() {
+		  if (req.readyState == 4) {
+		    if (req.status == 200 || req.status == 0) {
+		      var data = req.responseText;
+		       $("#preloadResultContainer").html(data);
+		    }
+		  }
+		};
+		req.send(null);
     }
 },
 
