@@ -63,7 +63,6 @@ doomHeight = function(elem, matchElem) {
 
 sw_ajax_win_request = function(r, nid) {
     if(r < 1) {
-	    $.ajaxSetup({ cache: false });
         $('#preloadResultContainer').load("/check-winner/"+nid, function(response, status, xhr) {
             if(status != 'error') {
                 $('#scratchandwin-claim-form').trigger( "create" );
