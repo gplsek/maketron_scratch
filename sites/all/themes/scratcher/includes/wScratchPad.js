@@ -44,7 +44,7 @@
 			if(values.length > 0) { return values; }
 			else { return elements; }
 		}
-		
+
 		settings = $.extend({}, $.fn.wScratchPad.defaultSettings, settings || {});
 
 		return this.each(function()
@@ -57,18 +57,18 @@
 			if(!test.getContext)
 			{
 				elem.html("Browser does not support HTML5 canvas, please upgrade to a more modern browser.");
-				return false;	
+				return false;
 			}
 
 			var sp = new ScratchPad($settings, elem);
-			
+
 			elem.append(sp.generate());
-			
-			//get number of pixels of canvas for percent calculations 
+
+			//get number of pixels of canvas for percent calculations
 			sp.pixels = sp.canvas.width * sp.canvas.height;
-			
+
 			elem.data('_wScratchPad', sp);
-			
+
 			sp.init();
 		});
 	};
@@ -87,31 +87,33 @@
 		scratchMove	: null,						// scratcMove callback
 		cursor		: null						// Set path to custom cursor
 	};
-	
+
 	function ScratchPad(settings, elem)
 	{
 		this.sp = null;
 		this.settings = settings;
 		this.$elem = elem;
-		
+
 		this.enabled = true;
 		this.scratch = false;
-		
+
 		this.canvas = null;
 		this.ctx = null;
-		
+
+		this.moveCount = 0;
+
 		return this;
 	}
-	
-	ScratchPad.prototype = 
+
+	ScratchPad.prototype =
 	{
 		generate: function()
 		{
 			var $this = this;
-			
+
 			this.canvas = document.createElement('canvas');
 			this.ctx = this.canvas.getContext('2d');
-			
+
 			this.sp =
 			$('<div></div>')
 			.css({position: 'relative'})
@@ -120,7 +122,7 @@
 				.attr('width', this.settings.width + 'px')
 				.attr('height', this.settings.height + 'px')
 			)
-			
+
 			$(this.canvas)
 			.mousedown(function(e)
 			{
@@ -128,10 +130,10 @@
 
 				e.preventDefault();
 				e.stopPropagation();
-				
+
 				//reset canvas offset in case it has moved
 				$this.canvas_offset = $($this.canvas).offset();
-				
+
 				$this.scratch = true;
 				$this.scratchFunc(e, $this, 'Down');
 			})
@@ -139,14 +141,14 @@
 			{
 				e.preventDefault();
 				e.stopPropagation();
-				
+
 				if($this.scratch) $this.scratchFunc(e, $this, 'Move');
 			})
 			.mouseup(function(e)
 			{
 				e.preventDefault();
 				e.stopPropagation();
-				
+
 				//make sure we are in draw mode otherwise this will fire on any mouse up.
 				if($this.scratch)
 				{
@@ -156,25 +158,25 @@
 			});
 
 			this.bindMobile(this.sp);
-			
+
 			return this.sp;
 		},
-		
+
 		bindMobile: function($el)
 		{
 			$el.bind('touchstart touchmove touchend touchcancel', function ()
 			{
-				var touches = event.changedTouches, first = touches[0], type = ""; 
+				var touches = event.changedTouches, first = touches[0], type = "";
 
 				switch (event.type)
 				{
-					case "touchstart": type = "mousedown"; break; 
-					case "touchmove": type = "mousemove"; break; 
-					case "touchend": type = "mouseup"; break; 
+					case "touchstart": type = "mousedown"; break;
+					case "touchmove": type = "mousemove"; break;
+					case "touchend": type = "mouseup"; break;
 					default: return;
 				}
 
-				var simulatedEvent = document.createEvent("MouseEvent"); 
+				var simulatedEvent = document.createEvent("MouseEvent");
 
 				simulatedEvent.initMouseEvent(type, true, true, window, 1, first.screenX, first.screenY, first.clientX, first.clientY, false, false, false, false, 0/*left*/, null);
 				first.target.dispatchEvent(simulatedEvent);
@@ -189,12 +191,12 @@
 			this.sp.css('cursor', (this.settings.cursor ? 'url("' + this.settings.cursor + '"), default' : 'default'));
 
 			$(this.canvas).css({cursor: (this.settings.cursor ? 'url("' + this.settings.cursor + '"), default' : 'default')});
-			
+
 			this.canvas.width = this.settings.width;
 			this.canvas.height = this.settings.height;
-			
+
 			this.pixels = this.canvas.width * this.canvas.height;
-			
+
 			if(this.settings.image2)
 			{
 				this.drawImage(this.settings.image2);
@@ -213,7 +215,7 @@
 				{
 					this.setBgImage();
 				}
-				
+
 				this.ctx.fillStyle = this.settings.color;
 				this.ctx.beginPath();
 				this.ctx.rect(0, 0, this.settings.width, this.settings.height)
@@ -255,9 +257,9 @@
 		{
 			e.pageX = Math.floor(e.pageX - $this.canvas_offset.left);
 			e.pageY = Math.floor(e.pageY - $this.canvas_offset.top);
-			
+
 			$this['scratch' + event](e, $this);
-			
+
 			if($this.settings['scratch' + event]) $this.settings['scratch' + event].apply($this, [e, $this.scratchPercentage($this)]);
 		},
 
@@ -265,12 +267,12 @@
 		{
 			var hits = 0;
 			var imageData = $this.ctx.getImageData(0,0,$this.canvas.width,$this.canvas.height)
-			
+
 			for(var i=0, ii=imageData.data.length; i<ii; i=i+4)
 			{
 				if(imageData.data[i] == 0 && imageData.data[i+1] == 0 && imageData.data[i+2] == 0 && imageData.data[i+3] == 0) hits++;
 			}
-			
+
 			return (hits / $this.pixels) * 100;
 		},
 
@@ -281,24 +283,31 @@
 			$this.ctx.lineCap = "round";
 			$this.ctx.strokeStyle = $this.settings.color;
 			$this.ctx.lineWidth = $this.settings.size;
-			
+
 			//draw single dot in case of a click without a move
 			$this.ctx.beginPath();
 			$this.ctx.arc(e.pageX, e.pageY, $this.settings.size/2, 0, Math.PI*2, true);
 			$this.ctx.closePath();
 			$this.ctx.fill();
-			
+
 			//start the path for a drag
 			$this.ctx.beginPath();
 			$this.ctx.moveTo(e.pageX, e.pageY);
 		},
-		
+
 		scratchMove: function(e, $this)
 		{
 			$this.ctx.lineTo(e.pageX, e.pageY);
 			$this.ctx.stroke();
+			/* custom code to fix Samsung performance issue */
+			if(this.moveCount%80 == 0) {
+				if($this.scratchPercentage($this) > 55) {
+	                canvasClear();
+	            }
+	        }
+	        this.moveCount++;
 		},
-		
+
 		scratchUp: function(e, $this)
 		{
 			$this.ctx.closePath();

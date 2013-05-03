@@ -136,13 +136,13 @@ canvasInit = function(imgOver, imgUnder, nid) {
             size            : 20,
             cursor          : 'sites/all/themes/scratcher/images/cursor.png',
             scratchDown     : null,
-            scratchUp       : null,
+            scratchUp       : null/*,
             scratchMove     : function(e, percent) {
                 if(percent > 55) {
                     canvasClear();
                     r++;
                 }
-            }
+            }*/
         });
 
         /* append ID to canvas wrapper */
