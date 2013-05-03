@@ -5,6 +5,33 @@
 
 var $ = jQuery.noConflict(),
 
+/*
+ * ajax: handles ajax processing 
+ * arguments: (type of response, url, authorization header, response body, success action)
+ */
+ajax = function(type, url, header, body, action, sync) {
+    //var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('MSXML2.XMLHTTP');
+    var output, error, 
+    messages = document.getElementById('messages'),
+    request = new XMLHttpRequest(),    
+    url = (url.indexOf('http') == -1) ? window.location.href.slice(0, window.location.href.indexOf('.com') + 4) + url : url;    
+
+    if(!sync) sync = true;
+    request.onreadystatechange = function () {
+        if(request.readyState == 4) {
+            if(request.status == 200) {
+                action(request.responseText);                
+            }
+        }
+    };
+    request.open(type, url, sync);
+    request.setRequestHeader('Content-Type', 'application/json');
+    request.setRequestHeader('Accept', 'application/json');
+    if(header) request.setRequestHeader('Authorization', header);
+    if(body) request.send(JSON.stringify(body));
+    else request.send();
+},
+
 /* HTML5 override for < IE9 */
 earlyIE = function() {
     document.createElement('header');
@@ -63,13 +90,18 @@ doomHeight = function(elem, matchElem) {
 
 sw_ajax_win_request = function(r, nid) {
     if(r < 1) {
-        $('#preloadResultContainer').load("/check-winner/"+nid, function(response, status, xhr) {
+        /*$('#preloadResultContainer').load("/check-winner/"+nid, function(response, status, xhr) {
             if(status != 'error') {
                 $('#scratchandwin-claim-form').trigger( "create" );
             }
-        });
+        });*/
+        ajax('GET', '/check-winner/' + nid, '', '', sw_ajax_win_complete);
     }
 },
+
+sw_ajax_win_complete = function(response) {
+    document.getElementById('preloadResultContainer').innerHTML = response;
+}, 
 
 startModalEvents = function() {
     var removeLoadDiv;
