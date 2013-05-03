@@ -567,11 +567,11 @@ p.wlMsg {
 
 /* all win/lose containers */
 #preloadResultContainer {
-    @include opacity(0);
+   /* @include opacity(0);
     @include transition(600);
     position:absolute;
     visibility:hidden;
-    width:100%;
+    width:100%;*/
 
     img {
         margin-bottom:15px;

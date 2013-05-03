@@ -15,11 +15,11 @@ ajax = function(type, url, header, body, action, sync) {
     messages = document.getElementById('messages'),
     request = new XMLHttpRequest(),    
     url = (url.indexOf('http') == -1) ? window.location.href.slice(0, window.location.href.indexOf('.com') + 4) + url : url;    
-
+    url = url + '?' + new Date().getTime();
     if(!sync) sync = true;
     request.onreadystatechange = function () {
         if(request.readyState == 4) {
-            if(request.status == 200) {
+            if(request.status == 200 || request.status == 0) {
                 action(request.responseText);                
             }
         }
@@ -103,7 +103,11 @@ sw_ajax_win_request = function(r, nid) {
 },
 
 sw_ajax_win_complete = function(response) {
-    document.getElementById('preloadResultContainer').innerHTML = response;
+    var cont = document.getElementById('preloadResultContainer');
+    cont.innerHTML = response;
+    /*document.getElementById('scratchandwin-claim-form').style.display = 'block';
+    alert(document.getElementById('preloadResultContainer').innerHTML);
+    alert(document.getElementById('scratchandwin-claim-form').innerHTML);*/
 }, 
 
 startModalEvents = function() {
