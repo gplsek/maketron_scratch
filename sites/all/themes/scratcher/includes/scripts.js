@@ -166,7 +166,7 @@ canvasInit = function(imgOver, imgUnder, nid) {
         }
 
 
-        $('#scratch-canvas').wScratchPad({
+        /*$('#scratch-canvas').wScratchPad({
             width           : 320,
             height          : 330,
             image           : imgbot,
@@ -181,11 +181,11 @@ canvasInit = function(imgOver, imgUnder, nid) {
                     canvasClear();
                     r++;
                 }
-            }*/
-        });
+            }*
+        });*/
 
-        /* append ID to canvas wrapper */
-        $('#scratch-canvas > div').attr('id', 'canvasWrapper');
+        /* append ID to canvas wrapper *
+        $('#scratch-canvas > div').attr('id', 'canvasWrapper');*/
 
     }
 },
