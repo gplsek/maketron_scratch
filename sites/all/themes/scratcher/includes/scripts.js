@@ -6,21 +6,21 @@
 var $ = jQuery.noConflict(),
 
 /*
- * ajax: handles ajax processing 
+ * ajax: handles ajax processing
  * arguments: (type of response, url, authorization header, response body, success action)
  */
 ajax = function(type, url, header, body, action, sync) {
     //var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('MSXML2.XMLHTTP');
-    var output, error, 
+    var output, error,
     messages = document.getElementById('messages'),
-    request = new XMLHttpRequest(),    
-    url = (url.indexOf('http') == -1) ? window.location.href.slice(0, window.location.href.indexOf('.com') + 4) + url : url;    
+    request = new XMLHttpRequest(),
+    url = (url.indexOf('http') == -1) ? window.location.href.slice(0, window.location.href.indexOf('.com') + 4) + url : url;
     url = url + '?' + new Date().getTime();
     if(!sync) sync = true;
     request.onreadystatechange = function () {
         if(request.readyState == 4) {
             if(request.status == 200 || request.status == 0) {
-                action(request.responseText);                
+                action(request.responseText);
             }
         }
     };
@@ -90,7 +90,7 @@ doomHeight = function(elem, matchElem) {
     };
     resize();
 },
-
+/*
 sw_ajax_win_request = function() {
     var nid = document.getElementById('nindex').getAttribute('rel');
 
@@ -107,7 +107,7 @@ sw_ajax_win_complete = function(response) {
     cont.innerHTML = response;
     cont.className = '';
     document.getElementById('scratch-canvas').style.display = 'none';
-}, 
+},
 
 startModalEvents = function() {
     var removeLoadDiv;
@@ -119,7 +119,7 @@ startModalEvents = function() {
         clearTimeout(removeLoadDiv);
     });
 },
-
+*/
 ageVerInit = function() {
     $('#scratchandwin-age-form').submit(function() {
         var allselects = $('.form-type-select .ui-btn-inner'),
@@ -149,17 +149,17 @@ ageVerInit = function() {
         $('.ui-submit').removeClass('ui-btn-active');
         return false;
     });
-}, 
+},
 /*
  *  scratchInit: initializes scratcher interface
  *  arguments: ()
  */
 scratchInit = function() {
-    var main = document.getElementById('main'), 
+    var main = document.getElementById('main'),
     message = document.createElement('div');
-    
+
     if(supportsCanvas()) {
-        initPage('scratch-canvas', 'nindex', sw_ajax_win_request);
+        initPage('scratch-canvas', 'nindex');
     } else {
         document.getElementById('content').style.display = 'none';
         message.innerHTML = 'Your device does not support the technology required to play.';
@@ -256,7 +256,7 @@ canvasComplete = function(elem, plusElem) {
 
 $(document).ready(function() {
     var imgOver, imgUnder, resClass, newClass,
-    sidebar = document.getElementById('sidebar'), 
+    sidebar = document.getElementById('sidebar'),
     scratcher = document.getElementById('scratch-block');
     /*nid = $('#nindex').attr('rel'),
     _results = document.getElementById('preloadResultContainer');
