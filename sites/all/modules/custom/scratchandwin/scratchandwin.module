@@ -327,8 +327,6 @@ function _check_winner_image($nid){
 	      $winner_num = $node->field_winner_['und'][0]['value'];
 	      $win_every = $node->field_win_every['und'][0]['value'];
           /*images*/
-          $winText = $node->field_win_text['und'][0]['value'];
-          $loseText = $node->field_loose_text['und'][0]['value'];
 
           $win_count = count($node->field_win_images['und']);
           if ($win_count > 1){
@@ -363,11 +361,11 @@ function _check_winner_image($nid){
 	        //single winner
 	        if($current_impression == $winner_num){
 		     $_SESSION['campaign_id'] = $nid;
-		     $html .= $win;
+		     $html .= $winImg;
 		     $winner = true;
 		     $looser = false;
 	        }else{
-		     $html .= $loose;
+		     $html .= $loseImg;
 		     $winner = false;
 		     $looser = true;
 	        }
@@ -376,12 +374,12 @@ function _check_winner_image($nid){
 //	        $html .= "win every x impressions";
 	          if ($current_impression % $win_every == 0) {
 		         $_SESSION['campaign_id'] = $nid;
-			     $html .= $win;
+			     $html .= $winImg;
 			     $winner = true;
 			     $looser = false;
 			  }else{
 				$_SESSION['campaign_id'] = $nid;
-                 $html .= $loose;
+                 $html .= $loseImg;
                  $winner = false;
 			     $looser = true;
 			}
@@ -390,12 +388,12 @@ function _check_winner_image($nid){
 
 		    if(in_array($current_impression,$winners)){
 			   	$_SESSION['campaign_id'] = $nid;
-			     $html .= $win;
+			     $html .= $winImg;
 			     $winner = true;
 			     $looser = false;
 			}else{
 				$_SESSION['campaign_id'] = $nid;
-				 $html .= $loose;
+				 $html .= $loseImg;
                  $winner = false;
 			     $looser = true;
 
