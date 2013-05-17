@@ -62,19 +62,21 @@ function _scratch_block($nid){
 	$age = 0;
   }
 
-  $imgTop = image_style_url('scratch_image', $node->field_scratcher_images['und'][0]['uri']);
-  if($node->field_temp_images){
-  	$imgBot = image_style_url('scratch_image', $node->field_temp_images['und'][0]['uri']);
-  }else{
-	$imgBot = '';
-  }
+  $imgFront = image_style_url('scratch_image', $node->field_scratcher_images['und'][0]['uri']);
+  // if($node->field_temp_images){
+  //   	$imgBot = image_style_url('scratch_image', $node->field_temp_images['und'][0]['uri']);
+  //   }else{
+  // 	$imgBot = '';
+  //   }
+
+  $imgBack = _check_winner_image($nid);
 
   $time = strtotime("-$age year", time());
   $date = date("m/d/Y", $time);
   $array = explode('/',$date);
   $age_ver = '<div id="matchdate"><span id="md-m">'.$array[0].'</span<span id="md-d">'.$array[1].'</span><span id="md-y">'.$array[2].'</span></div>';
   $preloadBG = image_style_url('scratch_image', $node->field_scratcher_images['und'][0]['uri']);
-  $canvas = '<div id="preloadResultContainer" class="fixedHeight"></div><div id="scratch-canvas" class="scratch-box" data-top="'.$imgTop.'" data-bot="'.$imgBot.'"></div>';
+  $canvas = '<div id="preloadResultContainer" class="fixedHeight"></div><div id="scratch-canvas" class="scratch-box" data-front="'.$imgFront.'" data-back="'.$imgBack.'"></div>';
   if($node->field_age_verification['und'][0]['value'] == 1){
 	 $preloader = '<div id="loading-text" class="enabled"><div id="preloadScreen"><div id="preloadMsg">';
 	 $preloader .= '<h4>You must be '.$age.' to play</h4>';
@@ -304,6 +306,114 @@ function _check_winner_block($nid){
 
 	return $html;
 }
+
+
+function _check_winner_image($nid){
+    $html = "";
+    $_SESSION['campaign_id'] = '';
+    $node = node_load($nid);
+    $winner = false;
+    $looser = true;
+	//get campaign type
+	      $type = $node->field_campaign_type['und'][0]['value'];
+	      $current_impression = $node->field_current_impressions['und'][0]['value'] + 1;
+	      $max_impression = $node->field_impressions['und'][0]['value'];
+	      $winner_num = $node->field_winner_['und'][0]['value'];
+	      $win_every = $node->field_win_every['und'][0]['value'];
+          /*images*/
+          $winText = $node->field_win_text['und'][0]['value'];
+          $loseText = $node->field_loose_text['und'][0]['value'];
+
+          $win_count = count($node->field_win_images['und']);
+          if ($win_count > 1){
+            $win_index = rand(0, $win_count);
+          }else{
+	        $win_index = 0;
+          }
+          $lose_count = count($node->field_loose_images['und']);
+          if($lose_count > 1){
+             $lose_index = rand(0, $lose_count);
+          }else{
+	         $lose_index = 0;
+          }
+
+          $winImg = image_style_url('campaign_node_banner', $node->field_win_images['und'][$win_index]['uri']);
+          $loseImg = image_style_url('campaign_node_banner', $node->field_loose_images['und'][$lose_index]['uri']);
+
+            // $loose .= "<img src='".$loseImg."' border='0' class='img_lose'/>";
+            //          	$loose .= "<p class='wlMsg'>".$loseText."</p>";
+            // 
+            // 
+            // 			$win .= "<img src='".$winImg."' border='0' class='img_win'/>";
+            // 			$win .= "<p class='wlMsg'>".$winText."</p>";
+            // 		    //$win .= "<a id='cta_claim_prize' href='/claim-prize'>Claim Your Prize</a>";
+
+
+
+
+
+
+	  if($type == 0){
+	        //single winner
+	        if($current_impression == $winner_num){
+		     $_SESSION['campaign_id'] = $nid;
+		     $html .= $win;
+		     $winner = true;
+		     $looser = false;
+	        }else{
+		     $html .= $loose;
+		     $winner = false;
+		     $looser = true;
+	        }
+	      }else if($type == 1){
+	        //win every x impressions
+//	        $html .= "win every x impressions";
+	          if ($current_impression % $win_every == 0) {
+		         $_SESSION['campaign_id'] = $nid;
+			     $html .= $win;
+			     $winner = true;
+			     $looser = false;
+			  }else{
+				$_SESSION['campaign_id'] = $nid;
+                 $html .= $loose;
+                 $winner = false;
+			     $looser = true;
+			}
+		  }else if ($type == 2){
+		   $winners = explode(",", $node->field_random_winners['und'][0]['value']);
+
+		    if(in_array($current_impression,$winners)){
+			   	$_SESSION['campaign_id'] = $nid;
+			     $html .= $win;
+			     $winner = true;
+			     $looser = false;
+			}else{
+				$_SESSION['campaign_id'] = $nid;
+				 $html .= $loose;
+                 $winner = false;
+			     $looser = true;
+
+			}
+
+	      }
+
+	    $node->field_current_impressions['und'][0]['value'] = $current_impression;
+
+	    if($max_impression == $current_impression){
+		 $node->status = 0;
+	    }
+	    node_save($node);
+
+	//echo $html;
+	// if($winner){
+	//      $html .= render(drupal_get_form('scratchandwin_claim_form'));
+	//     }else if(($looser) && ($node->field_show_form_on_loose['und'][0]['value'] == 1)){
+	// 	 $html .= render(drupal_get_form('scratchandwin_claim_form'));
+	//     }
+
+	return $html;
+}
+
 
 
 
