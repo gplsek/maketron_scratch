@@ -88,9 +88,14 @@ function _scratch_block($nid){
   }else{
 	$preloader = '';
   }
-
+  $form = '';
+  if($_SESSION['status']){
+     $form = render(drupal_get_form('scratchandwin_claim_form')); 
+  }else if(($_SESSION['status'] == false) && ($node->field_show_form_on_loose['und'][0]['value'] == 1)){
+	$form = render(drupal_get_form('scratchandwin_claim_form')); 
+  }
   /* need to randomize these */
-  $html = '<div class="scratch-block" class="enabled"><div id="scratch-container">'.$canvas.$preloader.'</div></div>';
+  $html = '<div class="scratch-block" class="enabled"><div id="scratch-container">'.$canvas.$preloader.$form.'</div></div>';
   $html = $html.'<div id="nindex" rel="'.$nid.'"></div>';
 	return $html;
 }
@@ -311,6 +316,7 @@ function _check_winner_block($nid){
 function _check_winner_image($nid){
     $html = "";
     $_SESSION['campaign_id'] = '';
+    $_SESSION['status'] = false;
     $node = node_load($nid);
     $winner = false;
     $looser = true;
@@ -410,7 +416,7 @@ function _check_winner_image($nid){
 	//     }else if(($looser) && ($node->field_show_form_on_loose['und'][0]['value'] == 1)){
 	// 	 $html .= render(drupal_get_form('scratchandwin_claim_form'));
 	//     }
-
+    $_SESSION['status'] = $winner;
 	return $html;
 }
 
