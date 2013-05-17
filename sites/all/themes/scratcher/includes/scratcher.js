@@ -493,11 +493,9 @@ function scratcherChangedEnd(ev) {
  * Arguments (canvas id, win function)
  */
  var winFunct;
-function initPage(canvasId, id, win) {
+function initPage(canvasId, id) {
     var cont = document.getElementById(canvasId),
     scratchbox;
-
-    winFunct = win;
 
     cont.innerHTML = '<canvas id="scratcher" class="scratch-box" width="330" height="320"></canvas>';
 
