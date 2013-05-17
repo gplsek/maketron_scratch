@@ -416,16 +416,6 @@ return Scratcher;
 })();
 
 
-
-
-
-/**
- * This file controls the page logic
- *
- * depends on jQuery>=1.7
- */
-(function() {
-
 /**
  * Returns true if this browser supports canvas
  *
@@ -435,11 +425,21 @@ function supportsCanvas() {
     return !!document.createElement('canvas').getContext;
 };
 
+
+
+/**
+ * This file controls the page logic
+ *
+ * depends on jQuery>=1.7
+ *
+(function() {
+
+
 /**
  * Handle scratch event on a scratcher
  */
-scractched = 0;
-scratchedWinner = 0;
+var scractched = 0, 
+scratchedWinner = 0, 
 scratchedLoser = 0;
 function scratcherChangedEnd(ev) {
     var pct = (this.fullAmount(32) * 100)|0;
@@ -456,8 +456,9 @@ function scratcherChangedEnd(ev) {
         }
     }
     
-    if (pct >= 35){
-        if (scractched <= 3){
+    if (pct >= 55){
+        winFunct();
+        /*if (scractched <= 3){
             this.removeEventListener('scratchesended');
             
             if (scratchedWinner == 3){
@@ -483,32 +484,39 @@ function scratcherChangedEnd(ev) {
             if (scratchedWinner == 3){
                 window.location.href = "/winner";
             }
-        }
+        }*/
             }
 };
 
 /**
  * Assuming canvas works here, do all initial page setup
+ * Arguments (canvas id, win function)
  */
-function initPage() {
-    $('#scratch-canvas').html('<canvas id="scratcher" class="scratch-box" width="330" height="320"></canvas>');
+ var winFunct;
+function initPage(canvasId, id, win) {
+    var cont = document.getElementById(canvasId), 
+    scratchbox;
+
+    winFunct = win;
     
-    var scratchers = [];
+    cont.innerHTML = '<canvas id="scratcher" class="scratch-box" width="330" height="320"></canvas>';
+    
+    /*var scratchers = [];
     var i, i1;
     var lose = 1;
     var countRand = 0;
     var winners = new Array();
-    var scratchbox = document.getElementById('scratcher');
+    scratchbox = document.getElementById('scratcher');*/
     
     // predetermine the winners
-    var randomnums = new Array(6, 9, 8, 7, 2, 4, 5, 1, 3);
+    /*var randomnums = new Array(6, 9, 8, 7, 2, 4, 5, 1, 3);
     //console.log('Random Numbers: '+randomnums);
         for (var i in randomnums) {
         countRand++;
         if (countRand <= 2){
             winners.push(randomnums[i]);
         }
-    }
+    }*/
     //console.log('Winning Nums: '+winners);
         
     // create new scratchers
@@ -535,29 +543,16 @@ function initPage() {
         scratchers[i].addEventListener('scratchesended', scratcherChangedEnd);
     } */
     scratchbox = new Scratcher('scratcher');
-    scratchbox.setImages('http://scratcher.tragicmedia.com/sites/default/files/styles/campaign_node_banner/public/DebWin_02.png?itok=xO0ib5ce', 'http://scratcher.tragicmedia.com/sites/default/files/styles/campaign_node_banner/public/img1_1.png?itok=NEbnjhV1');
+    scratchbox.setImages(cont.getAttribute('data-bot'), cont.getAttribute('data-top'));
     scratchbox.addEventListener('scratchesended', scratcherChangedEnd);
 };
-
+/*
 shuffle = function(o){
     for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
     return o;
 };
 
-
-/**
- * Handle page load
- */
-$(function() {
-    if (supportsCanvas()) {
-        initPage();
-    } else {
-        $('#main-body').hide();
-        $('#error-box').html('Your device does not support the technology required to play.').show();
-    }
-});
-
-})();
+})();*/
 
 
 /*!

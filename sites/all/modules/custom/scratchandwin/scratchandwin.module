@@ -61,12 +61,20 @@ function _scratch_block($nid){
   }else{
 	$age = 0;
   }
+
+  $imgTop = image_style_url('scratch_image', $node->field_scratcher_images['und'][0]['uri']);
+  if($node->field_temp_images){
+  	$imgBot = image_style_url('scratch_image', $node->field_temp_images['und'][0]['uri']);
+  }else{
+	$imgBot = '';
+  }
+
   $time = strtotime("-$age year", time());
   $date = date("m/d/Y", $time);
   $array = explode('/',$date);
   $age_ver = '<div id="matchdate"><span id="md-m">'.$array[0].'</span<span id="md-d">'.$array[1].'</span><span id="md-y">'.$array[2].'</span></div>';
   $preloadBG = image_style_url('scratch_image', $node->field_scratcher_images['und'][0]['uri']);
-  $canvas = '<div id="preloadResultContainer" class="fixedHeight"></div><div id="scratch-canvas" class="scratch-box"></div>';
+  $canvas = '<div id="preloadResultContainer" class="fixedHeight"></div><div id="scratch-canvas" class="scratch-box" data-top="'.$imgTop.'" data-bot="'.$imgBot.'"></div>';
   if($node->field_age_verification['und'][0]['value'] == 1){
 	 $preloader = '<div id="loading-text" class="enabled"><div id="preloadScreen"><div id="preloadMsg">';
 	 $preloader .= '<h4>You must be '.$age.' to play</h4>';
@@ -80,14 +88,8 @@ function _scratch_block($nid){
   }
 
   /* need to randomize these */
-  $imgTop = '<div id="imgTop">'.image_style_url('scratch_image', $node->field_scratcher_images['und'][0]['uri']).'</div>';
-  if($node->field_temp_images){
-  	$imgBot = '<div id="imgBot">'.image_style_url('scratch_image', $node->field_temp_images['und'][0]['uri']).'</div>';
-  }else{
-	$imgBot = '';
-  }
   $html = '<div class="scratch-block" class="enabled"><div id="scratch-container">'.$canvas.$preloader.'</div></div>';
-  $html = $html.$imgTop.$imgBot.'<div id="nindex" rel="'.$nid.'"></div>';
+  $html = $html.'<div id="nindex" rel="'.$nid.'"></div>';
 	return $html;
 }
 

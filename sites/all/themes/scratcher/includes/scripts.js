@@ -91,23 +91,22 @@ doomHeight = function(elem, matchElem) {
     resize();
 },
 
-sw_ajax_win_request = function(r, nid) {
-    if(r < 1) {
-        /*$('#preloadResultContainer').load("/check-winner/"+nid, function(response, status, xhr) {
-            if(status != 'error') {
-                $('#scratchandwin-claim-form').trigger( "create" );
-            }
-        });*/
-        ajax('GET', '/check-winner/' + nid, '', '', sw_ajax_win_complete);
-    }
+sw_ajax_win_request = function() {
+    var nid = document.getElementById('nindex').getAttribute('rel');
+
+    $('#preloadResultContainer').load("/check-winner/"+nid, function(response, status, xhr) {
+        if(status != 'error') {
+            $('#scratchandwin-claim-form').trigger( "create" );
+        }
+    });
+    ajax('GET', '/check-winner/' + nid, '', '', sw_ajax_win_complete);
 },
 
 sw_ajax_win_complete = function(response) {
     var cont = document.getElementById('preloadResultContainer');
     cont.innerHTML = response;
-    /*document.getElementById('scratchandwin-claim-form').style.display = 'block';
-    alert(document.getElementById('preloadResultContainer').innerHTML);
-    alert(document.getElementById('scratchandwin-claim-form').innerHTML);*/
+    cont.className = '';
+    document.getElementById('scratch-canvas').style.display = 'none';
 }, 
 
 startModalEvents = function() {
@@ -150,8 +149,26 @@ ageVerInit = function() {
         $('.ui-submit').removeClass('ui-btn-active');
         return false;
     });
-},
+}, 
+/*
+ *  scratchInit: initializes scratcher interface
+ *  arguments: ()
+ */
+scratchInit = function() {
+    var main = document.getElementById('main'), 
+    message = document.createElement('div');
+    
+    if(supportsCanvas()) {
+        initPage('scratch-canvas', 'nindex', sw_ajax_win_request);
+    } else {
+        document.getElementById('content').style.display = 'none';
+        message.innerHTML = 'Your device does not support the technology required to play.';
+        message.className = 'messages error';
 
+        main.insertBefore(message, main.firstChild);
+    }
+};
+/*
 canvasInit = function(imgOver, imgUnder, nid) {
         var nid = nid, r = 0, loadCanvas,
         resClass, results = document.getElementById('preloadResultContainer'),
@@ -185,7 +202,7 @@ canvasInit = function(imgOver, imgUnder, nid) {
         });*/
 
         /* append ID to canvas wrapper *
-        $('#scratch-canvas > div').attr('id', 'canvasWrapper');*/
+        $('#scratch-canvas > div').attr('id', 'canvasWrapper');
 
     }
 },
@@ -201,7 +218,7 @@ canvasClear = function() {
     scratch.addClass('finished');
     scratch.remove();
 
-    /* expand form */
+    /* expand form *
     if(resultDiv && formDiv) {
         canvasComplete(resultDiv, formDiv);
     }
@@ -224,7 +241,7 @@ canvasComplete = function(elem, plusElem) {
         elem.className = classes;
     }
 
-    /* DEV need to make this specific to form cases */
+    /* DEV need to make this specific to form cases *
     var timeout,
     scrollToForm = function() {
         $('html, body').animate({
@@ -235,19 +252,23 @@ canvasComplete = function(elem, plusElem) {
     if(timeout) clearTimeout(timeout);
     timeout = setTimeout(scrollToForm, 1500);
 }
+*/
 
 $(document).ready(function() {
-
-    var z=0, imgOver, imgUnder, resClass, newClass,
-    nid = $('#nindex').attr('rel'),
+    var imgOver, imgUnder, resClass, newClass,
+    sidebar = document.getElementById('sidebar'), 
+    scratcher = document.getElementById('scratch-block');
+    /*nid = $('#nindex').attr('rel'),
     _results = document.getElementById('preloadResultContainer');
     Canvas = document.getElementById('scratch-canvas');
-    resClass = _results.className;
+    resClass = _results.className;*/
 
     /* default */
     externalLinks();
 
-    /* Canvas var for swiping iphone >= 5.0 */
+    scratchInit('scratch-canvas');
+
+    /* Canvas var for swiping iphone >= 5.0 *
     if(Canvas) {
 
         if($('#loading-text').length) {
@@ -258,10 +279,10 @@ $(document).ready(function() {
             ageVerInit();
         }
 
-        imgOver = $('#imgTop').html();
+        imgOver = $('#scratchBlockimgTop').html();
         imgUnder = $('#imgBot').html();
 
-        /* if no bottom image, initialize results backdrop */
+        /* if no bottom image, initialize results backdrop *
         if(imgUnder == null) {
             imgUnder = '';
             if(resClass.indexOf('showResult') == -1) resClass = resClass + ' showResult';
@@ -275,9 +296,8 @@ $(document).ready(function() {
         canvasInit(imgOver, imgUnder, nid);
         sw_ajax_win_request(z, nid);
         z++;
-    }
+    }*/
 
-    var sidebar = document.getElementById('sidebar');
     if(sidebar) resizeElem(sidebar);
     if($('#content table').length) $('#content table').wrap('<div class="table-wrapper">');
 
