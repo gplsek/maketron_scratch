@@ -1,4 +1,4 @@
-var $ = jQuery.noConflict(), 
+var $ = jQuery.noConflict(),
 
 Scratcher = (function() {
 
@@ -157,7 +157,7 @@ Scratcher.prototype.recompositeCanvases = function() {
 
 /**
  * Draw a scratch line
- * 
+ *
  * Dispatches the 'scratch' event.
  *
  * @param x,y the coordinates
@@ -394,8 +394,8 @@ if (!Function.prototype.bind) {
             throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
         }
 
-        var aArgs = Array.prototype.slice.call(arguments, 1), 
-                fToBind = this, 
+        var aArgs = Array.prototype.slice.call(arguments, 1),
+                fToBind = this,
                 fNOP = function () {},
                 fBound = function () {
                     return fToBind.apply(this instanceof fNOP
@@ -438,16 +438,16 @@ function supportsCanvas() {
 /**
  * Handle scratch event on a scratcher
  */
-var scractched = 0, 
-scratchedWinner = 0, 
+var scractched = 0,
+scratchedWinner = 0,
 scratchedLoser = 0;
 function scratcherChangedEnd(ev) {
     var pct = (this.fullAmount(32) * 100)|0;
-    
+
     if (this.scratched != true){
         this.scratched = true;
         scractched++;
-        
+
         if (this.winner){
             scratchedWinner++;
         }
@@ -455,12 +455,12 @@ function scratcherChangedEnd(ev) {
             scratchedLoser++;
         }
     }
-    
+
     if (pct >= 55){
         winFunct();
         /*if (scractched <= 3){
             this.removeEventListener('scratchesended');
-            
+
             if (scratchedWinner == 3){
                 $.cookie("scratch_winner", "test@test.com");
                 window.location.href = "/winner";
@@ -477,7 +477,7 @@ function scratcherChangedEnd(ev) {
             else {
                                 window.location.href = "/loser";
                             }
-            
+
             this.removeEventListener('scratchesended');
         }
                 else {
@@ -494,20 +494,20 @@ function scratcherChangedEnd(ev) {
  */
  var winFunct;
 function initPage(canvasId, id, win) {
-    var cont = document.getElementById(canvasId), 
+    var cont = document.getElementById(canvasId),
     scratchbox;
 
     winFunct = win;
-    
+
     cont.innerHTML = '<canvas id="scratcher" class="scratch-box" width="330" height="320"></canvas>';
-    
+
     /*var scratchers = [];
     var i, i1;
     var lose = 1;
     var countRand = 0;
     var winners = new Array();
     scratchbox = document.getElementById('scratcher');*/
-    
+
     // predetermine the winners
     /*var randomnums = new Array(6, 9, 8, 7, 2, 4, 5, 1, 3);
     //console.log('Random Numbers: '+randomnums);
@@ -518,7 +518,7 @@ function initPage(canvasId, id, win) {
         }
     }*/
     //console.log('Winning Nums: '+winners);
-        
+
     // create new scratchers
     /*var scratchers = new Array(9);
 
@@ -534,7 +534,7 @@ function initPage(canvasId, id, win) {
                 checkWinner++;
             }
         }
-        
+
         if (checkWinner == 0){
             scratchers[i].setImages('/campaigns/23/loser' + lose + '.jpg', '/campaigns/23/scratch.png');
             lose++;
@@ -543,7 +543,7 @@ function initPage(canvasId, id, win) {
         scratchers[i].addEventListener('scratchesended', scratcherChangedEnd);
     } */
     scratchbox = new Scratcher('scratcher');
-    scratchbox.setImages(cont.getAttribute('data-bot'), cont.getAttribute('data-top'));
+    scratchbox.setImages(cont.getAttribute('data-back'), cont.getAttribute('data-front'));
     scratchbox.addEventListener('scratchesended', scratcherChangedEnd);
 };
 /*
