@@ -444,7 +444,7 @@ scratchedLoser = 0;
 function scratcherChangedEnd(ev) {
     var pct = (this.fullAmount(32) * 100)|0;
 
-    if (this.scratched != true){
+    /*if (this.scratched != true){
         this.scratched = true;
         scractched++;
 
@@ -454,10 +454,10 @@ function scratcherChangedEnd(ev) {
         else {
             scratchedLoser++;
         }
-    }
+    }*/
 
-    if (pct >= 55){
-        winFunct();
+    if (pct >= 35){
+        endFunc();
         /*if (scractched <= 3){
             this.removeEventListener('scratchesended');
 
@@ -490,13 +490,13 @@ function scratcherChangedEnd(ev) {
 
 /**
  * Assuming canvas works here, do all initial page setup
- * Arguments (canvas id, win function)
+ * Arguments (canvas id, oncomplete function)
  */
- var winFunct;
-function initPage(canvasId, id) {
+ var endFunc;
+function initPage(canvasId, id, complete) {
     var cont = document.getElementById(canvasId),
     scratchbox;
-
+    endFunc = complete;
     cont.innerHTML = '<canvas id="scratcher" class="scratch-box" width="330" height="320"></canvas>';
 
     /*var scratchers = [];

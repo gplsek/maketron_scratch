@@ -121,7 +121,7 @@ startModalEvents = function() {
 },
 */
 ageVerInit = function() {
-    $('#scratchandwin-age-form').submit(function() {
+    $('#scratchandwin-age-form .form-submit')[0].onclick = function() {
         var allselects = $('.form-type-select .ui-btn-inner'),
         testday = $('#matchdate #md-m').text(),
         testyear = $('#matchdate #md-y').text(),
@@ -144,11 +144,24 @@ ageVerInit = function() {
             useryr = useryr.text();
             if((useryr <  testyear) || (useryr == testyear && usermo >= testday)) {
                 $('#loading-text').remove();
+                document.getElementById('scratch-container').className = 'scratch';
             }
         }
         $('.ui-submit').removeClass('ui-btn-active');
         return false;
-    });
+    }
+},
+/*
+ *  scratchEnd: on scratch complete function
+ *  arguments: ()
+ */
+scratchEnd = function() {
+    var form = document.getElementById('scratchandwin-claim-form'),
+    cont = document.getElementById('scratch-container');
+
+    if(form) {
+        cont.className = 'form';
+    }
 },
 /*
  *  scratchInit: initializes scratcher interface
@@ -156,10 +169,18 @@ ageVerInit = function() {
  */
 scratchInit = function() {
     var main = document.getElementById('main'),
-    message = document.createElement('div');
+    message = document.createElement('div'),
+    ageVerify = document.getElementById('loading-text'),
+    cont = document.getElementById('scratch-container');
 
     if(supportsCanvas()) {
-        initPage('scratch-canvas', 'nindex');
+        if(ageVerify) {
+            cont.className = 'verify';
+            ageVerInit();
+        } else {
+            cont.className = 'scratch';
+        }
+        initPage('scratch-canvas', 'nindex', scratchEnd);
     } else {
         document.getElementById('content').style.display = 'none';
         message.innerHTML = 'Your device does not support the technology required to play.';

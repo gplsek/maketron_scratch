@@ -193,20 +193,25 @@ body.no-sidebars.node-type-scratch-campaign {
     position:relative;
 
     #scratch-canvas,
-    #loading-text {
+    #loading-text,
+    #scratchandwin-claim-form {
         @include size($canvas-x, $canvas-y);
         @include transition(2500ms);
         position:absolute;
         left:0;
         top:0;
-    }
-    #scratch-canvas.enabled,
-    #loading-text.enabled {
         z-index:1;
+        opacity:0;
     }
-    #scratch-canvas,
-    #loading-text {
-        z-index:0;
+    &.verify #loading-text,
+    &.scratch #scratch-canvas,
+    &.form #scratchandwin-claim-form {
+        z-index:99;
+        opacity:1;
+        @include transition(2500ms);
+    }
+    &.form, &.form #scratchandwin-claim-form {
+        height:auto;
     }
 }
 
@@ -230,40 +235,10 @@ body.no-sidebars.node-type-scratch-campaign {
 #loading-text {
     position:relative;
 
-    &,
-    #preloadMsg,
-    #preloadScreen {
-        @include transition(500ms);
-        @include opacity(0);
-        background:transparent;
-
-    }
-
-    &.fade-in {
-
-        #preloadScreen {
-            @include box-shadow(0,0,5px,2px,#666);
-            background:rgba(255,255,255,.6);
-        }
-
-        &,
-        #preloadScreen,
-        #preloadMsg {
-            @include transition(500ms, opacity);
-            @include opacity(1);
-        }
-    }
-
     #preloadScreen {
         @include size($canvas-x, $canvas-y);
     }
 
-    #preloadScreen,
-    img {
-        position:absolute;
-        left:0;
-        top:0;
-    }
 
     #preloadMsg {
         //@include border-radius(20px, 20px);
