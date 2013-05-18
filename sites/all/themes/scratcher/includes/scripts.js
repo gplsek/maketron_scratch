@@ -125,6 +125,7 @@ ageVerInit = function() {
         var allselects = $('.form-type-select .ui-btn-inner'),
         testday = $('#matchdate #md-m').text(),
         testyear = $('#matchdate #md-y').text(),
+        testage = new Date().getFullYear() - testyear,
         userday = $('#edit-field-dob-day option:selected'),
         usermo = $('#edit-field-dob-month option:selected'),
         useryr = $('#edit-field-dob-year option:selected');
@@ -145,6 +146,8 @@ ageVerInit = function() {
             if((useryr <  testyear) || (useryr == testyear && usermo >= testday)) {
                 $('#loading-text').remove();
                 document.getElementById('scratch-container').className = 'scratch';
+            } else {
+                alert('You must be ' + testage + ' to play!');
             }
         }
         $('.ui-submit').removeClass('ui-btn-active');
@@ -157,10 +160,14 @@ ageVerInit = function() {
  */
 scratchEnd = function() {
     var form = document.getElementById('scratchandwin-claim-form'),
-    cont = document.getElementById('scratch-container');
+    cont = document.getElementById('scratch-container'),
+    offset = form.offsetTop;
 
     if(form) {
         cont.className = 'form';
+        $('html, body').animate(function() {
+            scrollTop:offset
+        }, 300);
     }
 },
 /*

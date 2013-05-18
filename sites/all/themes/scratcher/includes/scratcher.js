@@ -65,14 +65,18 @@ function Scratcher(canvasId, backImage, frontImage) {
  * Set the images to use
  */
 Scratcher.prototype.setImages = function(backImage, frontImage) {
-    this.image = {
+    this.image = {};
+
+    if(backImage) this.image.back = { 'url':backImage, 'img':null };
+    if(frontImage) this.image.front = { 'url':frontImage, 'img':null };
+    /*this.image = {
         'back': { 'url':backImage, 'img':null },
         'front': { 'url':frontImage, 'img':null }
-    };
-
-    if (backImage && frontImage) {
+    };*/
+    this._loadImages();
+    /*if (backImage && frontImage) {
         this._loadImages(); // start image loading from constructor now
-    }
+    }*/
 };
 
 /**
@@ -146,10 +150,10 @@ Scratcher.prototype.recompositeCanvases = function() {
 
     // Step 3: stamp the background on the temp (!! source-atop mode !!)
     tempctx.globalCompositeOperation = 'source-atop';
-    tempctx.drawImage(this.image.back.img, 0, 0);
+    if(this.image.back) tempctx.drawImage(this.image.back.img, 0, 0);
 
     // Step 4: stamp the foreground on the display canvas (source-over)
-    mainctx.drawImage(this.image.front.img, 0, 0);
+    if(this.image.front) mainctx.drawImage(this.image.front.img, 0, 0);
 
     // Step 5: stamp the temp on the display canvas (source-over)
     mainctx.drawImage(this.canvas.temp, 0, 0);
@@ -203,13 +207,15 @@ Scratcher.prototype._setupCanvases = function() {
      * Dispatches the 'scratchesbegan' event.
      */
     function mousedown_handler(e) {
-        var local = getLocalCoords(c, getEventCoords(e));
-        this.mouseDown = true;
+        if(!this.disabled) {
+            var local = getLocalCoords(c, getEventCoords(e));
+            this.mouseDown = true;
 
-        this.scratchLine(local.x, local.y, true);
-        this.recompositeCanvases();
+            this.scratchLine(local.x, local.y, true);
+            this.recompositeCanvases();
 
-        this.dispatchEvent(this.createEvent('scratchesbegan'));
+            this.dispatchEvent(this.createEvent('scratchesbegan'));
+        }
 
         return false;
     };
@@ -222,11 +228,12 @@ Scratcher.prototype._setupCanvases = function() {
      */
     function mousemove_handler(e) {
         if (!this.mouseDown) { return true; }
+        if(!this.disabled) {
+            var local = getLocalCoords(c, getEventCoords(e));
 
-        var local = getLocalCoords(c, getEventCoords(e));
-
-        this.scratchLine(local.x, local.y, false);
-        this.recompositeCanvases();
+            this.scratchLine(local.x, local.y, false);
+            this.recompositeCanvases();
+        }
 
         return false;
     };
@@ -237,7 +244,7 @@ Scratcher.prototype._setupCanvases = function() {
      * Dispatches the 'scratchesended' event.
      */
     function mouseup_handler(e) {
-        if (this.mouseDown) {
+        if (this.mouseDown && !this.disabled) {
             this.mouseDown = false;
 
             this.dispatchEvent(this.createEvent('scratchesended'));
@@ -292,7 +299,7 @@ Scratcher.prototype._loadImages = function() {
     function imageLoaded(e) {
         loadCount++;
 
-        if (loadCount >= 2) {
+        if (loadCount >= Object.keys(this.image).length) {
             // call the callback with this Scratcher as an argument:
             this.dispatchEvent(this.createEvent('imagesloaded'));
             this.reset();
@@ -441,7 +448,7 @@ function supportsCanvas() {
 var scractched = 0,
 scratchedWinner = 0,
 scratchedLoser = 0;
-function scratcherChangedEnd(ev) {
+function scratcherCheck(ev) {
     var pct = (this.fullAmount(32) * 100)|0;
 
     /*if (this.scratched != true){
@@ -456,7 +463,11 @@ function scratcherChangedEnd(ev) {
         }
     }*/
 
-    if (pct >= 35){
+    if (pct >= 65){
+        //this.reset;
+        //this.recompositeCanvases();
+        scratchbox.setImages('', cont.getAttribute('data-back'));
+        this.disabled = true;
         endFunc();
         /*if (scractched <= 3){
             this.removeEventListener('scratchesended');
@@ -492,11 +503,11 @@ function scratcherChangedEnd(ev) {
  * Assuming canvas works here, do all initial page setup
  * Arguments (canvas id, oncomplete function)
  */
- var endFunc;
+ var endFunc, scratchbox, cont;
 function initPage(canvasId, id, complete) {
-    var cont = document.getElementById(canvasId),
-    scratchbox;
+    cont = document.getElementById(canvasId),
     endFunc = complete;
+
     cont.innerHTML = '<canvas id="scratcher" class="scratch-box" width="330" height="320"></canvas>';
 
     /*var scratchers = [];
@@ -538,11 +549,11 @@ function initPage(canvasId, id, complete) {
             lose++;
         }
         //scratchers[i].addEventListener('scratch', scratcherChanged);
-        scratchers[i].addEventListener('scratchesended', scratcherChangedEnd);
+        scratchers[i].addEventListener('scratchesended', scratcherCheck);
     } */
     scratchbox = new Scratcher('scratcher');
     scratchbox.setImages(cont.getAttribute('data-back'), cont.getAttribute('data-front'));
-    scratchbox.addEventListener('scratchesended', scratcherChangedEnd);
+    scratchbox.addEventListener('scratch', scratcherCheck);
 };
 /*
 shuffle = function(o){

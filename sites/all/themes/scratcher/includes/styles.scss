@@ -192,9 +192,7 @@ body.no-sidebars.node-type-scratch-campaign {
 #scratch-container {
     position:relative;
 
-    #scratch-canvas,
-    #loading-text,
-    #scratchandwin-claim-form {
+    #loading-text {
         @include size($canvas-x, $canvas-y);
         @include transition(2500ms);
         position:absolute;
@@ -203,15 +201,27 @@ body.no-sidebars.node-type-scratch-campaign {
         z-index:1;
         opacity:0;
     }
+    #scratch-canvas, #scratchandwin-claim-form {
+        position:relative;
+        opacity:0;
+        z-index:1;
+        overflow:hidden;
+    }
+    #scratchandwin-claim-form {
+        height:0;
+        padding:0;
+    }
     &.verify #loading-text,
     &.scratch #scratch-canvas,
-    &.form #scratchandwin-claim-form {
+    &.form #scratchandwin-claim-form,
+    &.form #scratch-canvas {
         z-index:99;
         opacity:1;
         @include transition(2500ms);
     }
-    &.form, &.form #scratchandwin-claim-form {
+    &.form #scratchandwin-claim-form {
         height:auto;
+        @include transition(2500ms);
     }
 }
 
