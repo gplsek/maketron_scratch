@@ -174,7 +174,7 @@ Scratcher.prototype.scratchLine = function(x, y, fresh) {
     ctx.lineWidth = 20;
     ctx.lineCap = 'butt';
     ctx.lineJoin = 'bevel';
-    //ctx.strokeStyle = '#f00'; // can be any opaque color
+    ctx.strokeStyle = '#111'; // can be any opaque color
     if (fresh) {
         ctx.beginPath();
         // this +0.01 hackishly causes Linux Chrome to draw a
