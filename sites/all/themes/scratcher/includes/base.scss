@@ -359,7 +359,8 @@ button {
         #header,
         #footer,
         #content {
-            @include size($canvas-x, auto);
+            @include size(100%, auto);
+            max-width:$canvas-x;
             margin:0 auto;
             padding:0;/*room for shadows*/
                 position:relative;

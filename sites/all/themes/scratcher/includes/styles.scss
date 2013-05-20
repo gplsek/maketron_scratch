@@ -191,38 +191,55 @@ body.no-sidebars.node-type-scratch-campaign {
 /* node page layout */
 #scratch-container {
     position:relative;
-
+    max-width:$canvas-x;
+    min-height:$canvas-y;
+    #loading-text, #scratch-canvas, #scratchandwin-claim-form {
+        @include transition(2500ms, opacity);
+        //display:none;
+        height:0;
+        z-index:1;
+        position:relative;
+        opacity:0;
+        overflow:hidden;
+    }
     #loading-text {
-        @include size($canvas-x, $canvas-y);
-        @include transition(2500ms);
+        /*@include transition(2500ms);
         position:absolute;
         left:0;
         top:0;
         z-index:1;
         opacity:0;
+        max-width:$canvas-x;
+        max-height:$canvas-y;*/
     }
     #scratch-canvas, #scratchandwin-claim-form {
-        position:relative;
+        /*position:relative;
         opacity:0;
         z-index:1;
-        overflow:hidden;
+        overflow:hidden;*/
     }
-    #scratchandwin-claim-form {
+    /*#scratchandwin-claim-form {
         height:0;
         padding:0;
-    }
+    }*/
     &.verify #loading-text,
     &.scratch #scratch-canvas,
     &.form #scratchandwin-claim-form,
     &.form #scratch-canvas {
         z-index:99;
+        height:auto;
         opacity:1;
-        @include transition(2500ms);
+        //display:block;
+        @include transition(2500ms, opacity);
     }
-    &.form #scratchandwin-claim-form {
+    &.form {
+        max-height:100%;
+        @include transition(2500ms, height);
+    }
+    /*&.form #scratchandwin-claim-form {
         height:auto;
         @include transition(2500ms);
-    }
+    }*/
 }
 
 /* canvas scratcher */
@@ -233,6 +250,9 @@ body.no-sidebars.node-type-scratch-campaign {
     canvas {
         position:relative;
         z-index:99;
+        width:100%;
+        min-height:320px;
+        height:auto;
     }
     &.finished {
         @include transition(2500ms, opacity);
@@ -245,9 +265,9 @@ body.no-sidebars.node-type-scratch-campaign {
 #loading-text {
     position:relative;
 
-    #preloadScreen {
+    /*#preloadScreen {
         @include size($canvas-x, $canvas-y);
-    }
+    }*/
 
 
     #preloadMsg {
@@ -256,10 +276,10 @@ body.no-sidebars.node-type-scratch-campaign {
         background:#111 url($path-img  + 'navy_blue.png') 0 0 repeat;
         //background:url($path-img + 'bg_buttons.png') 0 0 repeat;
         //border:2px solid #444;
-        position:absolute;
+        /*position:absolute;
         left:0;
         top:0;
-        z-index:1;
+        z-index:1;*/
         h4 {
             @include text-shadow(1px, 1px, 0, #666);
             @include font-size(32px, 34px);
@@ -425,8 +445,7 @@ p.wlMsg {
 
 #content form {
     margin:0 auto;
-    padding-bottom:15px;
-    width:90%;
+    padding:0 10px 15px;
 }
 
 .block-scratchandwin .content form {
@@ -434,13 +453,11 @@ p.wlMsg {
         @include wrap();
         .form-item {
             float:left;
-            height:102px;
+            height:auto;
             line-height:90px;
-
-            margin:0 0 15px;
-            width:92px;
+            margin:0 15px 15px 0;
             &.form-item-field-dob-day {
-                margin:0 2% 15px;
+                margin:0 15px 15px 0;
             }
         }
     }
@@ -550,21 +567,21 @@ p.wlMsg {
     background:#000 !important;
 }
 
-/* all win/lose containers */
+/* all win/lose containers *
 #preloadResultContainer {
    /* @include opacity(0);
     @include transition(600);
     position:absolute;
     visibility:hidden;
-    width:100%;*/
+    width:100%;*
 
     img {
         margin-bottom:15px;
     }
-    /* height set in ../includes/scripts.js */
+    /* height set in ../includes/scripts.js *
 
     /*  MOBILE canvas height on load
-        Removed on canvas clear */
+        Removed on canvas clear *
     &.fixedHeight {
         @include transition(600);
         height:330px !important;
@@ -575,7 +592,7 @@ p.wlMsg {
         visibility:visible;
     }
 
-    /* show behind scratch layer */
+    /* show behind scratch layer *
     &.showResult {
         @include transition(600);
         &.active {
@@ -583,7 +600,7 @@ p.wlMsg {
        }
     }
 
-}
+}*/
 
 
 
