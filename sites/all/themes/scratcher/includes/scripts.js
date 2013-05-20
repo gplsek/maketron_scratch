@@ -161,9 +161,10 @@ ageVerInit = function() {
 scratchEnd = function() {
     var form = document.getElementById('scratchandwin-claim-form'),
     cont = document.getElementById('scratch-container'),
-    offset = form.offsetTop;
+    offset;
 
     if(form) {
+        offset = form.offsetTop;
         cont.className = 'form';
         $('html, body').animate(function() {
             scrollTop:offset

@@ -90,9 +90,9 @@ function _scratch_block($nid){
   }
   $form = '';
   if($_SESSION['status']){
-     $form = render(drupal_get_form('scratchandwin_claim_form')); 
+     $form = render(drupal_get_form('scratchandwin_claim_form'));
   }else if(($_SESSION['status'] == false) && ($node->field_show_form_on_loose['und'][0]['value'] == 1)){
-	$form = render(drupal_get_form('scratchandwin_claim_form')); 
+	$form = render(drupal_get_form('scratchandwin_claim_form'));
   }
   /* need to randomize these */
   $html = '<div class="scratch-block" class="enabled"><div id="scratch-container">'.$canvas.$preloader.$form.'</div></div>';
@@ -129,8 +129,8 @@ function _check_winner_block($nid){
 	         $lose_index = 0;
           }
 
-          $winImg = image_style_url('campaign_node_banner', $node->field_win_images['und'][$win_index]['uri']);
-          $loseImg = image_style_url('campaign_node_banner', $node->field_loose_images['und'][$lose_index]['uri']);
+          $winImg = image_style_url('scratch_image', $node->field_win_images['und'][$win_index]['uri']);
+          $loseImg = image_style_url('scratch_image', $node->field_loose_images['und'][$lose_index]['uri']);
 
             $loose .= "<img src='".$loseImg."' border='0' class='img_lose'/>";
          	$loose .= "<p class='wlMsg'>".$loseText."</p>";
@@ -235,8 +235,8 @@ function _check_winner_image($nid){
 	         $lose_index = 0;
           }
 
-          $winImg = image_style_url('campaign_node_banner', $node->field_win_images['und'][$win_index]['uri']);
-          $loseImg = image_style_url('campaign_node_banner', $node->field_loose_images['und'][$lose_index]['uri']);
+          $winImg = image_style_url('scratch_image', $node->field_win_images['und'][$win_index]['uri']);
+          $loseImg = image_style_url('scratch_image', $node->field_loose_images['und'][$lose_index]['uri']);
 
 
 

@@ -150,6 +150,7 @@ Scratcher.prototype.recompositeCanvases = function() {
 
     // Step 3: stamp the background on the temp (!! source-atop mode !!)
     tempctx.globalCompositeOperation = 'source-atop';
+
     if(this.image.back) tempctx.drawImage(this.image.back.img, 0, 0);
 
     // Step 4: stamp the foreground on the display canvas (source-over)
@@ -173,7 +174,7 @@ Scratcher.prototype.scratchLine = function(x, y, fresh) {
     ctx.lineWidth = 20;
     ctx.lineCap = 'butt';
     ctx.lineJoin = 'bevel';
-    ctx.strokeStyle = '#f00'; // can be any opaque color
+    //ctx.strokeStyle = '#f00'; // can be any opaque color
     if (fresh) {
         ctx.beginPath();
         // this +0.01 hackishly causes Linux Chrome to draw a
