@@ -465,6 +465,7 @@ function scratcherCheck(ev) {
     }*/
 
     if (pct >= 65){
+        alert('pct');
         //this.reset;
         //this.recompositeCanvases();
         scratchbox.setImages('', cont.getAttribute('data-back'));
