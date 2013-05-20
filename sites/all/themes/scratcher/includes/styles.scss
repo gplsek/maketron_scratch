@@ -74,7 +74,8 @@ body.no-sidebars.node-type-scratch-campaign {
         margin-bottom:0;
     }
     #content {
-        min-height:330px;
+        //min-height:330px;
+        min-height:auto;
     }
 }
 
@@ -192,7 +193,8 @@ body.no-sidebars.node-type-scratch-campaign {
 #scratch-container {
     position:relative;
     max-width:$canvas-x;
-    min-height:$canvas-y;
+    //min-height:$canvas-y;
+    min-height:auto;
     #loading-text, #scratch-canvas, #scratchandwin-claim-form {
         @include transition(2500ms, opacity);
         //display:none;
