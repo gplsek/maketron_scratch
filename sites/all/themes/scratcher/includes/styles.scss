@@ -448,15 +448,17 @@ p.wlMsg {
 #content form {
     margin:0 auto;
     padding:0 10px 15px;
+    text-align:center;
 }
 
 .block-scratchandwin .content form {
     .user-dob {
         @include wrap();
+        display:inline-block;
+        margin-bottom:50px;
         .form-item {
             float:left;
             height:auto;
-            line-height:90px;
             margin:0 15px 15px 0;
             &.form-item-field-dob-day {
                 margin:0 15px 15px 0;
@@ -507,6 +509,10 @@ p.wlMsg {
     }
     .ui-focus, .ui-btn:focus {
         box-shadow:none !important;
+    }
+    .form-submit {
+        display:block;
+        margin:0 auto;
     }
 }
 .ui-checkbox label {
