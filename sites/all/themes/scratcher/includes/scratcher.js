@@ -465,7 +465,7 @@ var scractched = 0,
 scratchedWinner = 0,
 scratchedLoser = 0;
 function scratcherCheck(ev) {
-    var pct = (this.fullAmount(32) * 100)|0;
+    var pct = (this.fullAmount(50) * 100)|0;
 
     /*if (this.scratched != true){
         this.scratched = true;
