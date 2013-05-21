@@ -41,6 +41,7 @@ $canvas-y:330px;
 
 body {
     background:rgba(0,0,0,.9);
+    height:auto;
     //background:url($path-img + 'bg1.png') 0 0 repeat;
     #content .field-name-body {
         &, p {
@@ -76,6 +77,9 @@ body.no-sidebars.node-type-scratch-campaign {
     #content {
         //min-height:330px;
         min-height:auto;
+        max-height:auto;
+        height:auto;
+        overflow:hidden;
     }
 }
 
@@ -84,6 +88,7 @@ body.no-sidebars.node-type-scratch-campaign {
    // max-width:960px;
     position:relative;
     width:100%;
+    height:auto;
 }
 
 .region-content{
@@ -235,7 +240,7 @@ body.no-sidebars.node-type-scratch-campaign {
         @include transition(2500ms, opacity);
     }
     &.form {
-        max-height:100%;
+        max-height:auto;
         @include transition(2500ms, height);
     }
     /*&.form #scratchandwin-claim-form {
@@ -254,6 +259,7 @@ body.no-sidebars.node-type-scratch-campaign {
         z-index:99;
         width:100%;
         //min-height:320px;
+        min-height:auto;
         height:auto;
     }
     img {

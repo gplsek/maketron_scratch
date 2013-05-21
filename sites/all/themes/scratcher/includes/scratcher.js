@@ -463,7 +463,8 @@ function supportsCanvas() {
  */
 var scractched = 0,
 scratchedWinner = 0,
-scratchedLoser = 0;
+scratchedLoser = 0,
+scratchFin = false;
 function scratcherCheck(ev) {
     var pct = (this.fullAmount(50) * 100)|0;
 
@@ -483,9 +484,12 @@ function scratcherCheck(ev) {
         //this.reset;
         //this.recompositeCanvases();
         //scratchbox.setImages('', '');
-        scratchbox.replaceCanvas(cont.getAttribute('data-back'));
-        this.disabled = true;
-        endFunc();
+        if(!scratchFin) {
+            scratchbox.replaceCanvas(cont.getAttribute('data-back'));
+            //this.disabled = true;
+            endFunc();
+            scratchFin = true;
+        }
         /*if (scractched <= 3){
             this.removeEventListener('scratchesended');
 
