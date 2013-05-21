@@ -62,13 +62,27 @@ function Scratcher(canvasId, backImage, frontImage) {
 };
 
 /**
+ * Replaces the canvas with a static image
+ */
+Scratcher.prototype.replaceCanvas = function(imgUrl) {
+    var img = document.createElement('img'),
+    canvas = document.getElementById(scratchbox.canvasId);
+    //img.id = scratchbox.canvasId;
+    $(img).on('load', function() {
+        canvas.parentNode.insertBefore(img, canvas.parentNode.firstChild);
+        canvas.style.display = 'none';
+    });
+    img.src = imgUrl;
+};
+
+/**
  * Set the images to use
  */
 Scratcher.prototype.setImages = function(backImage, frontImage) {
     this.image = {};
 
-    if(backImage) this.image.back = { 'url':backImage, 'img':null };
-    if(frontImage) this.image.front = { 'url':frontImage, 'img':null };
+    this.image.back = { 'url':backImage, 'img':null };
+    this.image.front = { 'url':frontImage, 'img':null };
     /*this.image = {
         'back': { 'url':backImage, 'img':null },
         'front': { 'url':frontImage, 'img':null }
@@ -294,7 +308,8 @@ Scratcher.prototype.mainCanvas = function() {
  * Dispatches the 'imagesloaded' event
  */
 Scratcher.prototype._loadImages = function() {
-    var loadCount = 0;
+    var loadCount = 0,
+    base = window.location.href.slice(0, window.location.href.indexOf('.com/') + 5);
 
     // callback for when the images get loaded
     function imageLoaded(e) {
@@ -467,7 +482,8 @@ function scratcherCheck(ev) {
     if (pct >= 65){
         //this.reset;
         //this.recompositeCanvases();
-        scratchbox.setImages('', cont.getAttribute('data-back'));
+        //scratchbox.setImages('', '');
+        scratchbox.replaceCanvas(cont.getAttribute('data-back'));
         this.disabled = true;
         endFunc();
         /*if (scractched <= 3){
