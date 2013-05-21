@@ -256,6 +256,10 @@ body.no-sidebars.node-type-scratch-campaign {
         //min-height:320px;
         height:auto;
     }
+    img {
+        width:100%;
+        height:auto;
+    }
     &.finished {
         @include transition(2500ms, opacity);
         @include opacity(0);
