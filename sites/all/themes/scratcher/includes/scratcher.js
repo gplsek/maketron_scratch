@@ -64,7 +64,7 @@ function Scratcher(canvasId, backImage, frontImage) {
 /**
  * Replaces the canvas with a static image
  */
-Scratcher.prototype.replaceCanvas = function(imgUrl) {
+Scratcher.prototype.replaceCanvas = function() {
     var img = document.createElement('img'),
     canvas = document.getElementById(scratchbox.canvasId);
     //img.id = scratchbox.canvasId;
@@ -72,7 +72,7 @@ Scratcher.prototype.replaceCanvas = function(imgUrl) {
         canvas.parentNode.insertBefore(img, canvas.parentNode.firstChild);
         canvas.style.display = 'none';
     });
-    img.src = imgUrl;
+    img.src = this.image.back.url;
 };
 
 /**
@@ -151,13 +151,15 @@ Scratcher.prototype.fullAmount = function(stride) {
  * the drawImage() documentation for details.)  This would scale to
  * arbitrary-sized images, whereas in its current form, it will dog out
  * if the images are large.
+ *
+* @param bool - determines whether to draw all images
  */
-Scratcher.prototype.recompositeCanvases = function() {
+Scratcher.prototype.recompositeCanvases = function(initial) {
     var tempctx = this.canvas.temp.getContext('2d');
     var mainctx = this.canvas.main.getContext('2d');
 
     // Step 1: clear the temp
-    this.canvas.temp.width = this.canvas.temp.width; // resizing clears
+    this.canvas.temp.width = this.canvas.main.width; // resizing clears
 
     // Step 2: stamp the draw on the temp (source-over)
     tempctx.drawImage(this.canvas.draw, 0, 0);
@@ -168,7 +170,7 @@ Scratcher.prototype.recompositeCanvases = function() {
     if(this.image.back) tempctx.drawImage(this.image.back.img, 0, 0);
 
     // Step 4: stamp the foreground on the display canvas (source-over)
-    if(this.image.front) mainctx.drawImage(this.image.front.img, 0, 0);
+    if(this.image.front && initial) mainctx.drawImage(this.image.front.img, 0, 0);
 
     // Step 5: stamp the temp on the display canvas (source-over)
     mainctx.drawImage(this.canvas.temp, 0, 0);
@@ -223,13 +225,13 @@ Scratcher.prototype._setupCanvases = function() {
      */
     function mousedown_handler(e) {
         if(!this.disabled) {
-            var local = getLocalCoords(c, getEventCoords(e));
+           // var local = getLocalCoords(c, getEventCoords(e));
             this.mouseDown = true;
 
-            this.scratchLine(local.x, local.y, true);
-            this.recompositeCanvases();
+            //this.scratchLine(local.x, local.y, true);
+            //this.recompositeCanvases();
 
-            this.dispatchEvent(this.createEvent('scratchesbegan'));
+            //this.dispatchEvent(this.createEvent('scratchesbegan'));
         }
 
         return false;
@@ -262,7 +264,7 @@ Scratcher.prototype._setupCanvases = function() {
         if (this.mouseDown && !this.disabled) {
             this.mouseDown = false;
 
-            this.dispatchEvent(this.createEvent('scratchesended'));
+           // this.dispatchEvent(this.createEvent('scratchesended'));
 
             return false;
         }
@@ -289,7 +291,7 @@ Scratcher.prototype.reset = function() {
     // clear the draw canvas
     this.canvas.draw.width = this.canvas.draw.width;
 
-    this.recompositeCanvases();
+    this.recompositeCanvases(true);
 
     // call back if we have it
     this.dispatchEvent(this.createEvent('reset'));
@@ -466,7 +468,7 @@ scratchedWinner = 0,
 scratchedLoser = 0,
 scratchFin = false;
 function scratcherCheck(ev) {
-    var pct = (this.fullAmount(50) * 100)|0;
+    var pct = (this.fullAmount(100) * 100)|0;
 
     /*if (this.scratched != true){
         this.scratched = true;
@@ -485,7 +487,7 @@ function scratcherCheck(ev) {
         //this.recompositeCanvases();
         //scratchbox.setImages('', '');
         if(!scratchFin) {
-            scratchbox.replaceCanvas(cont.getAttribute('data-back'));
+            scratchbox.replaceCanvas();
             //this.disabled = true;
             endFunc();
             scratchFin = true;
@@ -527,9 +529,13 @@ function scratcherCheck(ev) {
  var endFunc, scratchbox, cont;
 function initPage(canvasId, id, complete) {
     cont = document.getElementById(canvasId),
-    endFunc = complete;
-
-    cont.innerHTML = '<canvas id="scratcher" class="scratch-box" width="330" height="320"></canvas>';
+    endFunc = complete,
+    canvas = document.createElement('canvas');
+    canvas.id = 'scratcher';
+    canvas.className = 'scratch-box';
+    canvas.width = '330';
+    canvas.height = '320';
+    cont.appendChild(canvas);
 
     /*var scratchers = [];
     var i, i1;

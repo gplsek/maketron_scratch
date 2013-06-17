@@ -254,10 +254,11 @@ body.no-sidebars.node-type-scratch-campaign {
     @include transition(2500ms, opacity);
     @include opacity(1);
     z-index:3;
+    position:relative;
     canvas {
         position:relative;
         z-index:99;
-        width:100%;
+        //width:100%;
         //min-height:320px;
         min-height:auto;
         height:auto;
@@ -294,7 +295,8 @@ body.no-sidebars.node-type-scratch-campaign {
         z-index:1;*/
         h4 {
             @include text-shadow(1px, 1px, 0, #666);
-            @include font-size(32px, 34px);
+            @include font-size(30px, 34px);
+            -webkit-font-smoothing: antialiased;
             color:#fff;
             font-weight:bold;
             padding:30px 30px 5px;
