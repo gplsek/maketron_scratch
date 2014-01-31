@@ -1,4 +1,4 @@
-vvv
+
 CONTENTS OF THIS FILE
 ---------------------
 

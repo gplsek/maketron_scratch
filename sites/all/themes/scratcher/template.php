@@ -100,9 +100,9 @@ function scratcher_preprocess_page(&$vars) {
   }
   // Initialize section image if it exists.
   if (!empty($vars['node'])) {
-
+	  $type = $vars['node']->type;
     /* scratcher header/footer images */
-    if($vars['node]']->type = 'scratch_campaign') {
+    if($type == 'scratch_campaign') {
         if(!empty($vars['node']->field_page_background)){
             $pageBG = file_create_url($vars['node']->field_page_background['und'][0]['uri']);
         } else {

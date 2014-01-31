@@ -1,0 +1,61 @@
+<?php
+	
+function blastapi_node_presave($node) {
+
+	if($node->type == 'station_feed_item'){
+		if($node->is_new){
+		  $node->body['und'][0]['value'] = strip_tags($node->body['und'][0]['value']);
+		  $clientID = $node->field_client_id['und'][0]['value'];
+		  $campaignID = $node->field_campaign_id['und'][0]['value'];
+		  $title = $node->title;
+		  blastapi_send_sms($node->body['und'][0]['value'],$clientID,$campaignID,$title);
+	    }
+		
+	}
+
+}
+
+function blastapi_send_sms($body,$clientID,$campaignID,$title){
+	
+	$body = "tototott";
+
+	$message = "Sent SMS to members of campaign $campaignID : $title";
+	//http://msnapaccess.com/api/blast/v1/send/[CLIENT_ID]?cmpid=XXX&text=XXX
+	$body = (strlen($body) > 118) ? substr($body,0,118).'...' : $body;
+	$qry_str = "?cmpid=$campaignID&text=$body";
+	$ch = curl_init();
+
+	// Set query data here with the URL
+	curl_setopt($ch, CURLOPT_URL, 'http://msnapaccess.com/api/blast/v1/send/'.$clientID . $qry_str); 
+
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($ch, CURLOPT_TIMEOUT, '3');
+	$content = trim(curl_exec($ch));
+	curl_close($ch);
+    
+    
+	
+	if (strpos($content,'Error') !== false) {
+		drupal_set_message(t('message not sent '.$content));
+		watchdog('blastapi', 'message not sent '.$content, array(), WATCHDOG_NOTICE, $link = NULL);
+		return;
+	}
+	
+    $xml = simplexml_load_string($content);
+	
+	
+	$status = (string)$xml->attributes()->stat[0];
+	$sent = (string)$xml->blast->attributes()->send_at[0];
+	$max_len = (string)$xml->blast->attributes()->max_len[0];
+	$text = (string)$xml->blast->attributes()->text[0];
+	$id = (string)$xml->blast->attributes()->id[0];
+	//$status = $xml->@attributes[stat];
+	
+	$message = "Status: $status. Sent: $sent MaxLen: $max_len ID: $id TEXT: $text";
+	
+	drupal_set_message(t($message));
+	watchdog('blastapi', $message, array(), WATCHDOG_NOTICE, $link = NULL);
+	//watchdog('blastapi', $content, array(), WATCHDOG_NOTICE, $link = NULL);
+    
+	return;
+}

@@ -7,6 +7,7 @@
 // VARS
 $color-bg:#f4f4f4;
 $color-body:#000;
+$color-feed-body:#fff;
 $color-header:#222;
 $color-link:#000;
 $color-link-hover:#333;
@@ -45,13 +46,27 @@ body {
     //background:url($path-img + 'bg1.png') 0 0 repeat;
     #content .field-name-body {
         &, p {
-            color:#fff;
+            color:#000;
         }
     }
 }
 
 body.front.no-sidebars #content {
     min-height:150px;
+}
+
+body.node-type-station-feed {
+    background:#fff;
+    height:auto;
+   
+    
+}
+
+body.node-type-station-feed-item {
+    background:#fff;
+    height:auto;
+   
+    
 }
 
 header h1 {
