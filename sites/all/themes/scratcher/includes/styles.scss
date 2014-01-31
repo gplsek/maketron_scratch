@@ -40,6 +40,13 @@ $canvas-y:330px;
 * BEGIN: Site Styles
 */
 
+body.page-batch {
+    background:#fff;
+    height:auto;
+   
+    
+}
+
 body {
     background:rgba(0,0,0,.9);
     height:auto;
@@ -58,9 +65,11 @@ body.front.no-sidebars #content {
 body.node-type-station-feed {
     background:#fff;
     height:auto;
-   
+
     
 }
+
+
 
 body.node-type-station-feed-item {
     background:#fff;
@@ -68,6 +77,14 @@ body.node-type-station-feed-item {
    
     
 }
+
+div.messages{
+    width:70%;
+	margin:0 auto;
+
+}
+
+
 
 header h1 {
     margin-bottom:35px;

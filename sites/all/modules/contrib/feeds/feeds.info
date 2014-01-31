@@ -11,6 +11,7 @@ files[] = includes/FeedsSource.inc
 files[] = libraries/ParserCSV.inc
 files[] = libraries/http_request.inc
 files[] = libraries/PuSHSubscriber.inc
+files[] = feeds.drush.inc
 
 ; Plugins
 files[] = plugins/FeedsCSVParser.inc

@@ -8,23 +8,27 @@ function blastapi_node_presave($node) {
 		  $clientID = $node->field_client_id['und'][0]['value'];
 		  $campaignID = $node->field_campaign_id['und'][0]['value'];
 		  $title = $node->title;
-		  blastapi_send_sms($node->body['und'][0]['value'],$clientID,$campaignID,$title);
+		  $link = $node->field_link['und'][0]['value'];
+		  blastapi_send_sms($node->body['und'][0]['value'],$clientID,$campaignID,$title,$link);
 	    }
 		
 	}
 
 }
 
-function blastapi_send_sms($body,$clientID,$campaignID,$title){
+function blastapi_send_sms($body,$clientID,$campaignID,$title,$link){
 	
-	$body = "tototott";
-
+	$link = bitly_user_shorten($link);
+	
 	$message = "Sent SMS to members of campaign $campaignID : $title";
 	//http://msnapaccess.com/api/blast/v1/send/[CLIENT_ID]?cmpid=XXX&text=XXX
-	$body = (strlen($body) > 118) ? substr($body,0,118).'...' : $body;
-	$qry_str = "?cmpid=$campaignID&text=$body";
+	$body = (strlen($body) > 118) ? substr($body,0,100) : $body;
+	
 	$ch = curl_init();
-
+	$title = (strlen($title) > 118) ? substr($title,0,00) : $title;
+	$title = $title.' '.$link;
+	$title = urlencode($title);
+	$qry_str = "?cmpid=$campaignID&text=$title";
 	// Set query data here with the URL
 	curl_setopt($ch, CURLOPT_URL, 'http://msnapaccess.com/api/blast/v1/send/'.$clientID . $qry_str); 
 
@@ -58,4 +62,14 @@ function blastapi_send_sms($body,$clientID,$campaignID,$title){
 	//watchdog('blastapi', $content, array(), WATCHDOG_NOTICE, $link = NULL);
     
 	return;
+}
+
+
+function blastapi_feed_callback() {
+
+    $myFeed = feeds_source(22);
+    while (FEEDS_BATCH_COMPLETE != $myFeed->import());
+	print "done";
+    return t('Import successfull');
+  
 }
