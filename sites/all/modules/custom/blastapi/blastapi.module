@@ -3,7 +3,7 @@
 function blastapi_node_presave($node) {
 
 	if($node->type == 'station_feed_item'){
-		if($node->is_new){
+		if(($node->is_new)&&($node->field_send['und'][0]['value'] == 1)){
 		  $node->body['und'][0]['value'] = strip_tags($node->body['und'][0]['value']);
 		  $clientID = $node->field_client_id['und'][0]['value'];
 		  $campaignID = $node->field_campaign_id['und'][0]['value'];
