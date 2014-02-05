@@ -3,6 +3,9 @@
 function blastapi_node_presave($node) {
 
 	if($node->type == 'station_feed_item'){
+		if(!isset($node->field_send['und'][0])){
+			return;
+		}
 		if(($node->is_new)&&($node->field_send['und'][0]['value'] == 1)){
 		  $node->body['und'][0]['value'] = strip_tags($node->body['und'][0]['value']);
 		  $clientID = $node->field_client_id['und'][0]['value'];
@@ -10,6 +13,7 @@ function blastapi_node_presave($node) {
 		  $title = $node->title;
 		  $link = $node->field_link['und'][0]['value'];
 		  $station = $node->field_station_name['und'][0]['value'];
+	      
 		  blastapi_send_sms($node->body['und'][0]['value'],$clientID,$campaignID,$title,$link,$station);
 	    }
 		
