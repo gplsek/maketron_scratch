@@ -13,7 +13,7 @@ function blastapi_node_presave($node) {
 		  $title = $node->title;
 		  $link = $node->field_link['und'][0]['value'];
 		  $station = $node->field_station_name['und'][0]['value'];
-	      
+	      print "new node will send for $station: ".$title."\n";
 		  blastapi_send_sms($node->body['und'][0]['value'],$clientID,$campaignID,$title,$link,$station);
 	    }
 		
@@ -65,7 +65,7 @@ function blastapi_send_sms($body,$clientID,$campaignID,$title,$link,$station){
 	drupal_set_message(t($message));
 	watchdog('blastapi', $message, array(), WATCHDOG_NOTICE, $link = NULL);
 	//watchdog('blastapi', $content, array(), WATCHDOG_NOTICE, $link = NULL);
-    
+    print $message."\n";
 	return;
 }
 
