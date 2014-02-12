@@ -22,6 +22,7 @@ function blastapi_node_presave($node) {
 }
 
 function blastapi_send_sms($body,$clientID,$campaignID,$title,$link,$station){
+	watchdog('blastapi', 'trying to send for client '.$clientID.' '.$station, array(), WATCHDOG_NOTICE, $link = NULL);
 	
 	$link = bitly_user_shorten($link);
 	
