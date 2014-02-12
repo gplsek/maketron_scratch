@@ -146,7 +146,6 @@ function feeds_import_tab_form($form, &$form_state, $node) {
  */
 function feeds_import_tab_form_submit($form, &$form_state) {
   $form_state['redirect'] = $form['#redirect'];
-  print_r($form['#feed_nid']);die();
   feeds_source($form['#importer_id'], $form['#feed_nid'])->startImport();
 }
 
