@@ -14,6 +14,7 @@ function blastapi_node_presave($node) {
 		  $link = $node->field_link['und'][0]['value'];
 		  $station = $node->field_station_name['und'][0]['value'];
 	      print "new node will send for $station: ".$title."\n";
+          
 		  blastapi_send_sms($node->body['und'][0]['value'],$clientID,$campaignID,$title,$link,$station);
 	    }
 		
@@ -22,9 +23,12 @@ function blastapi_node_presave($node) {
 }
 
 function blastapi_send_sms($body,$clientID,$campaignID,$title,$link,$station){
-	watchdog('blastapi', 'trying to send for client '.$clientID.' '.$station, array(), WATCHDOG_NOTICE, $link = NULL);
-
+	
 	$link = bitly_user_shorten($link);
+
+	watchdog('blastapi', 'trying to send for client '.$clientID.' '.$station.' '.$link, array(), WATCHDOG_NOTICE, $alink = NULL);
+
+	
 	
 	$message = "Sent SMS to members of campaign $campaignID : $title";
 	//http://msnapaccess.com/api/blast/v1/send/[CLIENT_ID]?cmpid=XXX&text=XXX
@@ -35,6 +39,7 @@ function blastapi_send_sms($body,$clientID,$campaignID,$title,$link,$station){
 	$title = $station.' '.$title.' '.$link;
 	$title = urlencode($title);
 	$qry_str = "?cmpid=$campaignID&text=$title";
+
 	// Set query data here with the URL
 	curl_setopt($ch, CURLOPT_URL, 'http://msnapaccess.com/api/blast/v1/send/'.$clientID . $qry_str); 
 
