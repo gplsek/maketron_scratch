@@ -250,6 +250,11 @@ function feeds_unlock_tab_form_submit($form, &$form_state) {
     ->condition('feed_nid', $feed_nid)
     ->fields(array('state' => FALSE))
     ->execute();
+	
+  // Delete any semaphore rows associated with this importer ID
+  db_delete('semaphore')
+    ->condition('name', $importer_id, 'LIKE')
+    ->execute();
 }
 
 /**
