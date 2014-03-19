@@ -87,9 +87,32 @@ function blastapi_feed_callback() {
 	
     //feeds_source("station_feed", 22)->startImport();
 	foreach($nids as $nid){
-      feeds_source('station_feed', $nid)->startImport();
-	  print "imported: ".$nid."\n";
+		
+		$url = db_select('feeds_source', 'f')
+		    ->fields('f', array('source'))
+		    ->condition('f.feed_nid', $nid)
+		    ->execute()
+		    ->fetchAssoc();
+
+		if(blastapi_check_url($url['source'])){
+           feeds_source('station_feed', $nid)->startImport();
+	       print "imported: ".$nid."\n";
+	   }else{
+	   	   print "url failed\n";
+		   watchdog('blastapi', 'failed to open url: '.$url['source'], array(), WATCHDOG_NOTICE, $link = NULL);
+	   }
     }
     return t('Import successfull');
   
+}
+
+function blastapi_check_url($url) {
+     $check = @fopen($url,"r"); // we are opening url with fopen
+     if($check){
+       $status = true;
+	}
+     else {
+       $status = false;
+	 }
+      return $status;
 }
